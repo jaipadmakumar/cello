@@ -38,7 +38,7 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
         double max_score = 0.0;
 
         LogicCircuit lc = new LogicCircuit(get_unassigned_lc());
-
+        Integer my_Loop_Counter = 0 ;
         for(int traj=0; traj<get_options().get_hill_trajectories(); ++traj) {
 
             set_best_score( 0.0 );
@@ -142,6 +142,7 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
 
                 //1. if second gate is used, swap
                 if(isNextGateCurrentlyUsed(lc, B_gate)) {
+                    System.out.println("LOOK IM HERE");
 
                     int B_gate_index = 0; //need to know the second gate index
                     for(int j=0; j<lc.get_logic_gates().size(); ++j) {
@@ -158,6 +159,8 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
                 }
                 //2. if second gate is unused, substitute
                 else {
+                	 my_Loop_Counter += 1;
+                	 
                     lc.get_logic_gates().get(A_gate_index).Name  = B_gate_name;
                     lc.get_logic_gates().get(A_gate_index).Group = B_gate_group;
                 }
@@ -272,6 +275,9 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
             max_score = 0.0;
 
         }
+        System.out.println("NUMBER OF TIMES SUBS: " + my_Loop_Counter);
+        System.out.println("NUMBER OF TIMES EXPECTED IN TOTAL: " + get_options().get_hill_trajectories() *
+        		(get_options().get_hill_iterations() + 100));
 
     }
 

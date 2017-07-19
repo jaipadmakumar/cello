@@ -324,7 +324,8 @@ public class DNACompiler {
             }
             //compute Boolean logic for each gate in the circuit.
             Evaluate.simulateLogic(abstract_lc);
-
+            //System.out.println("HERE'S THE ABSTRACT LC");
+            //System.out.println(abstract_lc);
         }
 
 
@@ -356,7 +357,9 @@ public class DNACompiler {
             return;
         }
 
-
+        //jai lines
+       // System.out.println("\nLC gates");
+       // System.out.println(_abstract_lc.get_logic_gates());
 
 
         // TODO organize DNACompiler in a more modular way.
@@ -749,6 +752,10 @@ public class DNACompiler {
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.steepest_ascent) {
                 circuit_builder = new BuildCircuitsSteepestAscent(_options, gate_library, roadblock);
             }
+            //jai fixed gate sim annealing for testing
+            else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.fixed_gates) {
+                circuit_builder = new BuildCircuitsFixedGates(_options, gate_library, roadblock);
+            }
             //completely randomizes the gate assignment.  Does this many times.
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.random) {
                 circuit_builder = new BuildCircuitsRandom(_options, gate_library, roadblock);
@@ -785,12 +792,13 @@ public class DNACompiler {
             for (LogicCircuit unassigned_lc : nonRB_unassigned_lcs) {
 
                 circuit_builder.set_unassigned_lc(unassigned_lc);
-
+                
 
                 /**
                  * Run assignment algorithm
                  */
                 circuit_builder.buildCircuits();
+                
 
 
                 // TODO hard-coded for Jonghyeon
@@ -856,6 +864,10 @@ public class DNACompiler {
          *
          */
         sortLogicCircuitsByScore(assigned_lcs);
+        System.out.println("Top circuit");
+        System.out.println(assigned_lcs.get(0).printGraph());
+        System.out.println("2nd best circuit");
+        System.out.println(assigned_lcs.get(1).printGraph());
 
         logger.info("best assignment score: " + String.format("%-5.4f", assigned_lcs.get(0).get_scores().get_score()));
 
@@ -1619,6 +1631,7 @@ public class DNACompiler {
 
         if(_options.get_UCFfilepath() == "") {
             _options.set_UCFfilepath( _options.get_home() + "/resources/UCF/Eco1C1G1T1.UCF.json" );
+            System.out.println("Using UCF located at: " + _options.get_UCFfilepath());
         }
 
         if(_options.get_output_directory().equals("")) {

@@ -21,7 +21,7 @@ public class Args {
     @Getter @Setter private String _jobID = ""; // unique identifier for a job
     @Getter @Setter private String _home = "";  // absolute path to project root directory
     @Getter @Setter private String _datapath = "/resources/data/"; // subpath to data files (relative to _home)
-    @Getter @Setter private String _UCFfilepath = ""; //filepath for the UCF .json file
+    @Getter @Setter private String _UCFfilepath = ""; //filepath for the UCF .json file --> retarded b/c immediately overridden by line 1627 in dnacompiler, must be passed as -option!
     @Getter @Setter private DNACompiler.CircuitType _circuit_type = DNACompiler.CircuitType.combinational;
 
     @Getter @Setter private String _output_directory = ""; // path to directory where output files will be saved
