@@ -36,6 +36,13 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     	  * probably to have my script spit out a list of nodes in graph to be fixed and nodes that are in 
     	  * individual cells. Then run simulated annealing on each set of nodes but loosening conditions so
     	  * that duplicate groups are allowed BETWEEN node subsets but not W/IN a subset. 
+    	  * 
+    	  * Will also need to carry over information as to which gates the QS gates connect to. Thus, it's
+    	  * probably going to simplest overall for python script to spit out a list of indices (in proper order)
+    	  * in abstract_LogicCircuit that define each subset as well as the quorum sensing gates. 
+    	  * Note the QS gates don't actually need to be explicitly passed, since they will terminal node of any
+    	  * subset that doesn't include the OUTPUT gate but do it anyways b/c in future that might not be true (for e.g.
+    	  * might have subset that has multiple QS gates b/c that reduces complexity)
          */
     	
         logger = Logger.getLogger(getThreadDependentLoggername());
@@ -46,13 +53,14 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 
         double max_score = 0.0;
         ArrayList<Integer> fixed_gate_indices = new ArrayList<Integer>();
-        //get list of gates to use at fixed indices aka the quorum sensing indices
-        //ArrayList<String> fixed_gate_names = new ArrayList<String>(Arrays.asList("J1_DigiJ","J2_DigiJ","QS1_DigiJQ","QS2_DigiJQ"));
-        
-        fixed_gate_indices.add(3);
+        //fixed_gate_indices.add(3);
         fixed_gate_indices.add(7);
-        System.out.println("Group Library");
-        System.out.println(get_gate_library());
+        
+        
+    		//if(!fixed_gate_names.contains(g.Name)){
+    			//swap_gates.add(g);
+        //System.out.println("Group Library");
+        //System.out.println(get_gate_library());
         
 
         LogicCircuit lc = new LogicCircuit(get_unassigned_lc());
@@ -170,10 +178,55 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
             Integer T0_STEPS = 100; //Purpose of arbitrarily adding a 100 steps to #of hill iterations? -jai
 
             //String b = get_options().get_output_directory() + "/b" + String.format("%02d", traj) + ".txt";
-
+            
+            /* outline for how code should work more logically:
+        	 * for(int i = 0; i < STEPS + T0_STEPS; ++i) {
+        	 * 		//current_gates lists need to be either populated here each time based on 
+        	 * 		//indices of subgraph or this needs to be put outside loop
+        	 * 		//and modified/updated as swaps and subs are performed
+        	 * 		subgraph1_current_gates = [];
+        	 * 		subgraph2_current_gates = [];
+        	 * 		subgraph1_indices = [];
+        	 * 		subgraph2_indices = [];
+        	 * 		A_gate = lc.drawRandomGate();
+        	 * 		
+        	 * 
+        	 * 		if(fixed_gates.contains(A_gate.Name)){
+        	 * 		//since QS gates leave cell, they should follow default assignment
+        	 * 		//steps b/c it doesn't matter which particular subgraph in
+        	 * 			//draw a fixed gate from gate lib., subject to constraints
+        	 * 			B_gate = drawFixedGateFromLibrary(lc, A_gate, ); //either in lc or not
+        	 * 			if(isCurrentlyAssigned(lc, B_gate)){
+        	 * 				//do swap
+        	 * 			}
+        	 * 			else{
+        	 * 				//do sub
+        	 * 			}}
+        	 * 		else{
+        	 * 			//now it matter which subgraph a gate is in so just choose one
+        	 * 			subgraph_num = pick random subgraph to do stuff on
+        	 * 		//get next gate given subgraph_num, this should probably be a
+        	 * 		//hashmap with keys as subgraph numbers connecting to current_gates
+        	 * 		//for that subgraph
+        	 * 			//choose gate from currently assigned gates or from gatelibrary
+        	 * 			B_gate = get_NextGateGivenSubgraph(subgraph_gates.get(subgraph_num), A_gate)
+        	 * 			if(subgraph_gates.get(subgraph_num).contains(B_gate)){
+        	 * 				//do swap
+        	 * 			}
+        	 * 			else{
+        	 * 				//do sub
+        	 * 			}
+        	 * 		}
+        	 * 		//update gate lists with changes
+        	 * 			
+        	 * 			
+        	 */
+            
+            
             for (int i = 0; i < STEPS + T0_STEPS; ++i) {
             	//Do hill climbing for current trajectory, entire loop runs  _hill_trajectories times
-            	// and each loop has _hill_iterations + TO_STEPS iterations -jai
+            	// and each loop has _hill_iterations + TO_STEPS iterations
+            	
 
                 //Util.fileWriter(b, follow_best, true);
 
@@ -193,58 +246,77 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
                 //int rb = get_roadblock().numberRoadblocking(lc);
 
                
+                //note that "A_gate_index" is index in _logic_gates() ArrayList NOT the actual index
+                //b/c _logic_gates() returns an ArrayList<Gate> that is not sorted by gate index
+                //very confusing... fix at some point --> A_gate = lc.get(gate @ A_gate_index)
+                //also could cause huge problems if lc.get_logic_gates() didn't consistently return 
+                //gates in same order (non-issue for now)
                 int A_gate_index = generator.nextInt(lc.get_logic_gates().size());
-               
-                
                 Gate A_gate = lc.get_logic_gates().get( A_gate_index );
-                Gate B_gate = getNextGate(lc, A_gate); //Get a second gate, either used or unused.
-
+                Gate B_gate;
 
                 String A_gate_name = new String(A_gate.Name);
-                String B_gate_name = new String(B_gate.Name);
                 String A_gate_group = new String(A_gate.Group);
-                String B_gate_group = new String(B_gate.Group);
+              
                 
-              //need to write something to say skip this gate if it == given gate
-               //probably do here by saying if A.gate.Group == str; continue
-              //jai written, skip gate if fixed
-
+                //certain gates in lc are fixed and can only be particular gates aka qs gates
+                //subgraph in is irrelevant b/c only one qs group per lc 
                 if(fixed_gate_indices.contains(A_gate.Index)){
-                	//System.out.println("here");
                 	//must try swapping or substitution w/ allowed gate
-                	Gate F_gate = getNextFixedGate(lc, A_gate, fixed_groups);
-                	String F_gate_name = new String(F_gate.Name);
-                    String F_gate_group = new String(F_gate.Group);
-                    //System.out.println("F gate name, group:" + F_gate_name + ", " + F_gate_group);
-                	//1. if second gate is used, swap
-                    if(isNextGateCurrentlyUsed(lc, F_gate)) {
-                    	//Never seem to actually enter here for some reason... jk now we do!
+                	B_gate = getNextFixedGate(lc, A_gate, fixed_groups);
+                	String B_gate_name = new String(B_gate.Name);
+                    String B_gate_group = new String(B_gate.Group);
+
+                    //1. if second gate is used, swap
+                    if(isNextGateCurrentlyUsed(lc, B_gate)) {
                     	num_fix_swaps += 1;
                         
-                        int F_gate_index = FindGateIndexFromName(lc, F_gate_name);
+                        int B_gate_index = FindGateIndexFromName(lc, B_gate_name);
                         //System.out.println("F gate index: " + F_gate_index);
                        
-                        lc.get_logic_gates().get(A_gate_index).Name  = F_gate_name;
-                        lc.get_logic_gates().get(F_gate_index).Name  = A_gate_name;
-                        lc.get_logic_gates().get(A_gate_index).Group = F_gate_group;
-                        lc.get_logic_gates().get(F_gate_index).Group = A_gate_group;
+                        lc.get_logic_gates().get(A_gate_index).Name  = B_gate_name;
+                        lc.get_logic_gates().get(B_gate_index).Name  = A_gate_name;
+                        lc.get_logic_gates().get(A_gate_index).Group = B_gate_group;
+                        lc.get_logic_gates().get(B_gate_index).Group = A_gate_group;
 
                     }
                     //2. if second gate is unused, substitute
                     else {
-                    	//do enter this group
                     	num_fix_subs += 1;
-                        lc.get_logic_gates().get(A_gate_index).Name  = F_gate_name;
-                        lc.get_logic_gates().get(A_gate_index).Group = F_gate_group;
+                        lc.get_logic_gates().get(A_gate_index).Name  = B_gate_name;
+                        lc.get_logic_gates().get(A_gate_index).Group = B_gate_group;
                     }
 
-                	//continue;
                 }
-                //end of jai
+                
+                
                 else{
-
-	                //1. if second gate is used, swap
-	                if(isNextGateCurrentlyUsed(lc, B_gate)) {
+                	//can't use getNextGate here b/c need to fix gate library to exclude gates in
+                	//particular subgraph that A_gate is in, not across the entire logic circuit
+                     
+                	//find subgraph indexes and current subgraph gates
+                     List<Integer> subgraph_indices = getSubgraphFromGate(subgraphs_indices, A_gate);
+                     
+                     
+                     ArrayList<Gate> current_subgraph_gates = new ArrayList<Gate>();
+                     //ArrayList<String> subgraph_group_names = new ArrayList<String>();
+                     for(Gate g:lc.get_logic_gates()){
+                    	 //get gates currently at those indices, note working with lc gate indexes here
+                    	 if(subgraph_indices.contains(g.Index)){
+                    		 current_subgraph_gates.add(g);
+                    		 //subgraph_group_names.add(g.Group);
+                    	 }
+                     }
+                     
+                    // System.out.println("Current subgraph gates: " + current_subgraph_gates);
+                     B_gate = getNextSubgraphGate(lc, subgraph_indices, A_gate);
+                     String B_gate_name = new String(B_gate.Name);
+                     String B_gate_group = new String(B_gate.Group);	 
+                    		 
+                    		 
+	                //1. if second gate is used in subgraph, swap
+	               // if(isNextGateCurrentlyUsed(lc, B_gate)) {
+                     if(isNextGateInArray(current_subgraph_gates, B_gate)){
 	                	//System.out.println("Swapping");
 	                	num_swaps += 1; 
 	                	
@@ -388,6 +460,11 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
         //System.out.println("LC AT END");
         //System.out.println(lc.printGraph());
         //END OF JAI 
+        
+        //System.out.println("lc graph");
+        //System.out.println(lc.printGraph());
+        checkSubgraphReuseError( lc, subgraphs_indices);
+        //checkReuseError(lc);
     }
 
 
@@ -403,17 +480,97 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     }
 
     private boolean isNextGateCurrentlyUsed(LogicCircuit A_lc, Gate B_gate) {
-        boolean is_used = false;
         for(int i=0; i<A_lc.get_logic_gates().size(); ++i) {
             String gate_name = A_lc.get_logic_gates().get(i).Name;
             if(B_gate.Name.equals(gate_name)) {
-                is_used = true;
-                break;
+            	return true;
+                }
+        }
+        return false;
+    }
+    
+    private boolean isNextGateInArray(ArrayList<Gate> gate_list, Gate B_gate){
+    	for(Gate g:gate_list){
+    		if(g.Name.equals(B_gate.Name)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    private boolean currentlyAssignedSubgraphGroup(LogicCircuit lc, List<Integer> subgraph_indices, String group_name){
+    	for(Gate g: lc.get_logic_gates()) {
+    		if(subgraph_indices.contains(g.Index)){
+    			if(g.Group.equals(group_name)) {
+    				return true;
+    			}	
+            }
+        }
+        return false;
+    }
+    
+    private List<Integer> getSubgraphFromGate(List<List<Integer>> subgraph_inds_list, Gate A_gate){
+    	 List<Integer> subgraph_indices = new ArrayList<Integer>(); 
+         for(List<Integer> subgraph_inds:subgraph_inds_list){
+        	 if(subgraph_inds.contains(A_gate.Index)){
+        		 subgraph_indices = subgraph_inds;
+            	 break;
+        	 }
+         }
+         return subgraph_indices;
+    }
+    
+    private Gate getNextSubgraphGate(LogicCircuit lc, List<Integer> subgraph_indices, Gate A_gate){
+    	//get allowed subgraph gates
+    	
+    	ArrayList<Gate> gates_of_type = new ArrayList<Gate>(get_gate_library().get_GATES_BY_TYPE().get(A_gate.Type).values());
+    	HashMap<String, Gate> allowed_B_gates = new HashMap<String, Gate>();
+    	ArrayList<Gate> current_subgraph_gates = new ArrayList<Gate>();
+    	
+    	for(Gate g:lc.get_logic_gates()){
+    		if(subgraph_indices.contains(g.Index)){
+    			current_subgraph_gates.add(g);
+    		}
+    	}
+    	
+        for(Gate g: gates_of_type) {
+
+             //disallow same gate or
+        	 //disallow swapping w/ a fixed gate --> also, currently causes crash for some reason if condition removed
+        	if(g.Name.equals(A_gate.Name) || fixed_gate_names.contains(g.Name)) {
+                continue;
+             }
+             
+             //allow RBS variant
+            else if(g.Group.equals(A_gate.Group)){
+            	//System.out.println("allowing RBS variant " + A_gate.Name + ": " + g.Name);
+                allowed_B_gates.put(g.Name, g);
+            }
+
+            //allow non-duplicate groups in subgraph OR currently used gates
+        	
+            else if (!currentlyAssignedSubgraphGroup(lc, subgraph_indices, g.Group) || isNextGateInArray(current_subgraph_gates, g)) {
+                allowed_B_gates.put(g.Name, g);
             }
         }
 
-        return is_used;
+
+         ArrayList<String> allowed_B_gate_names = new ArrayList<String>( allowed_B_gates.keySet());
+         Collections.shuffle(allowed_B_gate_names);
+         String B_gate_name = allowed_B_gate_names.get(0);
+         
+         /*
+         System.out.println("subgraph inds: " + subgraph_indices);
+         System.out.println("allowed B: " + allowed_B_gate_names.toString());
+         System.out.println("A_gate " + A_gate.Name);
+         System.out.println("B_gate " + B_gate_name);
+         System.out.println("Current assignment " + lc.printAssignment());
+         */
+         
+
+         return get_gate_library().get_GATES_BY_NAME().get(B_gate_name);
     }
+    	
 
 
     private Gate getNextGate(LogicCircuit lc, Gate A_gate) {
@@ -468,6 +625,7 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
         return get_gate_library().get_GATES_BY_NAME().get(B_gate_name);
 
     }
+    
     private Gate getNextFixedGate(LogicCircuit lc, Gate A_gate, ArrayList<String> allowed_groups) {
     	//gets another gate that is 1) different than A.gate 2) is not of the same group as something else in circuit
     	// 3) in specified set of allowed groups --> use for getting quorum sensing gates
@@ -519,6 +677,9 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 	    }
 		return gate_name_index;
     }
+    
+
+    
     //debugging purposes.
     private void checkReuseError(LogicCircuit lc) {
         for(int i=0; i<lc.get_logic_gates().size()-1; ++i) {
@@ -529,6 +690,40 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
             }
         }
     }
+    
+    //debugging subgraph reuse
+    private void checkSubgraphReuseError(LogicCircuit lc, List<List<Integer>> subgraphs_indices) {
+    	HashMap<Integer, List<Integer>> subgraph_map = new HashMap<Integer, List<Integer>>();
+    	HashMap<Integer, ArrayList<String>> subgraph_groups_map = new HashMap<Integer, ArrayList<String>>();
+    	
+    	for(int i=0; i<subgraphs_indices.size()-1; ++i){
+    		List<Integer> subgraph_inds = subgraphs_indices.get(i);
+    		subgraph_map.put(i, subgraph_inds);
+    	}
+    	
+    	for(int k : subgraph_map.keySet()){
+    		ArrayList<String> groups = new ArrayList<String>();
+    		List<Integer> subgraph_inds = subgraph_map.get(k);
+    		
+    		for(int i=0; i<lc.get_logic_gates().size()-1; ++i) {
+    			Gate g = lc.get_logic_gates().get(i);
+    			if(subgraph_inds.contains(g.Index)){
+    				groups.add(g.Group);
+    			}
+    		}
+    		
+    		subgraph_groups_map.put(k, groups);
+    	}
+    	
+    	for(int k:subgraph_groups_map.keySet()){
+    		ArrayList<String> subgraph_groups =subgraph_groups_map.get(k);
+    		Set<String> group_set = new HashSet<String>(subgraph_groups);
+    		if(group_set.size() < subgraph_groups.size()){
+    			throw new IllegalStateException("Repressor reuse error in simulated annealing, \n");
+    			}
+    	}
+    }
+    
 
     //if rejected, reset the Name for all logic gates.
     private void revert(LogicCircuit B_lc, LogicCircuit A_lc) {
@@ -558,7 +753,24 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     private ArrayList<String> fixed_gate_names = new ArrayList<String>(Arrays.asList("J1_DigiJ","J2_DigiJ",
     																					"QS1_DigiJQ","QS2_DigiJQ"));
     private ArrayList<String> fixed_groups  = new ArrayList<String>(Arrays.asList("DigiJ", "DigiJQ"));
-    
-    
+    //private ArrayList<String> fixed_gate_names = new ArrayList<String>(Arrays.asList("Q1_QacR","Q2_QacR"));
+    //private ArrayList<String> fixed_groups  = new ArrayList<String>(Arrays.asList("QacR"));
 
+    
+    //note this won't work b/c Arrays.asList() doesn't return an ArrayList so declaration is incorrect
+    //private static ArrayList<ArrayList<Integer>> sub_groups = new ArrayList<ArrayList<Integer>>();
+    //sub_groups.add(Arrays.asList(1,2));
+    
+    //subgraphs_indices must not overlap!
+    private List<List<Integer>> subgraphs_indices = Arrays.asList(
+    	    Arrays.asList( 1, 2, 3, 4),
+    	    Arrays.asList( 5, 6, 7, 8 ));
+    
+    
+    
+    
+    
+    
+    
+    
 }
