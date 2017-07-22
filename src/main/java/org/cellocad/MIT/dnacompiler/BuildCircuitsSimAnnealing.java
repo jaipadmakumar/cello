@@ -142,7 +142,6 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
 
                 //1. if second gate is used, swap
                 if(isNextGateCurrentlyUsed(lc, B_gate)) {
-                    System.out.println("LOOK IM HERE");
 
                     int B_gate_index = 0; //need to know the second gate index
                     for(int j=0; j<lc.get_logic_gates().size(); ++j) {
@@ -150,6 +149,10 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
                             B_gate_index = j;
                         }
                     }
+                    
+                    //System.out.println("B_gate_index from loop: " + B_gate_index);
+                    //System.out.println("B_gate_name expected: " + B_gate_name);
+                    //System.out.println("B gate name actual: " + lc.get_logic_gates().get(B_gate_index).Name);
 
                     lc.get_logic_gates().get(A_gate_index).Name  = B_gate_name;
                     lc.get_logic_gates().get(B_gate_index).Name  = A_gate_name;
@@ -319,7 +322,7 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
             }
 
             //allow non-duplicate groups
-            if (!currentlyAssignedGroup(lc, g.Group)) {
+            if (!currentlyAssignedGroup(lc, g.Group) || isNextGateCurrentlyUsed(lc, g)) {
                 allowed_B_gates.put(g.Name, g);
             }
 
