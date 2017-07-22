@@ -21,6 +21,8 @@ import java.util.*;
  * Assigned LogicCircuits are ranked by score.
  *
  */
+
+
 public class LogicCircuit{
 
     /**
@@ -680,6 +682,16 @@ public class LogicCircuit{
         }
 
         return logic_gate_types;
+    }
+    
+    public Gate get_RandomLogicGate() {
+    	//jai written
+    	Random generator = new Random();
+    	int random_index = generator.nextInt(this.get_logic_gates().size());
+    	Gate random_gate = this.get_logic_gates().get(random_index);
+    	
+    	return random_gate;
+    	
     }
 
 
