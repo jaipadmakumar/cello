@@ -55,20 +55,20 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
         ArrayList<Integer> fixed_gate_indices = new ArrayList<Integer>();
         fixed_gate_indices.add(3);
         fixed_gate_indices.add(7);
+        List<Gate> fixed_gates = new ArrayList<Gate>();
         
+        for(String k:get_gate_library().get_GATES_BY_NAME().keySet()){
+        	if(fixed_gate_names.contains(k)){
+        		fixed_gates.add(get_gate_library().get_GATES_BY_NAME().get(k));
+        	}
+        }
+        System.out.println("FIXED QUORUM SENSING GATES: " + fixed_gates);
         
-    		//if(!fixed_gate_names.contains(g.Name)){
-    			//swap_gates.add(g);
-        //System.out.println("Group Library");
-        //System.out.println(get_gate_library());
-        
-
         LogicCircuit lc = new LogicCircuit(get_unassigned_lc());
-        //jai
-        System.out.println("\nlogic circuit initial state\n");
-        System.out.println(lc.printGraph());
-        //end of jai
 
+        //System.out.println("\nlogic circuit initial state\n");
+        //System.out.println(lc.printGraph());
+        
         Integer num_swaps = 0; 
         Integer num_subs = 0;
         Integer num_fix_swaps = 0;
@@ -79,25 +79,21 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
             set_best_score( 0.0 );
 
             //initial random
-
+            List<String> used_fixed_groups = new ArrayList<String>();
             for (int i = 0; i < lc.get_logic_gates().size(); ++i) {
                 Gate g = lc.get_logic_gates().get(i);
 
-                //jai code
                 if(fixed_gate_indices.contains(g.Index)) {
-                	//hard coded for the time being
-                	if(g.Index == fixed_gate_indices.get(0)){
-                		g.Group = "DigiJ";//"PhlF"; 
-                		g.Name = "J1_DigiJ"; //"P1_Phlf";
-                	//System.out.println("\nFixed the following gate to index 2");
-                	//System.out.println("Group, Name:" + g.Group + "," + g.Name);
-                	}
-                	else{
-                		g.Group = "DigiJQ";
-                		g.Name = "QS1_DigiJQ";
+                	for(Gate fix_g:fixed_gates){
+                		if(!used_fixed_groups.contains(fix_g.Group)){
+                			System.out.println("gate" + g);
+                			g.Group = fix_g.Group;
+                			g.Name = fix_g.Name;
+                			used_fixed_groups.add(fix_g.Group);
+                			break;
+                		}
                 	}
                 }
-                //end of jai code (no else statement originally, just g.name and g.group = null)
                 else{
                 	g.Name = "null";
                 	g.Group = "null";
@@ -774,6 +770,8 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     private ArrayList<String> fixed_gate_names = new ArrayList<String>(Arrays.asList("J1_DigiJ","J2_DigiJ",
     																					"QS1_DigiJQ","QS2_DigiJQ"));
     private ArrayList<String> fixed_groups  = new ArrayList<String>(Arrays.asList("DigiJ", "DigiJQ"));
+    
+    
     //private ArrayList<String> fixed_gate_names = new ArrayList<String>(Arrays.asList("Q1_QacR","Q2_QacR"));
     //private ArrayList<String> fixed_groups  = new ArrayList<String>(Arrays.asList("QacR"));
 
