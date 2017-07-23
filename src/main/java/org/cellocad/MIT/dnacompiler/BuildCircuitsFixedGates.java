@@ -53,7 +53,7 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 
         double max_score = 0.0;
         ArrayList<Integer> fixed_gate_indices = new ArrayList<Integer>();
-        //fixed_gate_indices.add(3);
+        fixed_gate_indices.add(3);
         fixed_gate_indices.add(7);
         
         
@@ -320,7 +320,9 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 	                	//System.out.println("Swapping");
 	                	num_swaps += 1; 
 	                	
-	                    int B_gate_index = FindGateIndexFromName(lc, B_gate.Name); 
+	                	//need to make sure find correct gate index b/c can be duplicate
+	                	//gates across lc, just not in subgraph
+	                    int B_gate_index = FindSubgraphGateIndexFromName(lc, subgraph_indices, B_gate.Name); 
 	                    //System.out.println("B GATE INDEX: " + B_gate_index);
 	                    lc.get_logic_gates().get(A_gate_index).Name  = B_gate_name;
 	                    lc.get_logic_gates().get(B_gate_index).Name  = A_gate_name;
@@ -445,6 +447,8 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
             logger.info("Trajectory " + (traj+1) + " of " + get_options().get_hill_trajectories());
             set_best_score(0.0);
             max_score = 0.0;
+            checkSubgraphReuseError( lc, subgraphs_indices);
+
 
         }
         //jai written
@@ -463,7 +467,6 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
         
         //System.out.println("lc graph");
         //System.out.println(lc.printGraph());
-        checkSubgraphReuseError( lc, subgraphs_indices);
         //checkReuseError(lc);
     }
 
@@ -500,8 +503,11 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     
     private boolean currentlyAssignedSubgraphGroup(LogicCircuit lc, List<Integer> subgraph_indices, String group_name){
     	for(Gate g: lc.get_logic_gates()) {
+    		//System.out.println("gate, index: " + g + ", " + g.Index);
+			//System.out.println("group passed: " + group_name);
     		if(subgraph_indices.contains(g.Index)){
     			if(g.Group.equals(group_name)) {
+    				//System.out.println("returning true");
     				return true;
     			}	
             }
@@ -532,7 +538,7 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     			current_subgraph_gates.add(g);
     		}
     	}
-    	
+    
         for(Gate g: gates_of_type) {
 
              //disallow same gate or
@@ -547,9 +553,9 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
                 allowed_B_gates.put(g.Name, g);
             }
 
-            //allow non-duplicate groups in subgraph OR currently used gates
-        	
+            //allow non-duplicate subgraph groups OR currently used gates
             else if (!currentlyAssignedSubgraphGroup(lc, subgraph_indices, g.Group) || isNextGateInArray(current_subgraph_gates, g)) {
+            	
                 allowed_B_gates.put(g.Name, g);
             }
         }
@@ -559,8 +565,10 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
          Collections.shuffle(allowed_B_gate_names);
          String B_gate_name = allowed_B_gate_names.get(0);
          
+         
          /*
          System.out.println("subgraph inds: " + subgraph_indices);
+         System.out.println("Current subgraph gates: " + current_subgraph_gates);
          System.out.println("allowed B: " + allowed_B_gate_names.toString());
          System.out.println("A_gate " + A_gate.Name);
          System.out.println("B_gate " + B_gate_name);
@@ -669,11 +677,24 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 
     }
     private int FindGateIndexFromName(LogicCircuit lc, String gate_name){
-    int gate_name_index = 0; //need to know the second gate index
+    	int gate_name_index = 0; //need to know the second gate index
 	    for(int j=0; j<lc.get_logic_gates().size(); ++j) {
 	        if(lc.get_logic_gates().get(j).Name.equals(gate_name)) {
 	            gate_name_index = j;
 	        }
+	    }
+		return gate_name_index;
+    }
+    
+    private int FindSubgraphGateIndexFromName(LogicCircuit lc, List<Integer> subgraph_indices, String gate_name){
+    	int gate_name_index = 0; //need to know the second gate index
+	    for(int j=0; j<lc.get_logic_gates().size(); ++j) {
+	    	Gate g = lc.get_logic_gates().get(j);
+	    	if(subgraph_indices.contains(g.Index)){
+	    		if(g.Name.equals(gate_name)) {
+	    			gate_name_index = j;
+	    		}
+	    	}
 	    }
 		return gate_name_index;
     }
