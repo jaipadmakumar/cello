@@ -602,8 +602,7 @@ public class DNACompiler {
         }
 
         if (!LogicCircuitUtil.libraryGatesCoverCircuitGates(abstract_lc, gate_library)) {
-            //logger.info("Not enough gates in the library to cover the gates in the circuit.");
-            //return;
+            //this is where want to try splitting the circuit so need to force fixed_gates assignment algorithm here
             logger.info("Not enough gates in the library to cover the gates in the circuit.");
             return;
 
@@ -1667,8 +1666,12 @@ public class DNACompiler {
             return abstract_lc;
         }
 
-
-
+        
+        //stupid condition that evals as true just to see if worked
+        if(!_options.get_lc_fixed_indices().contains(100)){
+        	System.out.println("Fixed indices list ARG: " + _options.get_lc_fixed_indices());
+        	System.out.println("Subgraphs list ARG: " + _options.get_lc_subgraphs());
+        }
         LogicCircuit abstract_logic_circuit = new LogicCircuit();
 
         ////////////////// Create LogicCircuit from NetSynth //////////////

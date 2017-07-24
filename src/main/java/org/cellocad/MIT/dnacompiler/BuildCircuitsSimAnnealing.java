@@ -51,7 +51,7 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
                 g.Name = "null";
                 g.Group = "null";
             }
-
+            
             for (int i = 0; i < lc.get_logic_gates().size(); ++i) {
 
                 Gate g = lc.get_logic_gates().get(i);

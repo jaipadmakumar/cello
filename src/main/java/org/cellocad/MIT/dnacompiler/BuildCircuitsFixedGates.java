@@ -52,9 +52,10 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 
 
         double max_score = 0.0;
-        ArrayList<Integer> fixed_gate_indices = new ArrayList<Integer>();
-        fixed_gate_indices.add(3);
-        fixed_gate_indices.add(7);
+        //ArrayList<Integer> fixed_gate_indices = new ArrayList<Integer>();
+        //fixed_gate_indices.add(3);
+        //fixed_gate_indices.add(7);
+        
         List<Gate> fixed_gates = new ArrayList<Gate>();
         
         for(String k:get_gate_library().get_GATES_BY_NAME().keySet()){
@@ -63,6 +64,8 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
         	}
         }
         System.out.println("FIXED QUORUM SENSING GATES: " + fixed_gates);
+        System.out.println("FIXED GRAPH INDS: " + fixed_gate_indices);
+        System.out.println("SUBGRAPHS: " + subgraphs_indices);        
         
         LogicCircuit lc = new LogicCircuit(get_unassigned_lc());
 
@@ -86,7 +89,6 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
                 if(fixed_gate_indices.contains(g.Index)) {
                 	for(Gate fix_g:fixed_gates){
                 		if(!used_fixed_groups.contains(fix_g.Group)){
-                			System.out.println("gate" + g);
                 			g.Group = fix_g.Group;
                 			g.Name = fix_g.Name;
                 			used_fixed_groups.add(fix_g.Group);
@@ -781,10 +783,11 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     //sub_groups.add(Arrays.asList(1,2));
     
     //subgraphs_indices must not overlap!
-    private List<List<Integer>> subgraphs_indices = Arrays.asList(
-    	    Arrays.asList( 1, 2, 3, 4),
-    	    Arrays.asList( 5, 6, 7, 8 ));
-    
+    //private List<List<Integer>> subgraphs_indices = Arrays.asList(
+    	//    Arrays.asList( 1, 2, 3, 4),
+    	  //  Arrays.asList( 5, 6, 7, 8 ));
+    private List<List<Integer>> subgraphs_indices = get_options().get_lc_subgraphs();
+    private List<Integer> fixed_gate_indices = get_options().get_lc_fixed_indices();
     
     
     

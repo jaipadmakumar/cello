@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Runtime arguments given in the command line
@@ -21,7 +22,7 @@ public class Args {
     @Getter @Setter private String _jobID = ""; // unique identifier for a job
     @Getter @Setter private String _home = "";  // absolute path to project root directory
     @Getter @Setter private String _datapath = "/resources/data/"; // subpath to data files (relative to _home)
-    @Getter @Setter private String _UCFfilepath = ""; //filepath for the UCF .json file --> retarded b/c immediately overridden by line 1627 in dnacompiler, must be passed as -option!
+    @Getter @Setter private String _UCFfilepath = ""; //filepath for the UCF .json file
     @Getter @Setter private DNACompiler.CircuitType _circuit_type = DNACompiler.CircuitType.combinational;
 
     @Getter @Setter private String _output_directory = ""; // path to directory where output files will be saved
@@ -95,8 +96,12 @@ public class Args {
     @Getter @Setter private boolean _truthtable_tox = false; // make toxicity bargraph figures
     @Getter @Setter private boolean _response_fn = true; // make response function figures
     @Getter @Setter private boolean _write_circuit_json = false; // LogicCircuit to JSON (~10 Mb in size)
-
-
+    
+    //options for fixed_gates (quorum sensing) assignment algorithm
+    @Getter @Setter private List<Integer> _lc_fixed_indices = new ArrayList<Integer>(); //comma separated list of indices
+    //commandline syntax: 1,2,3||4,5,9||7,8 returns [[1,2,3],[4,5,9],[7,8]]
+    @Getter @Setter private List<List<Integer>> _lc_subgraphs = new ArrayList<List<Integer>>();
+    
     public Args() {
 
         String _filepath = Args.class.getClassLoader().getResource(".").getPath();
@@ -393,7 +398,30 @@ public class Args {
                 ArrayList<String> groups = Util.lineTokenizer(comma_separated_list);
                 _exclude_groups = groups;
             }
-
+            if(args[i].equals("-lc_fixed_indices")){
+            	String comma_separated_inds_list = args[i+1];
+            	ArrayList<String> fixed_inds_strings = Util.lineTokenizer(comma_separated_inds_list);
+            	for(String ind_string:fixed_inds_strings){
+            		Integer ind = Integer.parseInt(ind_string);
+            		_lc_fixed_indices.add(ind);
+            	}
+            }
+            //commandline syntax: 1,2,3||4,5,9||7,8 returns [[1,2,3],[4,5,9],[7,8]]
+            if(args[i].equals("-lc_subgraphs")){
+               	String[] subgraph_strings_arr = args[i+1].split("\\|\\|"); //comma separated list of subgraph inds
+               	System.out.println(subgraph_strings_arr);
+               	//ArrayList<String> subgraphs_list = Util.lineTokenizer(subgraphs_strings_arr);
+               	for(String subgraph_string:subgraph_strings_arr){
+               		ArrayList<String> subgraph_inds_string = Util.lineTokenizer(subgraph_string);
+               		List<Integer> subgraph_inds = new ArrayList<Integer>();
+               		for(String subgraph_ind_str:subgraph_inds_string){
+               			Integer subgraph_ind = Integer.parseInt(subgraph_ind_str);
+               			subgraph_inds.add(subgraph_ind);
+               		}
+               		
+               		_lc_subgraphs.add(subgraph_inds);
+               	}
+            }
             if(args[i].equals("-options")) {
                 String file  = args[i+1];
                 ArrayList<String> fileLines = Util.fileLines(file);
