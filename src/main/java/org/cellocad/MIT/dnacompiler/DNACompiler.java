@@ -604,6 +604,8 @@ public class DNACompiler {
         if (!LogicCircuitUtil.libraryGatesCoverCircuitGates(abstract_lc, gate_library)) {
             //this is where want to try splitting the circuit so need to force fixed_gates assignment algorithm here
             logger.info("Not enough gates in the library to cover the gates in the circuit.");
+            //_options.set_assignment_algorithm("fixed_gates"); _options is final 
+            
             return;
 
         } else {
