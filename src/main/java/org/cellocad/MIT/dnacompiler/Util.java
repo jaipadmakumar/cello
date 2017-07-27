@@ -7,6 +7,7 @@ import org.apache.tools.ant.DirectoryScanner;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 
@@ -261,6 +262,35 @@ public class Util{
         }
     }
 
+    public static List<Integer> getFixedIndsPythonFile(String file_path){
+    	ArrayList<String> file_lines = fileLines(file_path);
+    	//get fixed values
+    	ArrayList<String> fixed_inds_strings = lineTokenizer(file_lines.get(0));
+    	List<Integer> fixed_inds = new ArrayList<Integer>();
+    	for(String ind_string:fixed_inds_strings){
+    		Integer ind = Integer.parseInt(ind_string);
+    		fixed_inds.add(ind);
+    	}
+    	return fixed_inds;
+    }
 
+    public static List<List<Integer>> getSubgraphIndsPythonFile(String file_path){
+    	//get subgraph inds
+    	ArrayList<String> file_lines = fileLines(file_path);
+    	String[] subgraph_strings_arr = file_lines.get(1).split("\\|\\|"); //comma separated list of subgraph inds
+    	List<List<Integer>> subgraph_inds_list =  new ArrayList<List<Integer>>();
+
+       	for(String subgraph_string:subgraph_strings_arr){
+       		ArrayList<String> subgraph_inds_string = Util.lineTokenizer(subgraph_string);
+       		List<Integer> subgraph_inds = new ArrayList<Integer>();
+       		for(String subgraph_ind_str:subgraph_inds_string){
+       			Integer subgraph_ind = Integer.parseInt(subgraph_ind_str);
+       			subgraph_inds.add(subgraph_ind);
+       		}
+       		
+       		subgraph_inds_list.add(subgraph_inds);
+       	}
+       	return subgraph_inds_list;
+    }
 
 }
