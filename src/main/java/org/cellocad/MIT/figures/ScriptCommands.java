@@ -4,6 +4,8 @@ package org.cellocad.MIT.figures;
 import org.cellocad.MIT.dnacompiler.Util;
 
 import java.io.File;
+import java.lang.Runtime;
+
 
 public class ScriptCommands {
 
@@ -82,6 +84,34 @@ public class ScriptCommands {
             }
         }
     }
+    
+    /***********************************************************************
+
+    Synopsis    [  ]
+    
+	Calls crappy jai python scripts to find subgraph indices and fixed gates. 
+    ***********************************************************************/
+    public void findSubgraphIndices(String dnacompiler_filename) {
+    	try{
+	    	//String cmd = "python " + _home + "/resources/scripts/split_circuit/get_circuit_subgraphs.py "  + dnacompiler_filename;
+	    	System.out.println("python " + _home + "/resources/scripts/split_circuit/get_circuit_subgraphs.py "  + dnacompiler_filename);
+	    	String[] cmd = {
+	    		      "python",
+	    		      _home + "/resources/scripts/split_circuit/get_circuit_subgraphs.py",
+	    		      dnacompiler_filename
+	    	};
+	    	//System.out.println("command string: " + cmd);
+	    	//String command_result = Util.executeCommand(cmd);
+	    	//System.out.println("cmd results: " + command_result);
+	    	Runtime rt = Runtime.getRuntime();
+	    	Process pr = rt.exec(cmd);
+	    	int res1 = pr.waitFor();
+	        System.out.println(res1);
+    	}
+    	catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
+    	}
 
 
     public void removeGateFiles(String directory) {
