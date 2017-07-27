@@ -5,8 +5,10 @@ package org.cellocad.MIT.dnacompiler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import lombok.Getter;
 import lombok.Setter;
+
 import org.apache.log4j.*;
 import org.cellocad.BU.netsynth.NetSynth;
 import org.cellocad.BU.netsynth.NetSynthSwitch;
@@ -90,6 +92,7 @@ public class DNACompiler {
 //        _options.setThreadDependentLoggername(threadDependentLoggername);
         _options.set_username(_username);
         _options.parse(args);
+        _options.PrintArgs();
 
 
 
@@ -603,11 +606,10 @@ public class DNACompiler {
         }
 
         if (!LogicCircuitUtil.libraryGatesCoverCircuitGates(abstract_lc, gate_library)) {
-            //this is where want to try splitting the circuit so need to force fixed_gates assignment algorithm here
-            logger.info("Not enough gates in the library to cover the gates in the circuit.");
-            //_options.set_assignment_algorithm("fixed_gates"); _options is final 
-            
-            return;
+            //if run out of gates, must try splitting circuit
+            logger.info("Not enough gates in the library to cover the gates in the circuit."
+            		+ "Forcing simulated annealing w/ circuit splitting.");
+            get_options().set_assignment_algorithm(BuildCircuits.AssignmentAlgorithm.fixed_gates);
 
         } else {
             logger.info("The gates library can cover the circuit.");
@@ -756,11 +758,20 @@ public class DNACompiler {
             }
             //jai fixed gate sim annealing for testing
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.fixed_gates) {
+            	
             	//TODO delete script_com and move original instantiation 
                 ScriptCommands script_com = new ScriptCommands(_options.get_home(), _options.get_output_directory(), _options.get_jobID());
                // System.out.println("Calling python script w/ arg: " + _options.get_jobID() + "_dnacompiler_output.txt");
-            	script_com.findSubgraphIndices("/Users/jaipadmakumar/Desktop/voigt_lab/cello/cello/demo/demo_FixedGatesDigital0xFE_002/demo_FixedGatesDigital0xFE_002_dnacompiler_output.txt");
-                circuit_builder = new BuildCircuitsFixedGates(_options, gate_library, roadblock);
+            	script_com.findSubgraphIndices("/Users/jaipadmakumar/Desktop/voigt_lab/cello/run_with_cmdline_test_001/run_with_cmdline_test_001_dnacompiler_output.txt");
+            	
+            	String output_script_filepath = "/Users/jaipadmakumar/Desktop/voigt_lab/cello/run_with_cmdline_test_001/circuit_subgraph_data_for_cello_TEST.txt";
+            	//set fixed values and subgraph inds
+            	get_options().set_lc_fixed_indices(Util.getFixedIndsPythonFile(output_script_filepath));
+            	get_options().set_lc_subgraphs(Util.getSubgraphIndsPythonFile(output_script_filepath));
+            	
+            	//_options.PrintArgs();
+                circuit_builder = new BuildCircuitsFixedGates(_options, gate_library, roadblock); 
+                
             }
             //completely randomizes the gate assignment.  Does this many times.
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.random) {
