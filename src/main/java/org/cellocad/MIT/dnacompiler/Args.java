@@ -410,8 +410,7 @@ public class Args {
             //commandline syntax: 1,2,3||4,5,9||7,8 returns [[1,2,3],[4,5,9],[7,8]]
             if(args[i].equals("-lc_subgraphs")){
                	String[] subgraph_strings_arr = args[i+1].split("\\|\\|"); //comma separated list of subgraph inds
-               	System.out.println(subgraph_strings_arr);
-               	//ArrayList<String> subgraphs_list = Util.lineTokenizer(subgraphs_strings_arr);
+               	//System.out.println(subgraph_strings_arr);
                	for(String subgraph_string:subgraph_strings_arr){
                		ArrayList<String> subgraph_inds_string = Util.lineTokenizer(subgraph_string);
                		List<Integer> subgraph_inds = new ArrayList<Integer>();
