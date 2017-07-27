@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -433,6 +434,22 @@ public class Args {
                 parse(args_array);
             }
         }
+    }
+    
+    public void PrintArgs(){
+    	//Prints all arguments specified in object.
+    	System.out.println("Running w/ arguments: ");
+    	for (Field field : this.getClass().getDeclaredFields()) {
+    	    //field.setAccessible(true);
+    		try{
+	    	    String name = field.getName();
+	    	    Object value = field.get(this);
+	    	    System.out.printf("%s = %s%n", name, value);
+	    	    }
+    		 catch ( IllegalAccessException ex ) {
+    			 System.out.println(ex);
+    		 }
+    	}
     }
 
 }
