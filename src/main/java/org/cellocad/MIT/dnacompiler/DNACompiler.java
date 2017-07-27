@@ -111,6 +111,7 @@ public class DNACompiler {
         appender.setThreshold(Level.DEBUG);
         appender.activateOptions();
 
+        
         // ConsoleAppender is set in log4j.properties
         ConsoleAppender console = new ConsoleAppender();
         console.setLayout(new PatternLayout("%m%n"));
@@ -755,6 +756,10 @@ public class DNACompiler {
             }
             //jai fixed gate sim annealing for testing
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.fixed_gates) {
+            	//TODO delete script_com and move original instantiation 
+                ScriptCommands script_com = new ScriptCommands(_options.get_home(), _options.get_output_directory(), _options.get_jobID());
+               // System.out.println("Calling python script w/ arg: " + _options.get_jobID() + "_dnacompiler_output.txt");
+            	script_com.findSubgraphIndices("/Users/jaipadmakumar/Desktop/voigt_lab/cello/cello/demo/demo_FixedGatesDigital0xFE_002/demo_FixedGatesDigital0xFE_002_dnacompiler_output.txt");
                 circuit_builder = new BuildCircuitsFixedGates(_options, gate_library, roadblock);
             }
             //completely randomizes the gate assignment.  Does this many times.
