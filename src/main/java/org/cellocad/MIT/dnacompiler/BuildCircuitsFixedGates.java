@@ -40,6 +40,8 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     	  * This allows you to build more complex logic circuits even if there aren't enough gates in the library to cover 
     	  * the entire circuit, since the circuit will be split into individual cells which together function as a single
     	  * integrated unit. 
+    	  * 
+    	  * NOTE: FIXED GATES CURRENTLY HARDCODED
     	  */
     	
         logger = Logger.getLogger(getThreadDependentLoggername());
