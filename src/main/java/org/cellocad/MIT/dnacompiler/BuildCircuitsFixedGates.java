@@ -525,61 +525,7 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 
          return get_gate_library().get_GATES_BY_NAME().get(B_gate_name);
     }
-    	
-
-
-    private Gate getNextGate(LogicCircuit lc, Gate A_gate) {
-    	//gets another gate that is 1) different than A.gate 2) is not of the same group as something else in circuit
-    	//gates allowed should be: 
-    	// 1) an RBS variant of the current gate (substitute)
-    	// 2) of a different group and currently unassigned (substitute)
-    	// 3) an already assigned gate (performs swapping)
-    	// 4) not from fixed gates group (reserved for fixed gates), shouldn't be strictly necessary but for do for now...
-    	// Original implementation prevents 3 from ever occurring b/c blocks any duplicate groups --> fixed now
-    	
-        ArrayList<Gate> gates_of_type = new ArrayList<Gate>(get_gate_library().get_GATES_BY_TYPE().get(A_gate.Type).values());
-
-        HashMap<String, Gate> allowed_B_gates = new HashMap<String, Gate>();
-
-        for(Gate g: gates_of_type) {
-
-            //disallow same gate
-            if(g.Name.equals(A_gate.Name)) {
-                continue;
-            }
-            
-            //disallow swapping w/ a fixed gate --> also, currently causes crash for some reason if condition removed
-            else if(fixed_gate_names.contains(g.Name)){
-            	continue;
-            }
-            
-            //allow RBS variant
-            else if(g.Group.equals(A_gate.Group)){
-            	//System.out.println("allowing RBS variant " + A_gate.Name + ": " + g.Name);
-                allowed_B_gates.put(g.Name, g);
-            }
-
-            //allow non-duplicate groups OR currently used gates
-            else if (!currentlyAssignedGroup(lc, g.Group) || isNextGateCurrentlyUsed(lc, g)) {
-                allowed_B_gates.put(g.Name, g);
-            }
-        }
-
-
-        ArrayList<String> allowed_B_gate_names = new ArrayList<String>( allowed_B_gates.keySet());
-        Collections.shuffle(allowed_B_gate_names);
-        String B_gate_name = allowed_B_gate_names.get(0);
-        
-        /*
-        System.out.println("allowed B: " + allowed_B_gate_names.toString());
-        System.out.println("Current assignment " + lc.printAssignment());
-        System.out.println("A_gate " + A_gate.Name);
-        System.out.println("B_gate " + B_gate_name);
-        */
-
-        return get_gate_library().get_GATES_BY_NAME().get(B_gate_name);
-
-    }
+    
     
     private Gate getNextFixedGate(LogicCircuit lc, Gate A_gate, ArrayList<String> allowed_groups) {
     	//gets another gate that is 1) different than A.gate 2) is not of the same group as something else in circuit
@@ -623,6 +569,7 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
         return get_gate_library().get_GATES_BY_NAME().get(B_gate_name);
 
     }
+    
     private int FindGateIndexFromName(LogicCircuit lc, String gate_name){
     	int gate_name_index = 0; //need to know the second gate index
 	    for(int j=0; j<lc.get_logic_gates().size(); ++j) {
