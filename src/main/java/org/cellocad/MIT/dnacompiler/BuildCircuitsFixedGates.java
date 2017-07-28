@@ -32,18 +32,15 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 
     @Override
     public void buildCircuits(){
-    	 /*Best way to incorporate fixed gates and allow swaps only at subsets of gates (individual cells) is
-    	  * probably to have my script spit out a list of nodes in graph to be fixed and nodes that are in 
-    	  * individual cells. Then run simulated annealing on each set of nodes but loosening conditions so
-    	  * that duplicate groups are allowed BETWEEN node subsets but not W/IN a subset. 
-    	  * 
-    	  * Will also need to carry over information as to which gates the QS gates connect to. Thus, it's
-    	  * probably going to simplest overall for python script to spit out a list of indices (in proper order)
-    	  * in abstract_LogicCircuit that define each subset as well as the quorum sensing gates. 
-    	  * Note the QS gates don't actually need to be explicitly passed, since they will terminal node of any
-    	  * subset that doesn't include the OUTPUT gate but do it anyways b/c in future that might not be true (for e.g.
-    	  * might have subset that has multiple QS gates b/c that reduces complexity)
-         */
+    	 /*Builds circuits using simulated annealing incorporating fixed gates and subgraph information passed in options.
+    	  * Algorithm allows a defined set of (quorum sensing) gates to be incorporated at the 'fixed_gates' indices and 
+    	  * then allows any other gates in the gate library to be used in any of the 'subgraphs', which are defined by 
+    	  * the indices passed as an option. Duplicate gate groups are allowed between subgraphs but not w/in subgraphs,
+    	  * since each subgraph represents a part of the complete logic circuit that will be placed in an individual cell.
+    	  * This allows you to build more complex logic circuits even if there aren't enough gates in the library to cover 
+    	  * the entire circuit, since the circuit will be split into individual cells which together function as a single
+    	  * integrated unit. 
+    	  */
     	
         logger = Logger.getLogger(getThreadDependentLoggername());
         System.out.println("Enumerating logic circuits using simulated annealing and fixed gates... (jai code for quorum sensing)");
@@ -131,10 +128,6 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
 
                         g.Name = gates_of_group.get(0).Name;
                         g.Group = group_name;
-                        //loop effectively just sets to final item in gates_of_group not in circuit
-                        //--> odd behavior b/c really just want loop to stop when it hits an unused group_name 
-                        //break fixes this problem and prevents pointless iterations
-                        
                         break;
                     }
                 }
@@ -173,53 +166,9 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
             Double LOGINC = (LOGMAX - LOGMIN) / STEPS;
 
 
-            Integer T0_STEPS = 100; //Purpose of arbitrarily adding a 100 steps to #of hill iterations? -jai
+            Integer T0_STEPS = 100; //Purpose of arbitrarily adding a 100 steps to #of hill iterations?
 
-            //String b = get_options().get_output_directory() + "/b" + String.format("%02d", traj) + ".txt";
-            
-            /* outline for how code should work more logically:
-        	 * for(int i = 0; i < STEPS + T0_STEPS; ++i) {
-        	 * 		//current_gates lists need to be either populated here each time based on 
-        	 * 		//indices of subgraph or this needs to be put outside loop
-        	 * 		//and modified/updated as swaps and subs are performed
-        	 * 		subgraph1_current_gates = [];
-        	 * 		subgraph2_current_gates = [];
-        	 * 		subgraph1_indices = [];
-        	 * 		subgraph2_indices = [];
-        	 * 		A_gate = lc.drawRandomGate();
-        	 * 		
-        	 * 
-        	 * 		if(fixed_gates.contains(A_gate.Name)){
-        	 * 		//since QS gates leave cell, they should follow default assignment
-        	 * 		//steps b/c it doesn't matter which particular subgraph in
-        	 * 			//draw a fixed gate from gate lib., subject to constraints
-        	 * 			B_gate = drawFixedGateFromLibrary(lc, A_gate, ); //either in lc or not
-        	 * 			if(isCurrentlyAssigned(lc, B_gate)){
-        	 * 				//do swap
-        	 * 			}
-        	 * 			else{
-        	 * 				//do sub
-        	 * 			}}
-        	 * 		else{
-        	 * 			//now it matter which subgraph a gate is in so just choose one
-        	 * 			subgraph_num = pick random subgraph to do stuff on
-        	 * 		//get next gate given subgraph_num, this should probably be a
-        	 * 		//hashmap with keys as subgraph numbers connecting to current_gates
-        	 * 		//for that subgraph
-        	 * 			//choose gate from currently assigned gates or from gatelibrary
-        	 * 			B_gate = get_NextGateGivenSubgraph(subgraph_gates.get(subgraph_num), A_gate)
-        	 * 			if(subgraph_gates.get(subgraph_num).contains(B_gate)){
-        	 * 				//do swap
-        	 * 			}
-        	 * 			else{
-        	 * 				//do sub
-        	 * 			}
-        	 * 		}
-        	 * 		//update gate lists with changes
-        	 * 			
-        	 * 			
-        	 */
-            
+            //String b = get_options().get_output_directory() + "/b" + String.format("%02d", traj) + ".txt";   
             
             for (int i = 0; i < STEPS + T0_STEPS; ++i) {
             	//Do hill climbing for current trajectory, entire loop runs  _hill_trajectories times
