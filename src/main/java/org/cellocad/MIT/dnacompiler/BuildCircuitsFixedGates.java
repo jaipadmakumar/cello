@@ -41,7 +41,6 @@ public class BuildCircuitsFixedGates extends BuildCircuits {
     	  * the entire circuit, since the circuit will be split into individual cells which together function as a single
     	  * integrated unit. 
     	  * 
-    	  * NOTE: FIXED GATES CURRENTLY HARDCODED
     	  */
     	
         logger = Logger.getLogger(getThreadDependentLoggername());
