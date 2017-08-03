@@ -21,6 +21,8 @@ import java.util.*;
  * Assigned LogicCircuits are ranked by score.
  *
  */
+
+
 public class LogicCircuit{
 
     /**
@@ -45,7 +47,25 @@ public class LogicCircuit{
         _Wires = new ArrayList<Wire>();
         for(Gate g:Gates) { _Gates.add(g); }
         for(Wire w:Wires) { _Wires.add(w); }
-
+        
+        //jai written
+//        System.out.println("\n Gates and gate children");
+//        for(Gate g:_Gates){
+//        	System.out.print("gate:" + g);
+//        	System.out.print(" children:" + g.getChildren());
+//        	System.out.println("\n");
+//        }
+//        System.out.println("\n Wires to and from");
+//        for(Wire w:_Wires) {
+//        	System.out.println("Wire: " + w);
+//        	//System.out.print("From, To:" + w.From + "," + w.To);
+//        	//System.out.println("\n");
+//        }
+//        System.out.println("LOOKHERE");
+//        System.out.println(_Gates);
+//        System.out.println(_Wires);
+        //end of jai written
+        
         reconnectCircuit();
         categorizeGates();
         setGateTypes();
@@ -662,6 +682,16 @@ public class LogicCircuit{
         }
 
         return logic_gate_types;
+    }
+    
+    public Gate get_RandomLogicGate() {
+    	//jai written
+    	Random generator = new Random();
+    	int random_index = generator.nextInt(this.get_logic_gates().size());
+    	Gate random_gate = this.get_logic_gates().get(random_index);
+    	
+    	return random_gate;
+    	
     }
 
 

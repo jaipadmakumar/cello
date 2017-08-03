@@ -8,4 +8,3 @@ module A(output out1,  input in1, in2);
     2'b11: {out1} = 1'b0;
    endcase
   end
-endmodule

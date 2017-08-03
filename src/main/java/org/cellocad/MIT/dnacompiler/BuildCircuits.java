@@ -47,7 +47,8 @@ public class BuildCircuits {
         steepest_ascent,
         reload,
         preset,
-        sequential
+        sequential,
+        fixed_gates //jai added
     }
 
     //the string parsed from the command-line arguments must match one of the algorithms in the 'enum'

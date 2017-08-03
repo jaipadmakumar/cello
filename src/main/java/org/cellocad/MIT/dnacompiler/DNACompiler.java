@@ -5,8 +5,10 @@ package org.cellocad.MIT.dnacompiler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import lombok.Getter;
 import lombok.Setter;
+
 import org.apache.log4j.*;
 import org.cellocad.BU.netsynth.NetSynth;
 import org.cellocad.BU.netsynth.NetSynthSwitch;
@@ -90,6 +92,7 @@ public class DNACompiler {
 //        _options.setThreadDependentLoggername(threadDependentLoggername);
         _options.set_username(_username);
         _options.parse(args);
+        _options.PrintArgs();
 
 
 
@@ -111,6 +114,7 @@ public class DNACompiler {
         appender.setThreshold(Level.DEBUG);
         appender.activateOptions();
 
+        
         // ConsoleAppender is set in log4j.properties
         ConsoleAppender console = new ConsoleAppender();
         console.setLayout(new PatternLayout("%m%n"));
@@ -324,7 +328,8 @@ public class DNACompiler {
             }
             //compute Boolean logic for each gate in the circuit.
             Evaluate.simulateLogic(abstract_lc);
-
+            //System.out.println("HERE'S THE ABSTRACT LC");
+            //System.out.println(abstract_lc);
         }
 
 
@@ -356,7 +361,9 @@ public class DNACompiler {
             return;
         }
 
-
+        //jai lines
+       // System.out.println("\nLC gates");
+       // System.out.println(_abstract_lc.get_logic_gates());
 
 
         // TODO organize DNACompiler in a more modular way.
@@ -599,10 +606,10 @@ public class DNACompiler {
         }
 
         if (!LogicCircuitUtil.libraryGatesCoverCircuitGates(abstract_lc, gate_library)) {
-            //logger.info("Not enough gates in the library to cover the gates in the circuit.");
-            //return;
-            logger.info("Not enough gates in the library to cover the gates in the circuit.");
-            return;
+            //if run out of gates, must try splitting circuit
+            logger.info("Not enough gates in the library to cover the gates in the circuit."
+            		+ "Forcing simulated annealing w/ circuit splitting.");
+            get_options().set_assignment_algorithm(BuildCircuits.AssignmentAlgorithm.fixed_gates);
 
         } else {
             logger.info("The gates library can cover the circuit.");
@@ -749,6 +756,23 @@ public class DNACompiler {
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.steepest_ascent) {
                 circuit_builder = new BuildCircuitsSteepestAscent(_options, gate_library, roadblock);
             }
+            //jai fixed gate sim annealing for testing
+            else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.fixed_gates) {
+            	
+            	//TODO delete script_com and move original instantiation 
+                ScriptCommands script_com = new ScriptCommands(_options.get_home(), _options.get_output_directory(), _options.get_jobID());
+               // System.out.println("Calling python script w/ arg: " + _options.get_jobID() + "_dnacompiler_output.txt");
+            	script_com.findSubgraphIndices("/Users/jaipadmakumar/Desktop/voigt_lab/cello/run_with_cmdline_test_001/run_with_cmdline_test_001_dnacompiler_output.txt");
+            	
+            	String output_script_filepath = "/Users/jaipadmakumar/Desktop/voigt_lab/cello/run_with_cmdline_test_001/circuit_subgraph_data_for_cello_TEST.txt";
+            	//set fixed values and subgraph inds
+            	get_options().set_lc_fixed_indices(Util.getFixedIndsPythonFile(output_script_filepath));
+            	get_options().set_lc_subgraphs(Util.getSubgraphIndsPythonFile(output_script_filepath));
+            	
+            	//_options.PrintArgs();
+                circuit_builder = new BuildCircuitsFixedGates(_options, gate_library, roadblock); 
+                
+            }
             //completely randomizes the gate assignment.  Does this many times.
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.random) {
                 circuit_builder = new BuildCircuitsRandom(_options, gate_library, roadblock);
@@ -785,12 +809,13 @@ public class DNACompiler {
             for (LogicCircuit unassigned_lc : nonRB_unassigned_lcs) {
 
                 circuit_builder.set_unassigned_lc(unassigned_lc);
-
+                
 
                 /**
                  * Run assignment algorithm
                  */
                 circuit_builder.buildCircuits();
+                
 
 
                 // TODO hard-coded for Jonghyeon
@@ -856,6 +881,10 @@ public class DNACompiler {
          *
          */
         sortLogicCircuitsByScore(assigned_lcs);
+        System.out.println("Top circuit");
+        System.out.println(assigned_lcs.get(0).printGraph());
+        System.out.println("2nd best circuit");
+        System.out.println(assigned_lcs.get(1).printGraph());
 
         logger.info("best assignment score: " + String.format("%-5.4f", assigned_lcs.get(0).get_scores().get_score()));
 
@@ -1619,6 +1648,7 @@ public class DNACompiler {
 
         if(_options.get_UCFfilepath() == "") {
             _options.set_UCFfilepath( _options.get_home() + "/resources/UCF/Eco1C1G1T1.UCF.json" );
+            System.out.println("Using UCF located at: " + _options.get_UCFfilepath());
         }
 
         if(_options.get_output_directory().equals("")) {
@@ -1653,9 +1683,8 @@ public class DNACompiler {
 
             return abstract_lc;
         }
-
-
-
+        
+        
         LogicCircuit abstract_logic_circuit = new LogicCircuit();
 
         ////////////////// Create LogicCircuit from NetSynth //////////////
