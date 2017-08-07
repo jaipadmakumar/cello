@@ -745,7 +745,7 @@ public class DNACompiler {
             //Breadth First Search algorithm. Performs an exhaustive search.
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.breadth_first) {
                 circuit_builder = new BuildCircuitsBreadthFirstSearch(_options, gate_library, roadblock);
-
+                
                 /**
                  * Breadth-first is memory intensive and is not used in the publicly available tool on cellocad.org.
                  */
@@ -759,6 +759,11 @@ public class DNACompiler {
             //jai fixed gate sim annealing for testing
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.fixed_gates) {
             	
+            	PartitionCircuit pc = new PartitionCircuit(abstract_lc);
+            	//PartitionCircuit.partitionCircuit(abstract_lc);
+            	pc.partitionCircuit(abstract_lc);
+            	System.out.println("Success!");
+            	/*
             	//TODO delete script_com and move original instantiation 
                 ScriptCommands script_com = new ScriptCommands(_options.get_home(), _options.get_output_directory(), _options.get_jobID());
                // System.out.println("Calling python script w/ arg: " + _options.get_jobID() + "_dnacompiler_output.txt");
@@ -770,6 +775,8 @@ public class DNACompiler {
             	get_options().set_lc_subgraphs(Util.getSubgraphIndsPythonFile(output_script_filepath));
             	
             	//_options.PrintArgs();
+            	 * 
+            	 */
                 circuit_builder = new BuildCircuitsFixedGates(_options, gate_library, roadblock); 
                 
             }
