@@ -108,6 +108,33 @@ public class PartitionCircuit {
 		}
 		//System.out.println("paths: " + paths); 
 		return paths;
-	}	
+	}
+	
+	/**Finds all 'k' length combinations of items in the list.
+	 * 
+	 * @param arr list of objects to find combinations of
+	 * @param k length of subsets to find. In other words, it's the 'k' in "n choose k"
+	 * @return
+	 */
+	public static List<List<Object>> Combinations(List<Object> arr, int k){
+		//TODO Currently only works properly when k=2!
+		//TODO need to fix @ some point
+		
+		List<List<Object>> combos = new ArrayList<List<Object>>();
+		for(int i=0;i<arr.size();i++){
+			//List<Object> combo_set = new ArrayList<Object>();
+			for(int j=i+k-1; j<arr.size(); j+=k-1){
+				System.out.println("i= " + i + " j= " + j);
+				//List<Object> subList = arr.subList(i, j);
+				List<Object> subList = new ArrayList<Object>();
+				//need a list expander to get all integers between i and j and index w/ those
+				//List<Integer> inds = Range(i, j);
+				//for(int p=0;p<inds.size();p++){subList.add(arr.get(inds.get(p)));};
+				subList.add(arr.get(i)); subList.add(arr.get(j));
+				combos.add(subList);
+			}
+		}
+		return combos;
+	}
 	
 }
