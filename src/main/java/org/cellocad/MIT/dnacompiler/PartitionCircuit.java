@@ -25,7 +25,7 @@ public class PartitionCircuit {
 		//	g.set_unvisited(true);
 		//}
 		
-		List<Gate> empty_list = new ArrayList();
+		List<Gate> empty_list = new ArrayList<Gate>();
 		List<Gate> lc_gates = lc.get_logic_gates();
 		System.out.println("logic gates \n" + lc_gates);
 
@@ -38,14 +38,22 @@ public class PartitionCircuit {
 	}
 	
 	
+	
+	
+	/**Implements a depth first search with backtracking to find all (simple) paths
+	 * between 'start_gate' and 'end_gate'. This method employs tree recursion to
+	 * perform the search and, therefore, scales disastrously badly. Initially,
+	 * 'path' should be given as an empty List<Gate>. Returns a list of lists 
+	 * of gates corresponding to paths. 
+	 * 
+	 * @param lc a LogicCircuit instance
+	 * @param start_gate start gate of path
+	 * @param end_gate final gate of path
+	 * @param path pass as an empty list w/ type List<Gate> (required for recursive call) 
+	 */
 	public static List<List<Gate>> FindAllPaths(LogicCircuit lc, Gate start_gate, 
 											Gate end_gate, List<Gate> path){
-		/*Implements a depth first search with backtracking to find all (simple) paths
-		 * between 'start_gate' and 'end_gate'. This method employs tree recursion to
-		 * perform the search and, therefore, scales disastrously badly. Initially,
-		 * 'path' should be given as an empty List<Gate>. Returns a list of lists 
-		 * of gates corresponding to paths. 
-		 */
+
 		
 		//System.out.println("Finding all paths between " + start_gate.Index + " and " + end_gate.Index);
 		
