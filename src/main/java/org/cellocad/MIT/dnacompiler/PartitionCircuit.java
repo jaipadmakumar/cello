@@ -38,62 +38,32 @@ public class PartitionCircuit {
 	}
 	
 	
-	
-	/*python code
-	 * path = path + [start]
-if start == end:
-	return [path]
-if not graph.has_key(start):
-	return []
-paths = []
-for node in graph[start]:
-	if node not in path:
-		newpaths = find_all_paths(graph, node, end, path)
-		for newpath in newpaths:
-			paths.append(newpath)
-return paths
-
-	 */
-	
-//	 public static void simulateLogic(Gate g){
-//
-//	        if (g.is_unvisited()) {
-//
-//	            ArrayList<Gate> children = g.getChildren();
-//
-//	            for(Gate child: children) {
-//	                if(child.is_unvisited()){
-//	                    simulateLogic(child); //recursive
-//	                }
-//	            }
-//
-//	            //if all children have been visited, visit the current gate 'g'
-//	            g.set_unvisited( false );
-//	            g.set_logics( GateUtil.computeGateLogics(g) );
-//	        }
-//	    }
-
-	
 	public static List<List<Gate>> FindAllPaths(LogicCircuit lc, Gate start_gate, 
 											Gate end_gate, List<Gate> path){
-
-		System.out.println("Finding all paths between " + start_gate.Index + " and " + end_gate.Index);
+		/*Implements a depth first search with backtracking to find all (simple) paths
+		 * between 'start_gate' and 'end_gate'. This method employs tree recursion to
+		 * perform the search and, therefore, scales disastrously badly. Initially,
+		 * 'path' should be given as an empty List<Gate>. Returns a list of lists 
+		 * of gates corresponding to paths. 
+		 */
+		
+		//System.out.println("Finding all paths between " + start_gate.Index + " and " + end_gate.Index);
+		
 		List<List<Gate>> emptyList = Collections.emptyList();
+		
+		//need to create new object in memory to hold paths so that don't overwrite 
+		//path objects from previous recursive calls (as opposed to just doing path.add(start_gate))
 		List<Gate> new_path = new ArrayList<Gate>();
 		new_path.addAll(path);
 		new_path.add(start_gate);
-		//path.add(start_gate);
-		System.out.println("current path: " + path);
 		
-		if(start_gate == end_gate){
-			System.out.println("Gate found");
+		//System.out.println("current path: " + path);
+		
+		if(start_gate == end_gate){ //found a path, return it so it gets passed up the tree
 			List<List<Gate>> found_path = new ArrayList<List<Gate>>();
-			System.out.println("Found newpath: " + found_path);
 			found_path.add(new_path);
 			return found_path;
 		}
-		
-		
 		
 		List<List<Gate>> paths = new ArrayList<List<Gate>>();
 		//System.out.println(System.identityHashCode(path));
@@ -103,33 +73,33 @@ return paths
 		
 		for(Gate child:children){
 			List<Gate> input_gates = lc.get_input_gates();
-			if(input_gates.contains(child)){ //hit dead end
-				System.out.println("Hit dead end at input gate.");
+			if(input_gates.contains(child)){ //hit dead end, backtrack
 				return emptyList;
 			}
 		}
-//		if(children.isEmpty()){
-//			System.out.println("here");
-//			return emptyList;
-//		}
+		
+		/* If ever want to do this with input gates included (i.e. call, lc.get_Gates) then this is stopping condition
+		if(children.isEmpty()){
+			System.out.println("here");
+			return emptyList;
+		}
+		 */
 		
 		
-		System.out.println("Current gate: " + start_gate);
-		System.out.println("gate children: " + children);
+		//System.out.println("Current gate: " + start_gate);
+		//System.out.println("gate children: " + children);
+		
 		for(Gate child: children){
-			if(!path.contains(child)){
-				System.out.println("child not in path: " + child);
+			if(!new_path.contains(child)){
 				List<List<Gate>> newpaths = FindAllPaths(lc, child, end_gate, new_path);
-				System.out.println("newpaths: " + newpaths);
 				for(List<Gate> newpath:newpaths){
 					System.out.println("newpath: " + newpath);
 					paths.add(newpath);
 				}
 			}
 		}
-		System.out.println("paths: " + paths); 
+		//System.out.println("paths: " + paths); 
 		return paths;
-	}
-	
+	}	
 	
 }
