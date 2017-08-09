@@ -59,8 +59,8 @@ public class PartitionCircuit {
 		
 		List<List<Gate>> emptyList = Collections.emptyList();
 		
-		//need to create new object in memory to hold paths so that don't overwrite 
-		//path objects from previous recursive calls (as opposed to just doing path.add(start_gate))
+		//need to create new Gate in memory to hold paths so that don't overwrite 
+		//path Gates from previous recursive calls (as opposed to just doing path.add(start_gate))
 		List<Gate> new_path = new ArrayList<Gate>();
 		new_path.addAll(path);
 		new_path.add(start_gate);
@@ -112,21 +112,21 @@ public class PartitionCircuit {
 	
 	/**Finds all 'k' length combinations of items in the list.
 	 * 
-	 * @param arr list of objects to find combinations of
+	 * @param arr list of Gates to find combinations of
 	 * @param k length of subsets to find. In other words, it's the 'k' in "n choose k"
 	 * @return
 	 */
-	public static List<List<Object>> Combinations(List<Object> arr, int k){
+	public static List<List<Gate>> Combinations(List<Gate> arr, int k){
 		//TODO Currently only works properly when k=2!
 		//TODO need to fix @ some point
 		
-		List<List<Object>> combos = new ArrayList<List<Object>>();
+		List<List<Gate>> combos = new ArrayList<List<Gate>>();
 		for(int i=0;i<arr.size();i++){
-			//List<Object> combo_set = new ArrayList<Object>();
+			//List<Gate> combo_set = new ArrayList<Gate>();
 			for(int j=i+k-1; j<arr.size(); j+=k-1){
 				System.out.println("i= " + i + " j= " + j);
-				//List<Object> subList = arr.subList(i, j);
-				List<Object> subList = new ArrayList<Object>();
+				//List<Gate> subList = arr.subList(i, j);
+				List<Gate> subList = new ArrayList<Gate>();
 				//need a list expander to get all integers between i and j and index w/ those
 				//List<Integer> inds = Range(i, j);
 				//for(int p=0;p<inds.size();p++){subList.add(arr.get(inds.get(p)));};
