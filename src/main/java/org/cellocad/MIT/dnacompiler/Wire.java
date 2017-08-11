@@ -4,18 +4,29 @@ import org.cellocad.BU.dom.DWire;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
+ * {@code Wire} is a class that represents a 'wire' in a circuit. A wire connects two 
+ * {@code Gate} objects in a circuit. In other words, a Wire is equivalent to an edge
+ * in a graph (and a Gate serves as a node) and therefore has a Gate it leaves
+ * {@code From} and a node it goes {@code To}. Several different constructors are provided.
+ * <p>
+ * Consistent with other classes, a {@code Wire} object here runs in 'reverse' to the 
+ * direction viewed. An 'input' gate would have no outgoing wire. 
+ * For example, the final output wire in a LogicCircuit is specified 
+ * as going {@code From = output_gate} and {@code To = adjacent_gate}.
  *
- * @author prashantvaidyanathan
+ *
+ *One simple way to construct a {@code Wire} is by calling:<p>
+ *{@code Wire(int Index, Gate From, Gate To)} <p>
+ *Other constructors are available to set other potentially useful properties. 
+ *
+ *@param Index integer index of given wire
+ *@param From gate of origin for the wire defined as gate closer to outputs (gate wire leaves 'From')
+ *@param To gate the wire connects to defined as gate closer to inputs (gate wire goes 'To')
+ *@param Next sibling wire in NOR or OUTPUT_OR, points to child2 gate (i actually have no idea when this is used...)
+ *
+ *@author prashantvaidyanathan
  */
 
-
-/**
- * Synopsis    [ Wires connect gates in the circuit. ]
- *
- * From gate  (toward outputs)
- * To gate    (toward inputs)
- * Next wire  (sibling wire in NOR or OUTPUT_OR, points to child2 gate)
- */
 @JsonIgnoreProperties({"From", "To", "Next", "wire"})
 public class Wire {
 
