@@ -31,32 +31,129 @@ public class PartitionCircuit {
 		}
 		
 	}
+	
+	
 	public PartitionCircuit(LogicCircuit lc){
 		//default constructor
+		System.out.println("lc wires: " + lc.get_Wires());
+		
 	}
+	//create a nested helper class to hold subgraph paths
+	//maybe even create a nested class to hold subgraph data itself
+	
+	
+	
 	public List<List<Integer>> partitionCircuit(LogicCircuit lc){
+		
 		/* Identifies edges to cut returns gate indices in each subgraph
 		 * as an arraylist
 		 */
 		
+		//ArrayList<Integer> t = new ArrayList<Integer>();
 		List<List<Integer>> subgraph_indices = new ArrayList<List<Integer>>();
 		
 		//gate.unvisited is a CLASS variable so all instances of variable rewritten
 		//simultaneously --> this could break shit
-		
 		//for(Gate g:lc.get_logic_gates()){
 		//	g.set_unvisited(true);
 		//}
 		
 		List<Gate> empty_list = new ArrayList<Gate>();
-		List<Gate> lc_gates = lc.get_logic_gates();
-		System.out.println("logic gates \n" + lc_gates);
-
-		List<List<Gate>> pathers = FindAllPaths(lc, lc_gates.get(0), lc_gates.get(6), empty_list );
-		System.out.println(lc.printGraph());
-		System.out.println("success!");
-		System.out.println("paths found: ");
-		System.out.println(pathers);
+		//List<Gate> lc_gates = lc.get_logic_gates();
+		List<Gate> lc_gates = lc.get_Gates();
+		//System.out.println("logic gates \n" + lc_gates);
+		//Gate start = lc.get_input_gates().get(1);//lc_gates.get(0);
+		Gate end = lc.get_output_gates().get(0); //single output gate currently
+		
+		//List<List<Gate>> test_paths = FindAllPaths(lc, end, start, empty_list );
+		//System.out.println("Start: " + start + " End: " + end);
+		//System.out.println("all paths: " + test_paths);
+		
+		//List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(1), lc.get_logic_gates().get(6));
+		List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(3));
+		List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);//Combinations(lc.get_logic_gates(), 2);
+		
+		System.out.println("combos: \n" + gate_combinations);
+		
+		List<List<Gate>> all_paths = new ArrayList<List<Gate>>();
+		for(Gate g:lc.get_input_gates()){
+			all_paths.addAll(FindAllPaths(lc, end, g, empty_list));
+		}
+		
+		
+		
+		
+		
+		//general algorithm:
+		// 1. find all paths
+		// 2. any path that hits a qs node goes into separate graph --> all nodes to right of qs node, inclusive
+		// 3. any remaining paths go in dump graph containing rest of nodes
+		
+		//list of lists of list<gate> = 
+		//edge_cut: [[subgraph1path1, subgraph1path2],[subgraph2path1, subgraph2path2]]
+		
+		HashMap<List<Gate>, List<Subgraph>> edge_partition_paths = new HashMap<List<Gate>, List<Subgraph>>();
+		for(List<Gate> combos_list : gate_combinations){
+			//choose an edge to cut
+			//number of subgraphs = length(combos_list)
+			List<Subgraph> emptyGraphsList = new ArrayList<Subgraph>();
+			//List<List<Gate>> emptySubgraphsList = new ArrayList<List<Gate>>();
+			edge_partition_paths.put(combos_list, emptyGraphsList);
+			
+			HashMap<Integer, Subgraph> subgraph_path_map = new HashMap<Integer, Subgraph>();
+			int subgraph_num = 0;
+			subgraph_path_map.put(0, new Subgraph());
+			
+			//Subgraph t = new Subgraph(emptySubgraphsList);
+			
+			for(Gate qs_gate: combos_list){
+				//gives terminal node of subgraph
+				if(lc.get_input_gates().contains(qs_gate)){
+					//cutting at input gates is pointless
+					continue;
+				}
+				else{
+					//now build a subgraph terminating in qs node in terms of paths
+					Subgraph subgraph = new Subgraph();
+					//put subgraph_num key into dict here
+					subgraph_num += 1;
+					subgraph_path_map.put(subgraph_num, subgraph);
+					for(List<Gate> full_path:all_paths){
+						if(full_path.contains(qs_gate)){
+							//List<Gate> subpath = new ArrayList<Gate>();
+							int qs_gate_ind = full_path.indexOf(qs_gate);
+							System.out.println("qs gate index: " + qs_gate_ind);
+							System.out.println("full path: " + full_path);
+							List<Gate> subpath = full_path.subList(qs_gate_ind, full_path.size());
+							System.out.println("subpath: " + subpath);
+							subgraph_path_map.get(subgraph_num).addPath(subpath);
+						}
+						else{
+							subgraph_path_map.get(0).addPath(full_path);
+						}
+						
+					}
+					//collect subgraphs from subgraph_path_map into single list and add to edge_partitions_dict
+					for(int i: subgraph_path_map.keySet()){
+						//List<List<Gate>> subgraph_paths = 
+						edge_partition_paths.get(combos_list).add(subgraph_path_map.get(i));
+					}		
+				}
+			}
+		}
+		
+		//System.out.println("All paths: " + all_paths);
+		for(List<Gate >k:edge_partition_paths.keySet()){
+			System.out.println("partition: " + k);
+			System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(0).paths);
+			System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(1).paths);
+			//System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(2).paths);
+		}
+		
+		
+		
+		
+		
 		return subgraph_indices;
 	}
 	
