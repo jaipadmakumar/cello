@@ -1,0 +1,10 @@
+I1_IcaRA  Gate=24.24198
+        NOT    1         [ ]: 1                  0.001:  2.195    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.001:  2.195    individual_tox: 1.00
+        NOT    1         [ ]: 0                  4.400:  0.091    individual_tox: 1.00
+        NOT    1         [ ]: 0                  4.400:  0.091    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.001:  2.195    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.001:  2.195    individual_tox: 1.00
+        NOT    1         [ ]: 0                  4.400:  0.091    individual_tox: 1.00
+        NOT    1         [ ]: 0                  4.400:  0.091    individual_tox: 1.00
+

@@ -1,0 +1,1 @@
+/Users/jaipadmakumar/Desktop/voigt_lab/cello/cello/resources/netsynthResources/abc.mac -c "read CircuitPartition_001/netSynth1/Blif_File_EsABC.blif; strash;  rewrite; refactor; balance; write CircuitPartition_001/netSynth1/abcOutput.bench; quit"

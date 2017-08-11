@@ -1,0 +1,26 @@
+#GRAPHVIZ_OUTPUT 
+digraph{ 
+rankdir=LR; 
+splines=ortho; 
+YFP[shape=none,label="YFP"]; 
+pTac[shape=none,label="pTac"]; 
+pTet[shape=none,label="pTet"]; 
+pBAD[shape=none,label="pBAD"]; 
+S2_SrpR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_005_A000_xfer_model_S2_SrpR.png"]; 
+J2_DigiJ[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_005_A000_xfer_model_J2_DigiJ.png"]; 
+P3_PhlF[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_005_A000_xfer_model_P3_PhlF.png"]; 
+P3_PhlF[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_005_A000_xfer_model_P3_PhlF.png"]; 
+QS1_DigiJQ[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_005_A000_xfer_model_QS1_DigiJQ.png"]; 
+P1_PhlF[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_005_A000_xfer_model_P1_PhlF.png"]; 
+Q1_QacR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_005_A000_xfer_model_Q1_QacR.png"]; 
+S2_SrpR ->YFP ; 
+J2_DigiJ ->S2_SrpR ; 
+P3_PhlF ->J2_DigiJ ; 
+QS1_DigiJQ ->J2_DigiJ ; 
+P3_PhlF ->P3_PhlF ; 
+pBAD ->QS1_DigiJQ ; 
+P1_PhlF ->P3_PhlF ; 
+Q1_QacR ->P3_PhlF ; 
+pTac ->P1_PhlF ; 
+pTet ->Q1_QacR ; 
+} 

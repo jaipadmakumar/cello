@@ -1,0 +1,28 @@
+#GRAPHVIZ_OUTPUT 
+digraph{ 
+rankdir=LR; 
+splines=ortho; 
+YFP[shape=none,label="YFP"]; 
+pTac[shape=none,label="pTac"]; 
+pTet[shape=none,label="pTet"]; 
+pBAD[shape=none,label="pBAD"]; 
+P3_PhlF[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_0x00_001_A000_P3_PhlF_gate.png"]; 
+N1_LmrA[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_0x00_001_A000_N1_LmrA_gate.png"]; 
+B3_BM3R1[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_0x00_001_A000_B3_BM3R1_gate.png"]; 
+H1_HlyIIR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_0x00_001_A000_H1_HlyIIR_gate.png"]; 
+E1_BetI[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_0x00_001_A000_E1_BetI_gate.png"]; 
+A1_AmtR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_0x00_001_A000_A1_AmtR_gate.png"]; 
+P3_PhlF ->YFP ; 
+N1_LmrA ->YFP ; 
+pTac ->P3_PhlF ; 
+H1_HlyIIR ->P3_PhlF ; 
+B3_BM3R1 ->N1_LmrA ; 
+H1_HlyIIR ->N1_LmrA ; 
+A1_AmtR ->B3_BM3R1 ; 
+E1_BetI ->B3_BM3R1 ; 
+pBAD ->H1_HlyIIR ; 
+E1_BetI ->H1_HlyIIR ; 
+pBAD ->E1_BetI ; 
+A1_AmtR ->E1_BetI ; 
+pTet ->A1_AmtR ; 
+} 

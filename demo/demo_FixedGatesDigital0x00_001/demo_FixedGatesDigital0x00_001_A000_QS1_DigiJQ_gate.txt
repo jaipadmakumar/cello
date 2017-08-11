@@ -1,0 +1,10 @@
+QS1_DigiJQ  Gate=107092.39064
+        NOT    3         [ ]: 1                  0.010: 99.206    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.010: 99.206    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.015: 97.494    individual_tox: 1.00
+        NOT    3         [ ]: 0                  2.395:  0.001    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.010: 99.206    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.010: 99.206    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.015: 97.494    individual_tox: 1.00
+        NOT    3         [ ]: 0                  2.395:  0.001    individual_tox: 1.00
+

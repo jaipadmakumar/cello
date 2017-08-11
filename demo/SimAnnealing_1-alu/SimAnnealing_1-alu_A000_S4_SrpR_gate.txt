@@ -1,0 +1,10 @@
+S4_SrpR  Gate=250.93797
+        NOT    4         [ ]: 1                  0.033:  2.013    individual_tox: 1.00
+        NOT    4         [ ]: 0                  1.999:  0.007    individual_tox: 1.00
+        NOT    4         [ ]: 0                  1.687:  0.008    individual_tox: 1.00
+        NOT    4         [ ]: 1                  0.040:  1.949    individual_tox: 1.00
+        NOT    4         [ ]: 1                  0.033:  2.013    individual_tox: 1.00
+        NOT    4         [ ]: 0                  1.999:  0.007    individual_tox: 1.00
+        NOT    4         [ ]: 0                  1.687:  0.008    individual_tox: 1.00
+        NOT    4         [ ]: 1                  0.040:  1.949    individual_tox: 1.00
+

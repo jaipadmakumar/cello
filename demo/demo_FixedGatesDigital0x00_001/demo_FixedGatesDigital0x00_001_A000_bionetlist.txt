@@ -1,0 +1,12 @@
+pTac            01010101
+pTet            00110011
+pBAD            00001111
+S2_SrpR         pSrpR     pPhlF     
+P1_PhlF         pPhlF     pDigitalQS
+QS2_DigiJQ      pQacR     
+Q1_QacR         pDigital  pQacR     
+Q1_QacR         pTac      
+S2_SrpR         pBAD      pTet      
+J2_DigiJ        pTet      
+P2_PhlF         pBAD      
+YFP             pSrpR     

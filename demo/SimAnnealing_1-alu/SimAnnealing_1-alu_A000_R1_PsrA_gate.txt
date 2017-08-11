@@ -1,0 +1,10 @@
+R1_PsrA  Gate=20.56890
+        NOR    2         [ ]: 0          4.291   0.003:  0.221    individual_tox: 1.00
+        NOR    2         [ ]: 0          4.291   2.800:  0.208    individual_tox: 1.00
+        NOR    2         [ ]: 1          0.072   0.003:  4.990    individual_tox: 1.00
+        NOR    2         [ ]: 0          0.072   2.800:  0.243    individual_tox: 1.00
+        NOR    2         [ ]: 0          4.291   0.003:  0.221    individual_tox: 1.00
+        NOR    2         [ ]: 0          4.291   2.800:  0.208    individual_tox: 1.00
+        NOR    2         [ ]: 1          0.072   0.003:  4.990    individual_tox: 1.00
+        NOR    2         [ ]: 0          0.072   2.800:  0.243    individual_tox: 1.00
+

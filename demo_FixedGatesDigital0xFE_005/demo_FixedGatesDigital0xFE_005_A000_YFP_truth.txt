@@ -1,0 +1,10 @@
+YFP  Gate=699.99913
+     OUTPUT        [ 0 0 0 ]: 1                  2.100:  2.100    multiplied_tox: 1.00
+     OUTPUT        [ 0 0 1 ]: 1                  2.100:  2.100    multiplied_tox: 1.00
+     OUTPUT        [ 0 1 0 ]: 1                  2.100:  2.100    multiplied_tox: 1.00
+     OUTPUT        [ 0 1 1 ]: 1                  2.100:  2.100    multiplied_tox: 1.00
+     OUTPUT        [ 1 0 0 ]: 1                  2.100:  2.100    multiplied_tox: 1.00
+     OUTPUT        [ 1 0 1 ]: 1                  2.100:  2.100    multiplied_tox: 1.00
+     OUTPUT        [ 1 1 0 ]: 1                  2.100:  2.100    multiplied_tox: 1.00
+     OUTPUT        [ 1 1 1 ]: 0                  0.003:  0.003    multiplied_tox: 1.00
+

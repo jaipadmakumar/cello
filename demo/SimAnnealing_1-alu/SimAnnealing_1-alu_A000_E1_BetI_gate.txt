@@ -1,0 +1,10 @@
+E1_BetI  Gate=30.22562
+        NOR    2         [ ]: 0          3.794   3.764:  0.073    individual_tox: 1.00
+        NOR    2         [ ]: 0          3.794   0.229:  0.085    individual_tox: 1.00
+        NOR    2         [ ]: 0          0.065   3.764:  0.087    individual_tox: 1.00
+        NOR    2         [ ]: 1          0.065   0.229:  2.642    individual_tox: 1.00
+        NOR    2         [ ]: 0          3.794   3.764:  0.073    individual_tox: 1.00
+        NOR    2         [ ]: 0          3.794   0.229:  0.085    individual_tox: 1.00
+        NOR    2         [ ]: 0          0.065   3.764:  0.087    individual_tox: 1.00
+        NOR    2         [ ]: 1          0.065   0.229:  2.642    individual_tox: 1.00
+

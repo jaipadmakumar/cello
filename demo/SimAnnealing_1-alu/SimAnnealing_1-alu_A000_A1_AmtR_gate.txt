@@ -1,0 +1,10 @@
+A1_AmtR  Gate=53.44232
+        NOR    1         [ ]: 1          0.001   0.003:  3.751    individual_tox: 1.00
+        NOR    1         [ ]: 0          0.001   2.800:  0.070    individual_tox: 1.00
+        NOR    1         [ ]: 0          4.400   0.003:  0.065    individual_tox: 1.00
+        NOR    1         [ ]: 0          4.400   2.800:  0.062    individual_tox: 1.00
+        NOR    1         [ ]: 1          0.001   0.003:  3.751    individual_tox: 1.00
+        NOR    1         [ ]: 0          0.001   2.800:  0.070    individual_tox: 1.00
+        NOR    1         [ ]: 0          4.400   0.003:  0.065    individual_tox: 1.00
+        NOR    1         [ ]: 0          4.400   2.800:  0.062    individual_tox: 1.00
+

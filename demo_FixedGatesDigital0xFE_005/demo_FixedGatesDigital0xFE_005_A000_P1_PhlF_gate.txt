@@ -1,0 +1,10 @@
+P1_PhlF  Gate=389.93383
+        NOT    1         [ ]: 1                  0.003:  3.899    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.800:  0.010    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.003:  3.899    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.800:  0.010    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.003:  3.899    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.800:  0.010    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.003:  3.899    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.800:  0.010    individual_tox: 1.00
+

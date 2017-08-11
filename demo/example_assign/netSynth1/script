@@ -1,0 +1,1 @@
+/Users/jaipadmakumar/Desktop/voigt_lab/cello/cello/resources/netsynthResources/abc.mac -c "read example_assign/netSynth1/Blif_File_InvEsABC.blif; strash;  rewrite; refactor; balance; write example_assign/netSynth1/abcOutput.bench; quit"

@@ -1,0 +1,10 @@
+P3_PhlF  Gate=339.91055
+        NOT    3         [ ]: 1                  0.020:  6.800    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.020:  6.800    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.020:  6.800    individual_tox: 1.00
+        NOT    3         [ ]: 0                  6.799:  0.020    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.020:  6.800    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.020:  6.800    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.020:  6.800    individual_tox: 1.00
+        NOT    3         [ ]: 0                  6.799:  0.020    individual_tox: 1.00
+
