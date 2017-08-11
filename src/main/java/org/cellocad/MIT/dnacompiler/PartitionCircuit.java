@@ -30,6 +30,41 @@ public class PartitionCircuit {
 			paths.add(path_to_add);
 		}
 		
+		private LogicCircuit buildLogicCircuit(){
+			//LogicCircuit subcircuit = new LogicCircuit();
+			
+			ArrayList<Gate> sublcs_gates = new ArrayList<Gate>(); //lc gates list
+			ArrayList<Wire> sublcs_wires = new ArrayList<Wire>(); //lc wires list
+			int wire_count = 0;
+			
+			if(this.paths.size() == 1){
+				//needs to be cast as ArrayList
+				//ArrayList<Gate> sublcs_gates = new ArrayList<Gate>(subgraph_paths.get(0));
+				sublcs_gates.addAll(this.paths.get(0));
+				for(Gate g:sublcs_gates){
+					//int gate_ind = g.Index;
+					List<Integer> child_inds = new ArrayList<Integer>();
+					for(Gate child:g.getChildren()){
+						child_inds.add(child.Index);
+						
+						Wire wire = new Wire(wire_count, g, child);
+						sublcs_wires.add(wire);
+						wire_count +=1;
+					}
+					
+				}
+			}
+			else{
+				//need to find set of gates from list
+				
+			}
+			
+			
+			LogicCircuit subcircuit = new LogicCircuit(sublcs_gates, sublcs_wires);
+			
+			
+			return subcircuit;
+		}
 	}
 	
 	
