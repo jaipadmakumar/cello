@@ -10,7 +10,7 @@ public class PartitionCircuit {
 	
 	//Instance Variables
 	
-	@Getter @Setter private List<LogicCircuit> sub_lcs = new ArrayList<LogicCircuit>(); //list of sub LogicCircuits
+	@Getter @Setter private List<List<LogicCircuit>> sub_lcs = new ArrayList<List<LogicCircuit>>(); //list of sub LogicCircuits
 	
 	public class Subgraph{
 		List<Gate> gates = new ArrayList<Gate>();
