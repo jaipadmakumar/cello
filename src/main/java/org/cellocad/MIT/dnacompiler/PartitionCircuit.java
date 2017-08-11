@@ -8,6 +8,29 @@ import java.util.*;
 
 public class PartitionCircuit {
 	
+	public class Subgraph{
+		List<Gate> gates = new ArrayList<Gate>();
+		List<List<Gate>> paths = new ArrayList<List<Gate>>(); //should be a list of all paths through graph
+		
+		
+		Subgraph(){
+		//default constructor
+		}
+		
+		Subgraph(List<List<Gate>> subgraph_paths){
+			//construct subgraph in terms of paths
+			paths = subgraph_paths;
+		}
+		
+//		Subgraph(List<Gate> subgraph_path){
+//			paths.add(subgraph_path);
+//		}
+//		
+		private void addPath(List<Gate> path_to_add){
+			paths.add(path_to_add);
+		}
+		
+	}
 	public PartitionCircuit(LogicCircuit lc){
 		//default constructor
 	}
