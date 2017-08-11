@@ -15,5 +15,3 @@ derby.log
 /resources/results/*
 /demo/job_*
 **/.DS_Store
-
-tools/jscello/ucf2sbol/
