@@ -15,7 +15,7 @@ public class PartitionCircuit {
 	public class Subgraph{
 		List<Gate> gates = new ArrayList<Gate>();
 		List<List<Gate>> paths = new ArrayList<List<Gate>>(); //should be a list of all paths through graph
-		
+		LogicCircuit sub_lc;
 		
 		Subgraph(){
 		//default constructor
