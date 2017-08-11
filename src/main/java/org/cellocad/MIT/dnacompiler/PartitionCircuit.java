@@ -8,6 +8,10 @@ import java.util.*;
 
 public class PartitionCircuit {
 	
+	//Instance Variables
+	
+	@Getter @Setter private List<LogicCircuit> sub_lcs = new ArrayList<LogicCircuit>(); //list of sub LogicCircuits
+	
 	public class Subgraph{
 		List<Gate> gates = new ArrayList<Gate>();
 		List<List<Gate>> paths = new ArrayList<List<Gate>>(); //should be a list of all paths through graph
