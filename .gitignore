@@ -14,5 +14,6 @@ derby.log
 *pyc
 /resources/results/*
 /demo/job_*
+/demo/
 **/.DS_Store
 nb-configuration.xml
