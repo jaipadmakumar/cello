@@ -333,8 +333,8 @@ public class PartitionCircuit {
 		return combos;
 	}
 	
-	private static List<Gate> Union(List<List<Gate>> list_of_gates_lists){
-		List<Gate> union = new ArrayList<Gate>();
+	private static HashSet<Gate> Union(List<List<Gate>> list_of_gates_lists){
+		HashSet<Gate> union = new HashSet<Gate>();
 		for(List<Gate> gates_list:list_of_gates_lists){
 			for(Gate g:gates_list){
 				union.add(g);
