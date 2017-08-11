@@ -16,4 +16,3 @@ derby.log
 /demo/job_*
 /demo/
 **/.DS_Store
-nb-configuration.xml
