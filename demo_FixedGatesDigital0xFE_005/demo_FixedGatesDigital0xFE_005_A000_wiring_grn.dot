@@ -1,0 +1,26 @@
+#GRAPHVIZ_OUTPUT 
+digraph{ 
+rankdir=LR; 
+splines=ortho; 
+YFP[shape=none,label="YFP\n  700.00\n11111110"]; 
+pTac[shape=none,label="INPUT pTac 0\n  823.53\n01010101"]; 
+pTet[shape=none,label="INPUT pTet 0\n 3384.62\n00110011"]; 
+pBAD[shape=none,label="INPUT pBAD 0\n  304.88\n00001111"]; 
+S2_SrpR[shape=box,style=filled,fillcolor=gray100,label="NOT S2_SrpR 5\n  700.00\n11111110"]; 
+J2_DigiJ[shape=box,style=filled,fillcolor=gray100,label="NOR J2_DigiJ 4\n2346988.39\n00000001"]; 
+P3_PhlF[shape=box,style=filled,fillcolor=gray100,label="NOT P3_PhlF 3\n  339.91\n11101110"]; 
+P3_PhlF[shape=box,style=filled,fillcolor=gray100,label="NOR P3_PhlF 2\n  334.11\n00010001"]; 
+QS1_DigiJQ[shape=box,style=filled,fillcolor=gray100,label="NOT QS1_DigiJQ 1\n124452.05\n11110000"]; 
+P1_PhlF[shape=box,style=filled,fillcolor=gray100,label="NOT P1_PhlF 1\n  389.93\n10101010"]; 
+Q1_QacR[shape=box,style=filled,fillcolor=gray100,label="NOT Q1_QacR 1\n  239.67\n11001100"]; 
+S2_SrpR->YFP; 
+J2_DigiJ->S2_SrpR; 
+P3_PhlF->J2_DigiJ; 
+QS1_DigiJQ->J2_DigiJ; 
+P3_PhlF->P3_PhlF; 
+pBAD->QS1_DigiJQ; 
+P1_PhlF->P3_PhlF; 
+Q1_QacR->P3_PhlF; 
+pTac->P1_PhlF; 
+pTet->Q1_QacR; 
+} 

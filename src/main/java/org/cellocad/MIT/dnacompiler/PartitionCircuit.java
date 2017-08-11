@@ -41,15 +41,30 @@ public class PartitionCircuit {
 	
 	
 	/**Implements a depth first search with backtracking to find all (simple) paths
-	 * between 'start_gate' and 'end_gate'. This method employs tree recursion to
+	 * between <code>start_gate</code> and <code>end_gate</code>. This method employs tree recursion to
 	 * perform the search and, therefore, scales disastrously badly. Initially,
-	 * 'path' should be given as an empty List<Gate>. Returns a list of lists 
-	 * of gates corresponding to paths. 
+	 * 'path' should be given as an empty <code>List&ltGate&gt</code>. Returns a list of lists 
+	 * of gates corresponding to paths.
+	 * <p>
+	 * Note that the graph is traversed in reverse here and the paths returned are given
+	 * in the order in which they are traversed. Thus the paths returned are run in the
+	 * opposite direction you would normally read a graph. Therefore, the {@code start_gate}
+	 * should be the gate with the lower index (which corresponds to the gate 
+	 * further 'downstream' if looking at a graph visually). The indices correspond to the 
+	 * indices given in {@code LogicCircuit}. 
+	 * 
+	 * 
+	 * For example, to return all paths between an output and input gate
+	 * run with the following arguments:<br>
+	 * &nbsp {@code FindAllPaths(lc, output_gate, input_gate, emptyList)} <br>
+	 * which returns {@code [output_gate, ..., input_gate]}
 	 * 
 	 * @param lc a LogicCircuit instance
 	 * @param start_gate start gate of path
 	 * @param end_gate final gate of path
-	 * @param path pass as an empty list w/ type List<Gate> (required for recursive call) 
+	 * @param path pass as an empty list w/ type <code>List&ltGate&gt</code> (required for recursive call)
+	 * 
+	 * @see org.cellocad.MIT.dnacompiler.LogicCircuit
 	 */
 	public static List<List<Gate>> FindAllPaths(LogicCircuit lc, Gate start_gate, 
 											Gate end_gate, List<Gate> path){
@@ -78,20 +93,21 @@ public class PartitionCircuit {
 		
 		List<Gate> children = start_gate.getChildren();
 		
-		
+		/*
 		for(Gate child:children){
 			List<Gate> input_gates = lc.get_input_gates();
 			if(input_gates.contains(child)){ //hit dead end, backtrack
 				return emptyList;
 			}
 		}
+		*/
 		
-		/* If ever want to do this with input gates included (i.e. call, lc.get_Gates) then this is stopping condition
+		
+		//If ever want to do this with input gates included (i.e. call, lc.get_Gates) then this is stopping condition
 		if(children.isEmpty()){
-			System.out.println("here");
+			//System.out.println("here");
 			return emptyList;
 		}
-		 */
 		
 		
 		//System.out.println("Current gate: " + start_gate);
@@ -101,7 +117,7 @@ public class PartitionCircuit {
 			if(!new_path.contains(child)){
 				List<List<Gate>> newpaths = FindAllPaths(lc, child, end_gate, new_path);
 				for(List<Gate> newpath:newpaths){
-					System.out.println("newpath: " + newpath);
+					//System.out.println("newpath: " + newpath);
 					paths.add(newpath);
 				}
 			}
@@ -122,9 +138,8 @@ public class PartitionCircuit {
 		
 		List<List<Gate>> combos = new ArrayList<List<Gate>>();
 		for(int i=0;i<arr.size();i++){
-			//List<Gate> combo_set = new ArrayList<Gate>();
 			for(int j=i+k-1; j<arr.size(); j+=k-1){
-				System.out.println("i= " + i + " j= " + j);
+				//System.out.println("i= " + i + " j= " + j);
 				//List<Gate> subList = arr.subList(i, j);
 				List<Gate> subList = new ArrayList<Gate>();
 				//need a list expander to get all integers between i and j and index w/ those

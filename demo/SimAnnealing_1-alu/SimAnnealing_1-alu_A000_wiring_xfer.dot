@@ -1,0 +1,36 @@
+#GRAPHVIZ_OUTPUT 
+digraph{ 
+rankdir=LR; 
+splines=ortho; 
+YFP[shape=none,label="YFP"]; 
+pTac[shape=none,label="pTac"]; 
+pTet[shape=none,label="pTet"]; 
+pBAD[shape=none,label="pBAD"]; 
+J1_DigiJ[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_J1_DigiJ.png"]; 
+QS1_DigiJQ[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_QS1_DigiJQ.png"]; 
+P3_PhlF[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_P3_PhlF.png"]; 
+S4_SrpR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_S4_SrpR.png"]; 
+Q2_QacR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_Q2_QacR.png"]; 
+H1_HlyIIR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_H1_HlyIIR.png"]; 
+A1_AmtR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_A1_AmtR.png"]; 
+B3_BM3R1[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_B3_BM3R1.png"]; 
+I1_IcaRA[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_I1_IcaRA.png"]; 
+L1_LitR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="SimAnnealing_1-alu_A000_xfer_model_L1_LitR.png"]; 
+J1_DigiJ ->YFP ; 
+P3_PhlF ->J1_DigiJ ; 
+QS1_DigiJQ ->J1_DigiJ ; 
+Q2_QacR ->P3_PhlF ; 
+pBAD ->P3_PhlF ; 
+S4_SrpR ->QS1_DigiJQ ; 
+L1_LitR ->QS1_DigiJQ ; 
+Q2_QacR ->S4_SrpR ; 
+A1_AmtR ->Q2_QacR ; 
+H1_HlyIIR ->Q2_QacR ; 
+pTac ->A1_AmtR ; 
+pTet ->A1_AmtR ; 
+B3_BM3R1 ->H1_HlyIIR ; 
+I1_IcaRA ->H1_HlyIIR ; 
+pTac ->B3_BM3R1 ; 
+pTet ->I1_IcaRA ; 
+pBAD ->L1_LitR ; 
+} 

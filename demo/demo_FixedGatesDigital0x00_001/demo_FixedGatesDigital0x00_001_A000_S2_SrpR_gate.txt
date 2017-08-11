@@ -1,0 +1,10 @@
+S2_SrpR  Gate=647.98082
+        NOR    5         [ ]: 0          2.051   0.010:  0.003    individual_tox: 1.00
+        NOR    5         [ ]: 0          2.051   0.010:  0.003    individual_tox: 1.00
+        NOR    5         [ ]: 1          0.003   0.010:  1.993    individual_tox: 1.00
+        NOR    5         [ ]: 1          0.003   0.010:  1.993    individual_tox: 1.00
+        NOR    5         [ ]: 1          0.003   0.010:  1.992    individual_tox: 1.00
+        NOR    5         [ ]: 1          0.003   0.010:  1.992    individual_tox: 1.00
+        NOR    5         [ ]: 1          0.003   0.010:  1.993    individual_tox: 1.00
+        NOR    5         [ ]: 0          0.003   3.149:  0.003    individual_tox: 1.00
+

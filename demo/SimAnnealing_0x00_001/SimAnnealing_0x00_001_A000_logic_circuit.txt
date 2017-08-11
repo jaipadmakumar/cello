@@ -1,0 +1,115 @@
+
+----- Logic Circuit #0 -----
+OUTPUT_OR   00111110          YFP               0  (2,1)         4.47  tox:0.75
+NOT         11001100          A1_AmtR           6  (7)          58.41  tox:0.77
+NOR         00110000          E1_BetI           5  (6,8)        32.47  tox:1.00
+NOR         11000000          H1_HlyIIR         4  (5,8)        29.53  tox:1.00
+NOR         00000011          P3_PhlF           3  (5,6)       249.88  tox:1.00
+NOR         00111100          N1_LmrA           2  (4,3)         8.55  tox:1.00
+NOR         00101010          B3_BM3R1          1  (4,9)        74.36  tox:0.98
+INPUT       00001111          pBAD              8              304.88
+INPUT       00110011          pTet              7              3384.62
+INPUT       01010101          pTac              9              823.53
+
+Circuit_score = 4.47336     Cell_growth = 0.75397 
+
+YFP  Gate=4.47336
+  OUTPUT_OR        [ 0 0 0 ]: 0          0.211   0.011:  0.089    multiplied_tox: 1.00
+  OUTPUT_OR        [ 0 0 1 ]: 0          0.211   0.010:  0.088    multiplied_tox: 0.99
+  OUTPUT_OR        [ 0 1 0 ]: 1          1.814   0.789:  1.041    multiplied_tox: 0.75
+  OUTPUT_OR        [ 0 1 1 ]: 1          1.814   0.010:  0.730    multiplied_tox: 0.77
+  OUTPUT_OR        [ 1 0 0 ]: 1          1.801   0.788:  1.036    multiplied_tox: 0.98
+  OUTPUT_OR        [ 1 0 1 ]: 1          1.801   0.010:  0.725    multiplied_tox: 1.00
+  OUTPUT_OR        [ 1 1 0 ]: 1          0.202   0.788:  0.396    multiplied_tox: 0.75
+  OUTPUT_OR        [ 1 1 1 ]: 0          0.202   0.010:  0.085    multiplied_tox: 0.77
+
+A1_AmtR  Gate=58.40557
+        NOT    1   [ 0 0 0 ]: 1                  0.001:  3.794    individual_tox: 1.00
+        NOT    1   [ 0 0 1 ]: 1                  0.001:  3.794    individual_tox: 1.00
+        NOT    1   [ 0 1 0 ]: 0                  4.400:  0.065    individual_tox: 0.77
+        NOT    1   [ 0 1 1 ]: 0                  4.400:  0.065    individual_tox: 0.77
+        NOT    1   [ 1 0 0 ]: 1                  0.001:  3.794    individual_tox: 1.00
+        NOT    1   [ 1 0 1 ]: 1                  0.001:  3.794    individual_tox: 1.00
+        NOT    1   [ 1 1 0 ]: 0                  4.400:  0.065    individual_tox: 0.77
+        NOT    1   [ 1 1 1 ]: 0                  4.400:  0.065    individual_tox: 0.77
+
+E1_BetI  Gate=32.47214
+        NOR    2   [ 0 0 0 ]: 0          3.794   0.008:  0.088    individual_tox: 1.00
+        NOR    2   [ 0 0 1 ]: 0          3.794   0.008:  0.088    individual_tox: 1.00
+        NOR    2   [ 0 1 0 ]: 1          0.065   0.008:  3.741    individual_tox: 1.00
+        NOR    2   [ 0 1 1 ]: 1          0.065   0.008:  3.741    individual_tox: 1.00
+        NOR    2   [ 1 0 0 ]: 0          3.794   2.500:  0.075    individual_tox: 1.00
+        NOR    2   [ 1 0 1 ]: 0          3.794   2.500:  0.075    individual_tox: 1.00
+        NOR    2   [ 1 1 0 ]: 0          0.065   2.500:  0.115    individual_tox: 1.00
+        NOR    2   [ 1 1 1 ]: 0          0.065   2.500:  0.115    individual_tox: 1.00
+
+H1_HlyIIR  Gate=29.52682
+        NOR    3   [ 0 0 0 ]: 1          0.088   0.008:  2.149    individual_tox: 1.00
+        NOR    3   [ 0 0 1 ]: 1          0.088   0.008:  2.149    individual_tox: 1.00
+        NOR    3   [ 0 1 0 ]: 0          3.741   0.008:  0.071    individual_tox: 1.00
+        NOR    3   [ 0 1 1 ]: 0          3.741   0.008:  0.071    individual_tox: 1.00
+        NOR    3   [ 1 0 0 ]: 0          0.075   2.500:  0.073    individual_tox: 1.00
+        NOR    3   [ 1 0 1 ]: 0          0.075   2.500:  0.073    individual_tox: 1.00
+        NOR    3   [ 1 1 0 ]: 0          0.115   2.500:  0.073    individual_tox: 1.00
+        NOR    3   [ 1 1 1 ]: 0          0.115   2.500:  0.073    individual_tox: 1.00
+
+P3_PhlF  Gate=249.87627
+        NOR    3   [ 0 0 0 ]: 0          0.088   3.794:  0.020    individual_tox: 1.00
+        NOR    3   [ 0 0 1 ]: 0          0.088   3.794:  0.020    individual_tox: 1.00
+        NOR    3   [ 0 1 0 ]: 0          3.741   0.065:  0.020    individual_tox: 1.00
+        NOR    3   [ 0 1 1 ]: 0          3.741   0.065:  0.020    individual_tox: 1.00
+        NOR    3   [ 1 0 0 ]: 0          0.075   3.794:  0.020    individual_tox: 1.00
+        NOR    3   [ 1 0 1 ]: 0          0.075   3.794:  0.020    individual_tox: 1.00
+        NOR    3   [ 1 1 0 ]: 1          0.115   0.065:  5.010    individual_tox: 1.00
+        NOR    3   [ 1 1 1 ]: 1          0.115   0.065:  5.010    individual_tox: 1.00
+
+N1_LmrA  Gate=8.55062
+        NOR    4   [ 0 0 0 ]: 0          2.149   0.020:  0.211    individual_tox: 1.00
+        NOR    4   [ 0 0 1 ]: 0          2.149   0.020:  0.211    individual_tox: 1.00
+        NOR    4   [ 0 1 0 ]: 1          0.071   0.020:  1.814    individual_tox: 1.00
+        NOR    4   [ 0 1 1 ]: 1          0.071   0.020:  1.814    individual_tox: 1.00
+        NOR    4   [ 1 0 0 ]: 1          0.073   0.020:  1.801    individual_tox: 1.00
+        NOR    4   [ 1 0 1 ]: 1          0.073   0.020:  1.801    individual_tox: 1.00
+        NOR    4   [ 1 1 0 ]: 0          0.073   5.010:  0.202    individual_tox: 1.00
+        NOR    4   [ 1 1 1 ]: 0          0.073   5.010:  0.202    individual_tox: 1.00
+
+B3_BM3R1  Gate=74.35758
+        NOR    4   [ 0 0 0 ]: 0          2.149   0.003:  0.011    individual_tox: 1.00
+        NOR    4   [ 0 0 1 ]: 0          2.149   2.800:  0.010    individual_tox: 0.99
+        NOR    4   [ 0 1 0 ]: 1          0.071   0.003:  0.789    individual_tox: 0.98
+        NOR    4   [ 0 1 1 ]: 0          0.071   2.800:  0.010    individual_tox: 1.00
+        NOR    4   [ 1 0 0 ]: 1          0.073   0.003:  0.788    individual_tox: 0.98
+        NOR    4   [ 1 0 1 ]: 0          0.073   2.800:  0.010    individual_tox: 1.00
+        NOR    4   [ 1 1 0 ]: 1          0.073   0.003:  0.788    individual_tox: 0.98
+        NOR    4   [ 1 1 1 ]: 0          0.073   2.800:  0.010    individual_tox: 1.00
+
+pBAD  Gate=304.87805
+      INPUT        [ 0 0 0 ]: 0                       :  0.008
+      INPUT        [ 0 0 1 ]: 0                       :  0.008
+      INPUT        [ 0 1 0 ]: 0                       :  0.008
+      INPUT        [ 0 1 1 ]: 0                       :  0.008
+      INPUT        [ 1 0 0 ]: 1                       :  2.500
+      INPUT        [ 1 0 1 ]: 1                       :  2.500
+      INPUT        [ 1 1 0 ]: 1                       :  2.500
+      INPUT        [ 1 1 1 ]: 1                       :  2.500
+
+pTet  Gate=3384.61538
+      INPUT        [ 0 0 0 ]: 0                       :  0.001
+      INPUT        [ 0 0 1 ]: 0                       :  0.001
+      INPUT        [ 0 1 0 ]: 1                       :  4.400
+      INPUT        [ 0 1 1 ]: 1                       :  4.400
+      INPUT        [ 1 0 0 ]: 0                       :  0.001
+      INPUT        [ 1 0 1 ]: 0                       :  0.001
+      INPUT        [ 1 1 0 ]: 1                       :  4.400
+      INPUT        [ 1 1 1 ]: 1                       :  4.400
+
+pTac  Gate=823.52941
+      INPUT        [ 0 0 0 ]: 0                       :  0.003
+      INPUT        [ 0 0 1 ]: 1                       :  2.800
+      INPUT        [ 0 1 0 ]: 0                       :  0.003
+      INPUT        [ 0 1 1 ]: 1                       :  2.800
+      INPUT        [ 1 0 0 ]: 0                       :  0.003
+      INPUT        [ 1 0 1 ]: 1                       :  2.800
+      INPUT        [ 1 1 0 ]: 0                       :  0.003
+      INPUT        [ 1 1 1 ]: 1                       :  2.800
+

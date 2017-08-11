@@ -1,0 +1,10 @@
+J2_DigiJ  Gate=2317577.01678
+        NOR    6         [ ]: 0          0.000   6.793:  0.000    individual_tox: 1.00
+        NOR    6         [ ]: 1          0.000   0.021: 92.942    individual_tox: 1.00
+        NOR    6         [ ]: 1          0.000   0.021: 92.934    individual_tox: 1.00
+        NOR    6         [ ]: 0          0.000   6.793:  0.000    individual_tox: 1.00
+        NOR    6         [ ]: 1          0.001   0.020: 92.422    individual_tox: 1.00
+        NOR    6         [ ]: 0         17.920   0.020:  0.000    individual_tox: 1.00
+        NOR    6         [ ]: 0         17.918   0.020:  0.000    individual_tox: 1.00
+        NOR    6         [ ]: 1          0.001   0.020: 92.435    individual_tox: 1.00
+

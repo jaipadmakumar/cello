@@ -1,0 +1,26 @@
+#GRAPHVIZ_OUTPUT 
+digraph{ 
+rankdir=LR; 
+splines=ortho; 
+YFP[shape=none,label="YFP"]; 
+pTac[shape=none,label="pTac"]; 
+pTet[shape=none,label="pTet"]; 
+pBAD[shape=none,label="pBAD"]; 
+S2_SrpR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_002_A000_S2_SrpR_gate.png"]; 
+QS2_DigiJQ[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_002_A000_QS2_DigiJQ_gate.png"]; 
+P3_PhlF[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_002_A000_P3_PhlF_gate.png"]; 
+P3_PhlF[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_002_A000_P3_PhlF_gate.png"]; 
+J1_DigiJ[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_002_A000_J1_DigiJ_gate.png"]; 
+P3_PhlF[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_002_A000_P3_PhlF_gate.png"]; 
+Q1_QacR[fixedsize=true,height=1.0,width=1.0,label="",shape=none,image="demo_FixedGatesDigital0xFE_002_A000_Q1_QacR_gate.png"]; 
+S2_SrpR ->YFP ; 
+QS2_DigiJQ ->S2_SrpR ; 
+P3_PhlF ->QS2_DigiJQ ; 
+J1_DigiJ ->QS2_DigiJQ ; 
+P3_PhlF ->P3_PhlF ; 
+pBAD ->J1_DigiJ ; 
+P3_PhlF ->P3_PhlF ; 
+Q1_QacR ->P3_PhlF ; 
+pTac ->P3_PhlF ; 
+pTet ->Q1_QacR ; 
+} 

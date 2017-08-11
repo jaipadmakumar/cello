@@ -1,0 +1,10 @@
+QS1_DigiJQ  Gate=11828.18064
+        NOR    5         [ ]: 0          4.113   2.013:  0.000    individual_tox: 1.00
+        NOR    5         [ ]: 0          4.113   0.007:  0.000    individual_tox: 1.00
+        NOR    5         [ ]: 0          4.113   0.008:  0.000    individual_tox: 1.00
+        NOR    5         [ ]: 0          4.113   1.949:  0.000    individual_tox: 1.00
+        NOR    5         [ ]: 0          0.075   2.013:  0.001    individual_tox: 1.00
+        NOR    5         [ ]: 1          0.075   0.007: 17.971    individual_tox: 1.00
+        NOR    5         [ ]: 1          0.075   0.008: 17.817    individual_tox: 1.00
+        NOR    5         [ ]: 0          0.075   1.949:  0.002    individual_tox: 1.00
+

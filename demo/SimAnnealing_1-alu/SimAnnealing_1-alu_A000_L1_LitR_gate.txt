@@ -1,0 +1,10 @@
+L1_LitR  Gate=54.50211
+        NOT    1         [ ]: 1                  0.008:  4.113    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.008:  4.113    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.008:  4.113    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.008:  4.113    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.500:  0.075    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.500:  0.075    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.500:  0.075    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.500:  0.075    individual_tox: 1.00
+

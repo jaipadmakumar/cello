@@ -1,0 +1,10 @@
+J1_DigiJ  Gate=124452.04898
+        NOT    1         [ ]: 1                  0.008: 99.561    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.008: 99.561    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.008: 99.561    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.008: 99.561    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.500:  0.001    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.500:  0.001    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.500:  0.001    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.500:  0.001    individual_tox: 1.00
+

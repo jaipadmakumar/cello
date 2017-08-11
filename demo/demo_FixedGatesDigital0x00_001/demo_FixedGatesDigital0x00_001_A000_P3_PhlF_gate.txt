@@ -1,0 +1,10 @@
+P3_PhlF  Gate=339.14380
+        NOR    4         [ ]: 0          3.878   6.800:  0.020    individual_tox: 1.00
+        NOR    4         [ ]: 0          3.878   6.800:  0.020    individual_tox: 1.00
+        NOR    4         [ ]: 0          3.878   6.800:  0.020    individual_tox: 1.00
+        NOR    4         [ ]: 0          3.878   0.020:  0.020    individual_tox: 1.00
+        NOR    4         [ ]: 0          0.010   6.800:  0.020    individual_tox: 1.00
+        NOR    4         [ ]: 0          0.010   6.800:  0.020    individual_tox: 1.00
+        NOR    4         [ ]: 0          0.010   6.800:  0.020    individual_tox: 1.00
+        NOR    4         [ ]: 1          0.010   0.020:  6.799    individual_tox: 1.00
+

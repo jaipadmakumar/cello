@@ -1,0 +1,22 @@
+#GRAPHVIZ_OUTPUT 
+digraph{ 
+rankdir=LR; 
+splines=ortho; 
+YFP[shape=none,label="YFP\n   50.73\n11111110"]; 
+pTac[shape=none,label="INPUT pTac 0\n  823.53\n01010101"]; 
+pTet[shape=none,label="INPUT pTet 0\n 3384.62\n00110011"]; 
+pBAD[shape=none,label="INPUT pBAD 0\n  304.88\n00001111"]; 
+P1_PhlF[shape=box,style=filled,fillcolor=gray100,label="NOT P1_PhlF 3\n  383.85\n11111010"]; 
+B3_BM3R1[shape=box,style=filled,fillcolor=gray100,label="NOR B3_BM3R1 2\n   60.60\n00000101"]; 
+E1_BetI[shape=box,style=filled,fillcolor=gray100,label="NOT E1_BetI 1\n   35.61\n10101010"]; 
+H1_HlyIIR[shape=box,style=filled,fillcolor=gray100,label="NOT H1_HlyIIR 1\n   34.24\n11110000"]; 
+A1_AmtR[shape=box,style=filled,fillcolor=gray100,label="NOT A1_AmtR 1\n   58.41\n11001100"]; 
+P1_PhlF->YFP; 
+A1_AmtR->YFP; 
+B3_BM3R1->P1_PhlF; 
+E1_BetI->B3_BM3R1; 
+H1_HlyIIR->B3_BM3R1; 
+pTac->E1_BetI; 
+pBAD->H1_HlyIIR; 
+pTet->A1_AmtR; 
+} 

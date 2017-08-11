@@ -1,0 +1,10 @@
+E1_BetI  Gate=39.04378
+        NOT    3         [ ]: 1                  0.200:  3.234    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.200:  3.234    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.226:  3.078    individual_tox: 1.00
+        NOT    3         [ ]: 0                  5.083:  0.079    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.200:  3.234    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.200:  3.234    individual_tox: 1.00
+        NOT    3         [ ]: 1                  0.226:  3.078    individual_tox: 1.00
+        NOT    3         [ ]: 0                  5.083:  0.079    individual_tox: 1.00
+

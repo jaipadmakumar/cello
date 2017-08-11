@@ -1,0 +1,10 @@
+F1_AmeR  Gate=16.43385
+        NOT    1         [ ]: 1                  0.003:  3.764    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.800:  0.229    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.003:  3.764    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.800:  0.229    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.003:  3.764    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.800:  0.229    individual_tox: 1.00
+        NOT    1         [ ]: 1                  0.003:  3.764    individual_tox: 1.00
+        NOT    1         [ ]: 0                  2.800:  0.229    individual_tox: 1.00
+
