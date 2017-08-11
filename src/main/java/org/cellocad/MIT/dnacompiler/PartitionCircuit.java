@@ -138,6 +138,8 @@ public class PartitionCircuit {
 		// 1. find all paths
 		// 2. any path that hits a qs node goes into separate graph --> all nodes to right of qs node, inclusive
 		// 3. any remaining paths go in dump graph containing rest of nodes
+		//Circuit partitioning doesn't change topology of circuit itself so don't need to keep track of wires in this process
+		// (since wires aren't aware of anything, can just use gates to determine DAG structure)
 		
 		//list of lists of list<gate> = 
 		//edge_cut: [[subgraph1path1, subgraph1path2],[subgraph2path1, subgraph2path2]]
@@ -198,6 +200,15 @@ public class PartitionCircuit {
 			System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(0).paths);
 			System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(1).paths);
 			//System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(2).paths);
+		}
+		
+		//use identified subgraphs to find logic subcircuits
+		for(List<Gate >k:edge_partition_paths.keySet()){
+			List<Subgraph> subgraphs = edge_partition_paths.get(k);
+			for (Subgraph subgraph:subgraphs){
+				subgraph.buildLogicCircuit();
+				System.out.println(subgraph.sub_lc.printGraph());
+			}
 		}
 		
 		
