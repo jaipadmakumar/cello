@@ -1,9 +1,0 @@
-pTac            01010101
-pTet            00110011
-pBAD            00001111
-P1_PhlF         pBM3R1    
-B3_BM3R1        pBetI     pHlyIIR   
-E1_BetI         pTac      
-H1_HlyIIR       pBAD      
-A1_AmtR         pTet      
-YFP             pPhlF     pAmtR     

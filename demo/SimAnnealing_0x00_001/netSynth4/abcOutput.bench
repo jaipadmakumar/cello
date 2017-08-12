@@ -1,7 +1,0 @@
-# Benchmark "blif_file" written by ABC on Tue Jul 18 12:35:23 2017
-INPUT(in1)
-INPUT(in2)
-INPUT(in3)
-OUTPUT(out)
-n4          = vdd
-out         = NOT(n4)
