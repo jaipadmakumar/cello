@@ -11,6 +11,7 @@ public class PartitionCircuit {
 	//Instance Variables
 	
 	@Getter @Setter private List<List<LogicCircuit>> sub_lcs = new ArrayList<List<LogicCircuit>>(); //list of sub LogicCircuits
+	@Getter @Setter private LogicCircuit parent_lc;
 	
 	public class Subgraph{
 		List<Gate> gates = new ArrayList<Gate>();
@@ -85,6 +86,7 @@ public class PartitionCircuit {
 	
 	public PartitionCircuit(LogicCircuit lc){
 		//default constructor
+		parent_lc = lc;
 		System.out.println("lc wires: " + lc.get_Wires());
 		
 	}
@@ -102,18 +104,12 @@ public class PartitionCircuit {
 		//ArrayList<Integer> t = new ArrayList<Integer>();
 		List<List<Integer>> subgraph_indices = new ArrayList<List<Integer>>();
 		
-		//gate.unvisited is a CLASS variable so all instances of variable rewritten
-		//simultaneously --> this could break shit
-		//for(Gate g:lc.get_logic_gates()){
-		//	g.set_unvisited(true);
-		//}
-		
 		List<Gate> empty_list = new ArrayList<Gate>();
 		//List<Gate> lc_gates = lc.get_logic_gates();
-		List<Gate> lc_gates = lc.get_Gates();
+		//List<Gate> lc_gates = lc.get_Gates();
 		//System.out.println("logic gates \n" + lc_gates);
 		//Gate start = lc.get_input_gates().get(1);//lc_gates.get(0);
-		Gate end = lc.get_output_gates().get(0); //single output gate currently
+		Gate end = lc.get_output_gates().get(0); //single output gate only currently
 		
 		//List<List<Gate>> test_paths = FindAllPaths(lc, end, start, empty_list );
 		//System.out.println("Start: " + start + " End: " + end);
@@ -122,8 +118,14 @@ public class PartitionCircuit {
 		//List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(1), lc.get_logic_gates().get(6));
 		List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(3));
 		List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);//Combinations(lc.get_logic_gates(), 2);
+		//since effectively cutting wires, might work to better explicitly do so
+		//for readability
+		List<List<Gate>> edge_combinations_to_cut = getValidEdges(2);
 		
-		System.out.println("combos: \n" + gate_combinations);
+		//System.out.println("combos: \n");
+		//System.out.println(edge_combinations_to_cut);
+		
+		//System.out.println("combos: \n" + gate_combinations);
 		
 		List<List<Gate>> all_paths = new ArrayList<List<Gate>>();
 		for(Gate g:lc.get_input_gates()){
@@ -311,7 +313,7 @@ public class PartitionCircuit {
 	 * 
 	 * @param arr list of Gates to find combinations of
 	 * @param k length of subsets to find. In other words, it's the 'k' in "n choose k"
-	 * @return
+	 * @return list of k-item lists of gates representing all possible combinations of gates in {@code arr}
 	 */
 	public static List<List<Gate>> Combinations(List<Gate> arr, int k){
 		//TODO Currently only works properly when k=2!
@@ -331,6 +333,22 @@ public class PartitionCircuit {
 			}
 		}
 		return combos;
+	}
+	
+	//Gets all edges to cut, up to kth combinations of edges inclusive
+	//TODO Currently only returns single gates and k gate combinations
+	//		NOT ALL K COMBOS
+	private List<List<Gate>> getValidEdges(int k){
+		List<List<Gate>> combos_list = new ArrayList<List<Gate>>();
+		for(Gate g: this.parent_lc.get_logic_gates()){
+			List<Gate> single_gate = new ArrayList<Gate>();
+			single_gate.add(g);
+			combos_list.add(single_gate);
+		}
+		for(List<Gate> combos:Combinations(this.parent_lc.get_logic_gates(), k)){
+			combos_list.add(combos);
+		}
+		return combos_list;
 	}
 	
 	private static HashSet<Gate> Union(List<List<Gate>> list_of_gates_lists){
