@@ -123,7 +123,17 @@ public class PartitionCircuit {
 	//maybe even create a nested class to hold subgraph data itself
 	
 	
-	
+	/**
+	 * Given an {@code LogicCircuit}, finds the set of all partitions determined by
+	 * making all possible combinations of up to k edges. For example, if k=2, the 
+	 * algorithm will find all possible combinations of 2 edges (aka wires) + all 
+	 * single edges, and cuts the {@code LogicCircuit} into subcircuits based on 
+	 * those. Thus, each edge (or edge pair) denotes a single set of subcircuits
+	 * which, taken together, have the same logic as the original logic circuit.
+	 * 
+	 * @param lc
+	 * @return
+	 */
 	public List<List<Integer>> partitionCircuit(LogicCircuit lc){
 		
 		/* Identifies edges to cut returns gate indices in each subgraph
