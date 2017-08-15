@@ -120,13 +120,9 @@ public class PartitionCircuit {
 		//default constructor
 		parent_lc = lc;
 		sub_lcs = new ArrayList<List<Subgraph>>();
-		System.out.println("lc wires: " + lc.get_Wires());
 		
 	}
-	//create a nested helper class to hold subgraph paths
-	//maybe even create a nested class to hold subgraph data itself
-	
-	
+
 	/**
 	 * Given an {@code LogicCircuit}, finds the set of all partitions determined by
 	 * making all possible combinations of up to k edges. For example, if k=2, the 
@@ -152,8 +148,8 @@ public class PartitionCircuit {
 		//System.out.println("all paths: " + test_paths);
 		
 		//List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(1), lc.get_logic_gates().get(6));
-		List<Gate> test_gate_combos = Arrays.asList(lc_gates.get(3));//, lc_gates.get(1));
-		List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);//Combinations(lc.get_logic_gates(), 2);
+		List<Gate> test_gate_combos = Arrays.asList(lc_gates.get(3));
+		List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);
 		//since effectively cutting wires, might work to better explicitly do so
 		//for readability
 		//'edge' defined as leaving edges of gate, so gate is terminal node in graph
@@ -169,10 +165,6 @@ public class PartitionCircuit {
 			//System.out.println("Finding paths to gate: " + g);
 			all_paths.addAll(FindAllPaths(lc, end, g, empty_list));
 		}
-		
-		
-		
-		
 		
 		//general algorithm:
 		// 1. find all paths
@@ -208,9 +200,7 @@ public class PartitionCircuit {
 				subgraph_path_map.put(qs_gate, new Subgraph(qs_gate, getGateParents(qs_gate))); 
 			}
 			subgraph_path_map.put(lc.get_output_gates().get(0), new Subgraph());
-			
-			//Subgraph t = new Subgraph(emptySubgraphsList);
-			
+						
 			for(Gate qs_gate: combos_list){
 				//have terminal node of current subgraph
 				
@@ -221,16 +211,13 @@ public class PartitionCircuit {
 				
 				if(lc.get_input_gates().contains(qs_gate)){
 					//cutting at input gates is pointless
-					//also don't need include output gate b/c no has n incoming edge
+					//TODO also don't need include output gate b/c has no incoming edge
 					continue;
 				}
 				else{
 					//now build a subgraph terminating in qs node in terms of paths
 					//start with either an input gate or another quorum sensing gate
-					//Subgraph subgraph = new Subgraph();
-					//put subgraph_num key into dict here
-					//subgraph_num += 1;
-					//subgraph_path_map.put(subgraph_num, subgraph);
+
 					for(List<Gate> full_path:all_paths){
 						if(full_path.contains(qs_gate)){
 							//slice path into subpath that either goes from qs_gate to input
@@ -264,14 +251,6 @@ public class PartitionCircuit {
 				partition_subgraph_map.get(combos_list).add(subgraph_path_map.get(g));
 				}	
 		}
-		
-		//System.out.println("All paths: " + all_paths);
-//		for(List<Gate >k:partition_subgraph_map.keySet()){
-//			System.out.println("partition: " + k);
-//			System.out.println("subgraph paths\n"+partition_subgraph_map.get(k).get(0).paths);
-//			System.out.println("subgraph paths\n"+partition_subgraph_map.get(k).get(1).paths);
-//			//System.out.println("subgraph paths\n"+partition_subgraph_map.get(k).get(2).paths);
-//		}
 		
 		//use identified subgraphs to find logic subcircuits
 		
