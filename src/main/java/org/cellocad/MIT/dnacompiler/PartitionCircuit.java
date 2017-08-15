@@ -52,11 +52,18 @@ public class PartitionCircuit {
 			terminal_gate = term_gate;
 			terminal_gate_parents = term_gate_parents;
 		}
+		
 		private void addPath(List<Gate> path_to_add){
 			paths.add(path_to_add);
 		}
 		
 		private void buildLogicCircuit(){
+			//TODO Will need to do something to reconnect quorum sensing gate
+			//with other cell --> either subclass Gate w/ special QS gate
+			// or easier just add a field to it or even easier just
+			// add to children of correct gate in other graph (may cause problems
+			// down the line somewhere b/c not actually in the graph)
+			
 			//calculates subcircuit based on given subgraph paths
 			HashSet<Gate> sublcs_gates = new HashSet<Gate>(); //lc gates set
 			HashSet<Wire> sublcs_wires = new HashSet<Wire>(); //lc wires set
@@ -108,6 +115,7 @@ public class PartitionCircuit {
 	public PartitionCircuit(LogicCircuit lc){
 		//default constructor
 		parent_lc = lc;
+		sub_lcs = new ArrayList<List<Subgraph>>();
 		System.out.println("lc wires: " + lc.get_Wires());
 		
 	}
