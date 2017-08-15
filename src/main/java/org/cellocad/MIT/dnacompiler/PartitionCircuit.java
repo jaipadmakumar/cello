@@ -413,6 +413,16 @@ public class PartitionCircuit {
 		return index;
 	}
 	
+	//Finds 'parents' of given gate, all gates in LC that contain 'gate' as a child
+	private List<Gate> getGateParents(Gate gate){
+		List<Gate> parents = new ArrayList<Gate>();
+		for(Gate g:this.parent_lc.get_Gates()){
+			if(g.getChildren().contains(gate)){
+				parents.add(g);
+			}
+		}
+		return parents;
+	}
 	
 
 }
