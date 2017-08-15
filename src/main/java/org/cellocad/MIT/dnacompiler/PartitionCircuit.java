@@ -138,13 +138,7 @@ public class PartitionCircuit {
 	 * @param lc
 	 * @return
 	 */
-	public List<List<Integer>> partitionCircuit(LogicCircuit lc){
-		
-		/* Identifies edges to cut returns gate indices in each subgraph
-		 * as an arraylist
-		 */
-		
-		List<List<Integer>> subgraph_indices = new ArrayList<List<Integer>>();
+	public void partitionCircuit(LogicCircuit lc){
 		
 		List<Gate> empty_list = new ArrayList<Gate>();
 		List<Gate> lc_gates = lc.get_logic_gates();
@@ -296,11 +290,6 @@ public class PartitionCircuit {
 			}
 		}
 		
-		
-		
-		
-		
-		return subgraph_indices;
 	}
 	
 	
