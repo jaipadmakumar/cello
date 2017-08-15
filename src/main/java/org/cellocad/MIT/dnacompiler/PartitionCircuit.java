@@ -73,7 +73,11 @@ public class PartitionCircuit {
 				//only a single path through list so path is subgraph
 				//needs to be cast as ArrayList
 				//ArrayList<Gate> sublcs_gates = new ArrayList<Gate>(subgraph_paths.get(0));
-				sublcs_gates.addAll(this.paths.get(0));
+				
+				for(List<Gate> path:this.paths){
+					sublcs_gates.addAll(path);
+				}
+				//sublcs_gates.addAll(this.paths.get(0));
 				for(Gate g:sublcs_gates){
 					//int gate_ind = g.Index;
 					//List<Integer> child_inds = new ArrayList<Integer>();
@@ -140,11 +144,10 @@ public class PartitionCircuit {
 		 * as an arraylist
 		 */
 		
-		//ArrayList<Integer> t = new ArrayList<Integer>();
 		List<List<Integer>> subgraph_indices = new ArrayList<List<Integer>>();
 		
 		List<Gate> empty_list = new ArrayList<Gate>();
-		//List<Gate> lc_gates = lc.get_logic_gates();
+		List<Gate> lc_gates = lc.get_logic_gates();
 		//List<Gate> lc_gates = lc.get_Gates();
 		//System.out.println("logic gates \n" + lc_gates);
 		//Gate start = lc.get_input_gates().get(1);//lc_gates.get(0);
@@ -155,10 +158,11 @@ public class PartitionCircuit {
 		//System.out.println("all paths: " + test_paths);
 		
 		//List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(1), lc.get_logic_gates().get(6));
-		List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(3));
+		List<Gate> test_gate_combos = Arrays.asList(lc_gates.get(3));//, lc_gates.get(1));
 		List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);//Combinations(lc.get_logic_gates(), 2);
 		//since effectively cutting wires, might work to better explicitly do so
 		//for readability
+		//'edge' defined as leaving edges of gate, so gate is terminal node in graph
 		List<List<Gate>> edge_combinations_to_cut = getValidEdges(2);
 		
 		//System.out.println("combos: \n");
@@ -168,6 +172,7 @@ public class PartitionCircuit {
 		
 		List<List<Gate>> all_paths = new ArrayList<List<Gate>>();
 		for(Gate g:lc.get_input_gates()){
+			//System.out.println("Finding paths to gate: " + g);
 			all_paths.addAll(FindAllPaths(lc, end, g, empty_list));
 		}
 		
@@ -182,73 +187,111 @@ public class PartitionCircuit {
 		//Circuit partitioning doesn't change topology of circuit itself so don't need to keep track of wires in this process
 		// (since wires aren't aware of anything, can just use gates to determine DAG structure)
 		
+		//TODO test case where outdegree = 2
 		//list of lists of list<gate> = 
 		//edge_cut: [[subgraph1path1, subgraph1path2],[subgraph2path1, subgraph2path2]]
 		
-		HashMap<List<Gate>, List<Subgraph>> edge_partition_paths = new HashMap<List<Gate>, List<Subgraph>>();
-		for(List<Gate> combos_list : gate_combinations){
+		HashMap<List<Gate>, List<Subgraph>> partition_subgraph_map = new HashMap<List<Gate>, List<Subgraph>>();
+		
+		//for(List<Gate> combos_list : gate_combinations){
+		for(List<Gate> combos_list : edge_combinations_to_cut){
 			//choose an edge to cut
 			//number of subgraphs = length(combos_list)
 			List<Subgraph> emptyGraphsList = new ArrayList<Subgraph>();
 			//List<List<Gate>> emptySubgraphsList = new ArrayList<List<Gate>>();
-			edge_partition_paths.put(combos_list, emptyGraphsList);
+			partition_subgraph_map.put(combos_list, emptyGraphsList);
 			
-			HashMap<Integer, Subgraph> subgraph_path_map = new HashMap<Integer, Subgraph>();
-			int subgraph_num = 0;
-			subgraph_path_map.put(0, new Subgraph());
+			
+			//hashmap where Gate key = subgraph w/ terminal node = Gate
+			//then data validation aka deduping occurs w/in Subgraph class
+			HashMap<Gate, Subgraph> subgraph_path_map = new HashMap<Gate, Subgraph>();
+			//int subgraph_num = 0;
+			
+			//initialize w/ keys = terminal_gates of subgraphs
+			//and Subgraph objects w/ terminal gate and terminal gate parents set
+			
+			for(Gate qs_gate: combos_list){
+				subgraph_path_map.put(qs_gate, new Subgraph(qs_gate, getGateParents(qs_gate))); 
+			}
+			subgraph_path_map.put(lc.get_output_gates().get(0), new Subgraph());
 			
 			//Subgraph t = new Subgraph(emptySubgraphsList);
 			
 			for(Gate qs_gate: combos_list){
-				//gives terminal node of subgraph
+				//have terminal node of current subgraph
+				
+				List<Gate> terminal_gates_excluding_current = new ArrayList<Gate>();
+				for(Gate g:combos_list){
+					if(g != qs_gate){terminal_gates_excluding_current.add(g);}
+				}	
+				
 				if(lc.get_input_gates().contains(qs_gate)){
 					//cutting at input gates is pointless
+					//also don't need include output gate b/c no has n incoming edge
 					continue;
 				}
 				else{
 					//now build a subgraph terminating in qs node in terms of paths
-					Subgraph subgraph = new Subgraph();
+					//start with either an input gate or another quorum sensing gate
+					//Subgraph subgraph = new Subgraph();
 					//put subgraph_num key into dict here
-					subgraph_num += 1;
-					subgraph_path_map.put(subgraph_num, subgraph);
+					//subgraph_num += 1;
+					//subgraph_path_map.put(subgraph_num, subgraph);
 					for(List<Gate> full_path:all_paths){
 						if(full_path.contains(qs_gate)){
-							//List<Gate> subpath = new ArrayList<Gate>();
+							//slice path into subpath that either goes from qs_gate to input
+							//or qs_gate to other quorum sensing gate that may be in path
+							
 							int qs_gate_ind = full_path.indexOf(qs_gate);
-							System.out.println("qs gate index: " + qs_gate_ind);
+							int terminal_ind = LookForward(terminal_gates_excluding_current, qs_gate, full_path);
+
+							//System.out.println("qs gate index: " + qs_gate_ind);
 							System.out.println("full path: " + full_path);
-							List<Gate> subpath = full_path.subList(qs_gate_ind, full_path.size());
-							System.out.println("subpath: " + subpath);
-							subgraph_path_map.get(subgraph_num).addPath(subpath);
+							List<Gate> subpath = full_path.subList(qs_gate_ind, terminal_ind);
+							System.out.println("subpath: " + subpath + "\n");
+							subgraph_path_map.get(qs_gate).addPath(subpath);
 						}
 						else{
-							subgraph_path_map.get(0).addPath(full_path);
+							int terminal_ind = LookForward(combos_list, qs_gate, full_path);
+							List<Gate> subpath = full_path.subList(0, terminal_ind);
+							subgraph_path_map.get(lc.get_output_gates().get(0)).addPath(subpath);
+							//System.out.println("full path else: " + full_path);
 						}
 						
 					}
-					//collect subgraphs from subgraph_path_map into single list and add to edge_partitions_dict
-					for(int i: subgraph_path_map.keySet()){
-						//List<List<Gate>> subgraph_paths = 
-						edge_partition_paths.get(combos_list).add(subgraph_path_map.get(i));
-					}		
+				
 				}
+									
 			}
+			//collect subgraphs from subgraph_path_map into single list and add to edge_partitions_dict
+			for(Gate g: subgraph_path_map.keySet()){
+				System.out.println("key: " + g);
+				System.out.println("value: " + subgraph_path_map.get(g).paths);
+				partition_subgraph_map.get(combos_list).add(subgraph_path_map.get(g));
+				}	
 		}
 		
 		//System.out.println("All paths: " + all_paths);
-		for(List<Gate >k:edge_partition_paths.keySet()){
-			System.out.println("partition: " + k);
-			System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(0).paths);
-			System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(1).paths);
-			//System.out.println("subgraph paths\n"+edge_partition_paths.get(k).get(2).paths);
-		}
+//		for(List<Gate >k:partition_subgraph_map.keySet()){
+//			System.out.println("partition: " + k);
+//			System.out.println("subgraph paths\n"+partition_subgraph_map.get(k).get(0).paths);
+//			System.out.println("subgraph paths\n"+partition_subgraph_map.get(k).get(1).paths);
+//			//System.out.println("subgraph paths\n"+partition_subgraph_map.get(k).get(2).paths);
+//		}
 		
 		//use identified subgraphs to find logic subcircuits
-		for(List<Gate >k:edge_partition_paths.keySet()){
-			List<Subgraph> subgraphs = edge_partition_paths.get(k);
+		
+		System.out.println("Parent lc: \n" + this.parent_lc.printGraph());
+		for(List<Gate >k:partition_subgraph_map.keySet()){
+			List<Subgraph> subgraphs = partition_subgraph_map.get(k);
+			System.out.println("Edge Cut: " + k);
+			int sub_count = 1;
 			for (Subgraph subgraph:subgraphs){
 				subgraph.buildLogicCircuit();
+				System.out.println("terminal gate parents: " + subgraph.terminal_gate_parents);
+				System.out.println("Subgraph sub_lc " + sub_count + ":\n");
 				System.out.println(subgraph.sub_lc.printGraph());
+				sub_count +=1;
 			}
 		}
 		
