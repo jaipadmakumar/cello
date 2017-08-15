@@ -147,15 +147,18 @@ public class PartitionCircuit {
 		//System.out.println("Start: " + start + " End: " + end);
 		//System.out.println("all paths: " + test_paths);
 		
-		//List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(1), lc.get_logic_gates().get(6));
-		List<Gate> test_gate_combos = Arrays.asList(lc_gates.get(3));
-		List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);
+		//List<Gate> test_gate_combos = Arrays.asList(lc.get_logic_gates().get(1), lc.get_logic_gates().get(6),  lc.get_logic_gates().get(3), lc.get_logic_gates().get(2));
+		//List<Gate> test_gate_combos = Arrays.asList(lc_gates.get(3));
+		//List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);
+		
 		//since effectively cutting wires, might work to better explicitly do so
 		//for readability
 		//'edge' defined as leaving edges of gate, so gate is terminal node in graph
-		List<List<Gate>> edge_combinations_to_cut = getValidEdges(2);
+		List<List<Gate>> edge_combinations_to_cut = getValidEdges(3);
 		
-		//System.out.println("combos: \n");
+		//List<List<Gate>> test_combo_func = CombosTest(test_gate_combos, 3);
+		
+		//System.out.println("COMBOS of: " + "\n");
 		//System.out.println(edge_combinations_to_cut);
 		
 		//System.out.println("combos: \n" + gate_combinations);
@@ -227,9 +230,9 @@ public class PartitionCircuit {
 							int terminal_ind = LookForward(terminal_gates_excluding_current, qs_gate, full_path);
 
 							//System.out.println("qs gate index: " + qs_gate_ind);
-							System.out.println("full path: " + full_path);
+							//System.out.println("full path: " + full_path);
 							List<Gate> subpath = full_path.subList(qs_gate_ind, terminal_ind);
-							System.out.println("subpath: " + subpath + "\n");
+							//System.out.println("subpath: " + subpath + "\n");
 							subgraph_path_map.get(qs_gate).addPath(subpath);
 						}
 						else{
@@ -246,8 +249,8 @@ public class PartitionCircuit {
 			}
 			//collect subgraphs from subgraph_path_map into single list and add to edge_partitions_dict
 			for(Gate g: subgraph_path_map.keySet()){
-				System.out.println("key: " + g);
-				System.out.println("value: " + subgraph_path_map.get(g).paths);
+				//System.out.println("key: " + g);
+				//System.out.println("value: " + subgraph_path_map.get(g).paths);
 				partition_subgraph_map.get(combos_list).add(subgraph_path_map.get(g));
 				}	
 		}
@@ -438,6 +441,8 @@ public class PartitionCircuit {
 	}
 	
 	private static HashSet<Gate> Union(HashSet<List<Gate>> list_of_gates_lists){
+		//function is basically pointless at this point I think b/c it's already a hashset
+		//coming in...
 		HashSet<Gate> union = new HashSet<Gate>();
 		for(List<Gate> gates_list:list_of_gates_lists){
 			for(Gate g:gates_list){
@@ -454,6 +459,7 @@ public class PartitionCircuit {
 	 * was found, returns the length of the {@code path}. *Note again that when visualized on a graph, 
 	 * this is actually 'looking back' in a path but since paths here run from output --> input, it is 
 	 * implemented as lookforward. 
+	 * 
 	 * @param terminal_gates list of terminal gates that should be at the end of a path. "Look forward" to this gate.
 	 * @param current_gate gate to start looking "from", in other words, the start of a path
 	 * @param path path to search in
