@@ -10,27 +10,48 @@ public class PartitionCircuit {
 	
 	//Instance Variables
 	
-	@Getter @Setter private List<List<LogicCircuit>> sub_lcs = new ArrayList<List<LogicCircuit>>(); //list of sub LogicCircuits
+	@Getter @Setter private List<List<Subgraph>> sub_lcs; //list of sub LogicCircuits
 	@Getter @Setter private LogicCircuit parent_lc;
 	
+	
+	//From a code logic perspective, might make more sense to have 
+	//subgraph called subcircuit and have that be a subclass of 
+	//LogicCircuit
+	/*
+	 * A collection of Subgraph objects taken together constitute the same logic 
+	 * as the single parent logic circuit.
+	 */
 	public class Subgraph{
+		
 		List<Gate> gates = new ArrayList<Gate>();
-		List<List<Gate>> paths = new ArrayList<List<Gate>>(); //should be a list of all paths through graph
-		LogicCircuit sub_lc;
+		HashSet<List<Gate>> paths = new HashSet<List<Gate>>(); //should be a list of all paths through graph
+		LogicCircuit sub_lc; //logic subcircuit
+		List<Gate> terminal_gate_parents = new ArrayList<Gate>(); //tells you what qs_gate connects to in completed circuit
+		Gate terminal_gate = new Gate();
 		
 		Subgraph(){
 		//default constructor
 		}
 		
-		Subgraph(List<List<Gate>> subgraph_paths){
+		Subgraph(HashSet<List<Gate>> subgraph_paths){
 			//construct subgraph in terms of paths
 			paths = subgraph_paths;
 		}
 		
-//		Subgraph(List<Gate> subgraph_path){
-//			paths.add(subgraph_path);
-//		}
-//		
+		Subgraph(Subgraph subgr){
+			//copy constructor
+			this.gates = subgr.gates;
+			this.paths = subgr.paths;
+			this.sub_lc = subgr.sub_lc;
+			this.terminal_gate_parents = subgr.terminal_gate_parents;
+			
+		}
+		
+		Subgraph(Gate term_gate, List<Gate> term_gate_parents){
+			//construct w/ auto setting for qs node children
+			terminal_gate = term_gate;
+			terminal_gate_parents = term_gate_parents;
+		}
 		private void addPath(List<Gate> path_to_add){
 			paths.add(path_to_add);
 		}
@@ -362,6 +383,35 @@ public class PartitionCircuit {
 	}
 	
 	
+	/**
+	 * Looks forward in {@code path} from {@code current_gate} to the first gate in {@code terminal_gates}
+	 * encountered and returns the index in {@code path} of that gate. If no gate in {@code terminal_gates}
+	 * was found, returns the length of the {@code path}. *Note again that when visualized on a graph, 
+	 * this is actually 'looking back' in a path but since paths here run from output --> input, it is 
+	 * implemented as lookforward. 
+	 * @param terminal_gates list of terminal gates that should be at the end of a path. "Look forward" to this gate.
+	 * @param current_gate gate to start looking "from", in other words, the start of a path
+	 * @param path path to search in
+	 * @return index in path of first terminal gate found (assuming it occurs after start_gate) or size of 
+	 * path if no terminal gates were in the path. 
+	 */
+	private static Integer LookForward(List<Gate> terminal_gates, Gate current_gate, List<Gate> path){
+
+		Integer index = path.size();
+		Integer current_gate_ind = path.indexOf(current_gate);
+		
+		for(Gate g: terminal_gates){
+			if(path.contains(g)){
+				//want to stop at first index found
+				int ind = path.indexOf(g);
+				if(ind < index && ind > current_gate_ind){
+					index = ind;
+				}
+			}
+		}
+		
+		return index;
+	}
 	
 	
 

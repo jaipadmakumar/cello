@@ -42,6 +42,10 @@ public class PartitionCircuitTest {
 		//when(PartitionCircuit.Combinations(array,2)).thenReturn(expected);
 		assertEquals("Test Failed", combos, expected);
 	}
+	
+	//LogicCircuit lc = mock(LogicCircuit.class);
+	
+	
 
 }
 
