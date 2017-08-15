@@ -297,7 +297,7 @@ public class PartitionCircuit {
 		
 		List<Gate> children = start_gate.getChildren();
 		
-		/*
+		/**
 		for(Gate child:children){
 			List<Gate> input_gates = lc.get_input_gates();
 			if(input_gates.contains(child)){ //hit dead end, backtrack
@@ -372,7 +372,7 @@ public class PartitionCircuit {
 		return combos_list;
 	}
 	
-	private static HashSet<Gate> Union(List<List<Gate>> list_of_gates_lists){
+	private static HashSet<Gate> Union(HashSet<List<Gate>> list_of_gates_lists){
 		HashSet<Gate> union = new HashSet<Gate>();
 		for(List<Gate> gates_list:list_of_gates_lists){
 			for(Gate g:gates_list){
