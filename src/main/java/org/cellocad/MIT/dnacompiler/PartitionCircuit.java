@@ -284,6 +284,7 @@ public class PartitionCircuit {
 		System.out.println("Parent lc: \n" + this.parent_lc.printGraph());
 		for(List<Gate >k:partition_subgraph_map.keySet()){
 			List<Subgraph> subgraphs = partition_subgraph_map.get(k);
+			this.sub_lcs.add(subgraphs); //populate PartitionCircuit object w/ identified subgraphs
 			System.out.println("Edge Cut: " + k);
 			int sub_count = 1;
 			for (Subgraph subgraph:subgraphs){
