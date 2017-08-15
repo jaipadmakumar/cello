@@ -418,15 +418,23 @@ public class PartitionCircuit {
 //Gets all edges to cut, up to kth combinations of edges inclusive
 	private List<List<Gate>> getValidEdges(int k){
 		List<List<Gate>> combos_list = new ArrayList<List<Gate>>();
-		for(Gate g: this.parent_lc.get_logic_gates()){
-			List<Gate> single_gate = new ArrayList<Gate>();
-			single_gate.add(g);
-			combos_list.add(single_gate);
-		}
-		for(List<Gate> combos:Combinations(this.parent_lc.get_logic_gates(), k)){
-			combos_list.add(combos);
+		List<Integer> k_range = getRange(k);
+		
+		for(int i:k_range){
+			for(List<Gate> combos:Combinations(this.parent_lc.get_logic_gates(), i)){
+				combos_list.add(combos);
+			}
 		}
 		return combos_list;
+	}
+	
+	public static List<Integer> getRange(int n){
+		// Returns List of integers ranging from 1, n
+		List<Integer> range = new ArrayList<>();
+		for(int i=1; i<=n ; i++){
+			range.add(i);
+		}
+		return range;
 	}
 	
 	private static HashSet<Gate> Union(HashSet<List<Gate>> list_of_gates_lists){
