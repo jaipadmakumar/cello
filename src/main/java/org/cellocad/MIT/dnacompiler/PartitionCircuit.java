@@ -23,8 +23,8 @@ import java.util.*;
 public class PartitionCircuit {
 	
 	//Instance Variables
-	
-	@Getter @Setter private List<List<Subgraph>> sub_lcs; //list of sub LogicCircuits
+
+	@Getter @Setter private List<List<LogicCircuit>> sub_lcs; //list of sub LogicCircuits
 	@Getter @Setter private LogicCircuit parent_lc;
 	
 	
@@ -148,7 +148,7 @@ public class PartitionCircuit {
 	public PartitionCircuit(LogicCircuit lc){
 		//default constructor
 		parent_lc = lc;
-		sub_lcs = new ArrayList<List<Subgraph>>();
+		sub_lcs = new ArrayList<List<LogicCircuit>>();
 		
 	}
 
@@ -219,7 +219,6 @@ public class PartitionCircuit {
 			//List<List<Gate>> emptySubgraphsList = new ArrayList<List<Gate>>();
 			partition_subgraph_map.put(combos_list, emptyGraphsList);
 			
-			
 			//hashmap where Gate key = subgraph w/ terminal node = Gate
 			//then data validation aka deduping occurs w/in Subgraph class
 			HashMap<Gate, Subgraph> subgraph_path_map = new HashMap<Gate, Subgraph>();
@@ -285,21 +284,40 @@ public class PartitionCircuit {
 		}
 		
 		//use identified subgraphs to find logic subcircuits
-		
+		List<List<LogicCircuit>> all_subgraphs_lc = new ArrayList<>();
 		System.out.println("Parent lc: \n" + this.parent_lc.printGraph());
 		for(List<Gate >k:partition_subgraph_map.keySet()){
 			List<Subgraph> subgraphs = partition_subgraph_map.get(k);
-			this.sub_lcs.add(subgraphs); //populate PartitionCircuit object w/ identified subgraphs
+			List<LogicCircuit> subgraphs_lc = new ArrayList<>();
+			
+			
+			//following is just print statements for debugging
 			System.out.println("Edge Cut: " + k);
 			int sub_count = 1;
 			for (Subgraph subgraph:subgraphs){
 				subgraph.buildLogicCircuit();
+				
+				subgraphs_lc.add(subgraph.sub_lc);
 				System.out.println("terminal gate parents: " + subgraph.terminal_gate_parents);
 				System.out.println("Subgraph sub_lc " + sub_count + ":\n");
 				System.out.println(subgraph.sub_lc.printGraph());
 				sub_count +=1;
 			}
+			
+			all_subgraphs_lc.add(subgraphs_lc);
+			
+
 		}
+		
+		for(List<LogicCircuit> subgraphs:all_subgraphs_lc){
+			if(!isLogicCircuitTooBig(subgraphs, 5)){
+				this.sub_lcs.add(subgraphs); //populate PartitionCircuit object w/ identified subgraphs
+
+			}
+		}
+		
+		System.out.println("Number of subgraphs: " + this.sub_lcs.size());
+		System.out.println("Total number of subgraphs found: " + partition_subgraph_map.keySet().size() );
 		
 	}
 	
