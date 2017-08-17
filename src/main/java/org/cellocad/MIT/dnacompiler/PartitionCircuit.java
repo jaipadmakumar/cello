@@ -87,11 +87,6 @@ public class PartitionCircuit {
 		}
 		
 		private void buildLogicCircuit(){
-			//TODO Will need to do something to reconnect quorum sensing gate
-			//with other cell --> either subclass Gate w/ special QS gate
-			// or easier just add a field to it or even easier just
-			// add to children of correct gate in other graph (may cause problems
-			// down the line somewhere b/c not actually in the graph)
 			
 			//calculates subcircuit based on given subgraph paths
 			HashSet<Gate> sublcs_gates = new HashSet<Gate>(); //lc gates set
