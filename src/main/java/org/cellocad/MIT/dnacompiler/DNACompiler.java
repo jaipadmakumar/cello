@@ -812,9 +812,9 @@ public class DNACompiler {
 
 
             logger.info(unassigned_lcs.size());
-
+            System.out.println("unassigned size: " + unassigned_lcs.size() );
             for (LogicCircuit unassigned_lc : nonRB_unassigned_lcs) {
-
+            		//System.out.println("here");
                 circuit_builder.set_unassigned_lc(unassigned_lc);
                 
 
@@ -1719,10 +1719,10 @@ public class DNACompiler {
                 e.printStackTrace();
             }
         }
-
+        
         NetSynth netsynth = new NetSynth("netSynth", Utilities.getNetSynthResourcesFilepath() ,_options.get_output_directory());
 
-
+        
         GW = netsynth.runNetSynth(
                 verilog_filepath,
                 new ArrayList<NetSynthSwitch>(),
@@ -1731,7 +1731,7 @@ public class DNACompiler {
 
         netsynth.cleanDirectory();
 
-
+        
         abstract_logic_circuit = new LogicCircuit(GW.Gates, GW.Wires);
 
         //Prashant needs to fix bug with extra output wire.
