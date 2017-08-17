@@ -40,7 +40,16 @@ public class PartitionCircuit {
 	/**
 	 * A collection of Subgraph objects taken together constitute the same logic 
 	 * as the single parent logic circuit.
+	 * 
+	 * @param gates list of gates contained in subgraph
+	 * @param paths set of paths from source to terminal node present in the subgraph
+	 * @param sub_lc LogicCircuit constructed from Subgraph gates
+	 * @param terminal_gate final gate in the circuit
+	 * @param terminal_gate_parents parent gates of {@code terminal_gate} based on parent logic circuit
+	 * 
+	 * @author jaipadmakumar
 	 */
+	
 	public class Subgraph{
 		
 		List<Gate> gates = new ArrayList<Gate>();
