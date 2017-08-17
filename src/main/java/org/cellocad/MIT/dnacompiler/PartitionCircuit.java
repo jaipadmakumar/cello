@@ -542,5 +542,17 @@ public class PartitionCircuit {
 		return parents;
 	}
 	
+	//Serves as a scoring function for determining which subgraphs should be kept
+	private boolean isLogicCircuitTooBig(List<LogicCircuit> subgraphs, int max){
+		//returns true if any subgraph has number of gates larger than max
+		boolean bool = false;
+		for(LogicCircuit subgr: subgraphs){
+			if(subgr.get_logic_gates().size() > max){
+				bool = true;
+				}
+		}
+		return bool;
+	}
+	
 
 }
