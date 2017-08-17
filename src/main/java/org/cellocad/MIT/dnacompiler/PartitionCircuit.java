@@ -6,6 +6,20 @@ import lombok.Setter;
 
 import java.util.*;
 
+
+/**
+ * PartitionCircuit provides a class that enables a LogicCircuit instance to be split into 
+ * >1 subcircuits, which collectively constitute the same logic as the parent LogicCircuit 
+ * instance. PartitionCircuit is defined by the LogicCircuit it is constructed with.
+ * 
+ * @param sub_lcs this field contains all possible sets of subgraphs, where each set 
+ * mimicks the logic of the parent circuit
+ * @param parent_lc the parental {@code LogicCircuit} the instance was constructed with
+ * @author jaipadmakumar
+ *
+ */
+
+
 public class PartitionCircuit {
 	
 	//Instance Variables
