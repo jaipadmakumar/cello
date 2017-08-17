@@ -31,7 +31,13 @@ public class PartitionCircuit {
 	//From a code logic perspective, might make more sense to have 
 	//subgraph called subcircuit and have that be a subclass of 
 	//LogicCircuit
-	/*
+//	public class SplitLogicCircuit{
+//		@Getter @Setter private List<List<LogicCircuit>> sub_lcs;
+//		@Getter @Setter private LogicCircuit parent_lc;
+//		@Getter @Setter private LogicCircuit merged_lc;
+//	}
+	
+	/**
 	 * A collection of Subgraph objects taken together constitute the same logic 
 	 * as the single parent logic circuit.
 	 */
