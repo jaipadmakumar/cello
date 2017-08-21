@@ -34,7 +34,19 @@ public class LogicCircuit{
         _Wires = new ArrayList<Wire>();
         _Gates = new ArrayList<Gate>();
     }
-
+    
+    /**
+     * Constructor to make LogicCircuit from just Gates (indices and dTypes adn names must be legit here)
+     * Used for testing purposes
+     * @param Gates
+     */
+    public LogicCircuit(List<Gate> Gates) {
+    		_Gates = new ArrayList<Gate>();
+    		_Wires = new ArrayList<Wire>();
+    		
+    		for(Gate g:Gates) { _Gates.add(g); }
+    		
+    }
 
     /**
      *
@@ -47,24 +59,6 @@ public class LogicCircuit{
         _Wires = new ArrayList<Wire>();
         for(Gate g:Gates) { _Gates.add(g); }
         for(Wire w:Wires) { _Wires.add(w); }
-        
-        //jai written
-//        System.out.println("\n Gates and gate children");
-//        for(Gate g:_Gates){
-//        	System.out.print("gate:" + g);
-//        	System.out.print(" children:" + g.getChildren());
-//        	System.out.println("\n");
-//        }
-//        System.out.println("\n Wires to and from");
-//        for(Wire w:_Wires) {
-//        	System.out.println("Wire: " + w);
-//        	//System.out.print("From, To:" + w.From + "," + w.To);
-//        	//System.out.println("\n");
-//        }
-//        System.out.println("LOOKHERE");
-//        System.out.println(_Gates);
-//        System.out.println(_Wires);
-        //end of jai written
         
         reconnectCircuit();
         categorizeGates();
