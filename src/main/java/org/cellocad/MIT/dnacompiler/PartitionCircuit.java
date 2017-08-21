@@ -140,8 +140,12 @@ public class PartitionCircuit {
 	}
 	
 	
-	public PartitionCircuit(LogicCircuit lc){
+	public PartitionCircuit() {
 		//default constructor
+	}
+	
+	public PartitionCircuit(LogicCircuit lc){
+		
 		parent_lc = lc;
 		sub_lcs = new ArrayList<List<LogicCircuit>>();
 		
@@ -178,7 +182,7 @@ public class PartitionCircuit {
 		//since effectively cutting wires, might work to better explicitly do so
 		//for readability
 		//'edge' defined as leaving edges of gate, so gate is terminal node in graph
-		List<List<Gate>> edge_combinations_to_cut = getValidEdges(3);
+		List<List<Gate>> edge_combinations_to_cut = getValidEdges(2);
 		
 		//List<List<Gate>> test_combo_func = CombosTest(test_gate_combos, 3);
 		
@@ -214,62 +218,9 @@ public class PartitionCircuit {
 			//List<List<Gate>> emptySubgraphsList = new ArrayList<List<Gate>>();
 			partition_subgraph_map.put(combos_list, emptyGraphsList);
 			
-			//hashmap where Gate key = subgraph w/ terminal node = Gate
-			//then data validation aka deduping occurs w/in Subgraph class
-			HashMap<Gate, Subgraph> subgraph_path_map = new HashMap<Gate, Subgraph>();
-			//int subgraph_num = 0;
+			//CALL METHOD HERE
+			HashMap<Gate, Subgraph> subgraph_path_map = SplitSingleEdge(lc, combos_list, all_paths);
 			
-			//initialize w/ keys = terminal_gates of subgraphs
-			//and Subgraph objects w/ terminal gate and terminal gate parents set
-			
-			for(Gate qs_gate: combos_list){
-				subgraph_path_map.put(qs_gate, new Subgraph(qs_gate, getGateParents(qs_gate))); 
-			}
-			subgraph_path_map.put(lc.get_output_gates().get(0), new Subgraph());
-						
-			for(Gate qs_gate: combos_list){
-				//have terminal node of current subgraph
-				
-				List<Gate> terminal_gates_excluding_current = new ArrayList<Gate>();
-				for(Gate g:combos_list){
-					if(g != qs_gate){terminal_gates_excluding_current.add(g);}
-				}	
-				
-				if(lc.get_input_gates().contains(qs_gate)){
-					//cutting at input gates is pointless
-					//TODO also don't need include output gate b/c has no incoming edge
-					continue;
-				}
-				else{
-					//now build a subgraph terminating in qs node in terms of paths
-					//start with either an input gate or another quorum sensing gate
-
-					for(List<Gate> full_path:all_paths){
-						if(full_path.contains(qs_gate)){
-							//slice path into subpath that either goes from qs_gate to input
-							//or qs_gate to other quorum sensing gate that may be in path
-							
-							int qs_gate_ind = full_path.indexOf(qs_gate);
-							int terminal_ind = LookForward(terminal_gates_excluding_current, qs_gate, full_path);
-
-							//System.out.println("qs gate index: " + qs_gate_ind);
-							//System.out.println("full path: " + full_path);
-							List<Gate> subpath = full_path.subList(qs_gate_ind, terminal_ind);
-							//System.out.println("subpath: " + subpath + "\n");
-							subgraph_path_map.get(qs_gate).addPath(subpath);
-						}
-						else{
-							int terminal_ind = LookForward(combos_list, qs_gate, full_path);
-							List<Gate> subpath = full_path.subList(0, terminal_ind);
-							subgraph_path_map.get(lc.get_output_gates().get(0)).addPath(subpath);
-							//System.out.println("full path else: " + full_path);
-						}
-						
-					}
-				
-				}
-									
-			}
 			//collect subgraphs from subgraph_path_map into single list and add to edge_partitions_dict
 			for(Gate g: subgraph_path_map.keySet()){
 				//System.out.println("key: " + g);
@@ -317,6 +268,67 @@ public class PartitionCircuit {
 	}
 	
 	
+	//Helper method for partitionCircuit()
+	//Partitions a graph based on a single edge and returns a subgraph_path_map
+	public HashMap<Gate, Subgraph> SplitSingleEdge(LogicCircuit lc, List<Gate> edges_to_cut, List<List<Gate>> graph_paths){
+		
+		//hashmap where Gate key = subgraph w/ terminal node = Gate
+		//then data validation aka deduping occurs w/in Subgraph class
+		HashMap<Gate, Subgraph> subgraph_path_map = new HashMap<Gate, Subgraph>();
+		//int subgraph_num = 0;
+		
+		//initialize w/ keys = terminal_gates of subgraphs
+		//and Subgraph objects w/ terminal gate and terminal gate parents set
+		
+		for(Gate qs_gate: edges_to_cut){
+			subgraph_path_map.put(qs_gate, new Subgraph(qs_gate, getGateParents(qs_gate))); 
+		}
+		subgraph_path_map.put(lc.get_output_gates().get(0), new Subgraph());
+					
+		for(Gate qs_gate: edges_to_cut){
+			//have terminal node of current subgraph
+			
+			List<Gate> terminal_gates_excluding_current = new ArrayList<Gate>();
+			for(Gate g:edges_to_cut){
+				if(g != qs_gate){terminal_gates_excluding_current.add(g);}
+			}	
+			
+			if(lc.get_input_gates().contains(qs_gate)){
+				//cutting at input gates is pointless
+				//TODO also don't need include output gate b/c has no incoming edge
+				continue;
+			}
+			else{
+				//now build a subgraph terminating in qs node in terms of paths
+				//start with either an input gate or another quorum sensing gate
+		
+				for(List<Gate> full_path:graph_paths){
+					if(full_path.contains(qs_gate)){
+						//slice path into subpath that either goes from qs_gate to input
+						//or qs_gate to other quorum sensing gate that may be in path
+						
+						int qs_gate_ind = full_path.indexOf(qs_gate);
+						int terminal_ind = LookForward(terminal_gates_excluding_current, qs_gate, full_path);
+		
+						//System.out.println("qs gate index: " + qs_gate_ind);
+						//System.out.println("full path: " + full_path);
+						List<Gate> subpath = full_path.subList(qs_gate_ind, terminal_ind);
+						//System.out.println("subpath: " + subpath + "\n");
+						subgraph_path_map.get(qs_gate).addPath(subpath);
+					}
+					else{
+						int terminal_ind = LookForward(edges_to_cut, qs_gate, full_path);
+						List<Gate> subpath = full_path.subList(0, terminal_ind);
+						subgraph_path_map.get(lc.get_output_gates().get(0)).addPath(subpath);
+						//System.out.println("full path else: " + full_path);
+					}
+					
+				}
+			
+			}
+		}
+		return subgraph_path_map;
+	}
 	
 	
 	/**Implements a depth first search with backtracking to find all (simple) paths
@@ -527,7 +539,7 @@ public class PartitionCircuit {
 	}
 	
 	//Finds 'parents' of given gate, all gates in LC that contain 'gate' as a child
-	private List<Gate> getGateParents(Gate gate){
+	public List<Gate> getGateParents(Gate gate){
 		List<Gate> parents = new ArrayList<Gate>();
 		for(Gate g:this.parent_lc.get_Gates()){
 			if(g.getChildren().contains(gate)){
