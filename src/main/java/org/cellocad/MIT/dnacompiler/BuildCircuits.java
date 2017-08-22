@@ -18,7 +18,7 @@ import java.util.HashMap;
  *
  */
 
-public class BuildCircuits {
+public abstract class BuildCircuits {
 
     public BuildCircuits(){
 
