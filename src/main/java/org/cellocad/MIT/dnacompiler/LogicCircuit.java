@@ -36,7 +36,7 @@ public class LogicCircuit{
     }
     
     /**
-     * Constructor to make LogicCircuit from just Gates (indices and dTypes adn names must be legit here)
+     * Constructor to make LogicCircuit from just Gates (indices and dTypes and names must be legit here)
      * Used for testing purposes
      * @param Gates
      */
