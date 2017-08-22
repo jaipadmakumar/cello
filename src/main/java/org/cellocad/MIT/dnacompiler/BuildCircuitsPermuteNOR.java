@@ -333,5 +333,4 @@ public class BuildCircuitsPermuteNOR extends BuildCircuits {
 
     public static ArrayList<int[]> _NOR_indexes_set;
 
-    private Logger logger  = Logger.getLogger(getClass());
 }
