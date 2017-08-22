@@ -16,23 +16,6 @@ public class BuildCircuitsRandom extends BuildCircuits {
         super(options, gate_library, roadblock);
     }
 
-    private boolean currentlyAssignedGroup(LogicCircuit lc, String group_name) {
-
-        for(Gate g: lc.get_logic_gates()) {
-
-            if(g.Group.equals(group_name)) {
-
-                return true;
-
-            }
-
-        }
-
-        return false;
-
-    }
-
-
     @Override
     public void buildCircuits(){
         logger = Logger.getLogger(getThreadDependentLoggername());

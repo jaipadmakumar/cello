@@ -258,27 +258,5 @@ public class BuildCircuitsBreadthFirstSearch extends BuildCircuits {
 
     }
 
-
-    /**
-     * If group name already exists in the current circuit assignment, return true;
-     * This prevents the assignment of genetic gates belonging to the same group (such as RBS variants or crosstalkers)
-     *
-     * @param lc
-     * @param group_name
-     * @return
-     */
-    private boolean currentlyAssignedGroup(LogicCircuit lc, String group_name) {
-
-        for(Gate g: lc.get_logic_gates()) {
-
-            if(g.Group.equals(group_name)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
     private Logger logger  = Logger.getLogger(getClass());
 }
