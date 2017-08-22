@@ -815,31 +815,8 @@ public class DNACompiler {
                  * Run assignment algorithm
                  */
                 circuit_builder.buildCircuits();
-                
+                assigned_lcs.addAll(circuit_builder.get_logic_circuits());
 
-
-                // TODO hard-coded for Jonghyeon
-
-                boolean only_tp = false;
-
-                if (only_tp) {
-
-                    for (LogicCircuit lc : circuit_builder.get_logic_circuits()) {
-
-                        boolean has_all_tp_data = LogicCircuitUtil.dataFoundForAllTandemPromoters(gate_library, lc);
-
-                        if (has_all_tp_data) {
-                            assigned_lcs.add(lc);
-                        }
-                    }
-                }
-                //
-
-                else {
-
-                    assigned_lcs.addAll(circuit_builder.get_logic_circuits());
-
-                }
             }
 
             /**
