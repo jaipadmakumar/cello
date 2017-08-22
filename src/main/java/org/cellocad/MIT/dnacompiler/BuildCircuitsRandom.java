@@ -137,5 +137,4 @@ public class BuildCircuitsRandom extends BuildCircuits {
     //
     /////////////////////////
 
-    private Logger logger  = Logger.getLogger(getClass());
 }

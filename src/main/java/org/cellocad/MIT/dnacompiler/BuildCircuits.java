@@ -5,6 +5,8 @@ package org.cellocad.MIT.dnacompiler;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import org.apache.log4j.Logger;
 import org.cellocad.MIT.dnacompiler.Gate.GateType;
 
 import java.util.ArrayList;
@@ -117,4 +119,5 @@ public abstract class BuildCircuits {
     @Getter @Setter private Roadblock _roadblock; //
 
     @Getter @Setter private String threadDependentLoggername;
+    Logger logger  = Logger.getLogger(getClass());
 }

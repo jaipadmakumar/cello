@@ -258,5 +258,5 @@ public class BuildCircuitsBreadthFirstSearch extends BuildCircuits {
 
     }
 
-    private Logger logger  = Logger.getLogger(getClass());
+    
 }

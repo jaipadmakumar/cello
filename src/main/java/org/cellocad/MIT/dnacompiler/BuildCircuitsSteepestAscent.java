@@ -350,6 +350,4 @@ public class BuildCircuitsSteepestAscent extends BuildCircuits {
 
         Evaluate.evaluateCircuit(B_lc, get_gate_library(), get_options());
     }
-
-    private Logger logger  = Logger.getLogger(getClass());
 }

@@ -357,5 +357,4 @@ public class BuildCircuitsHillClimbing extends BuildCircuits {
     //
     /////////////////////////
 
-    private Logger logger  = Logger.getLogger(getClass());
 }

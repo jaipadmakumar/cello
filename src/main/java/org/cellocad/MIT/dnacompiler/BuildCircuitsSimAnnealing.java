@@ -363,7 +363,7 @@ public class BuildCircuitsSimAnnealing extends BuildCircuits {
     // Private member data
     //
     /////////////////////////
-
-    private Logger logger  = Logger.getLogger(getClass());
+    
+    //none anymore
 
 }

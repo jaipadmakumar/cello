@@ -172,7 +172,4 @@ public class BuildCircuitsReload extends BuildCircuits {
 
     }
 
-
-    private Logger logger  = Logger.getLogger(getClass());
-
 }

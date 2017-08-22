@@ -50,9 +50,4 @@ public class BuildCircuitsPreset extends BuildCircuits {
 
         get_logic_circuits().add(lc);
     }
-
-
-
-    private Logger logger  = Logger.getLogger(getClass());
-
 }
