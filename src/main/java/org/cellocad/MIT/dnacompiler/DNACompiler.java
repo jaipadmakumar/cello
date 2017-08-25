@@ -1708,7 +1708,8 @@ public class DNACompiler {
 
         List<NetSynthSwitch> switches = new ArrayList<>();
         org.json.JSONArray motifLibrary = new org.json.JSONArray();
-
+        switches.add(NetSynthSwitch.originalstructural); //jai did this, tells netsynth to only run structural verilog
+        //w/ no logic minimization
 
         //convert org.simple.json to org.json
         for(int i=0; i<ucf.get_motif_library().size(); ++i) {
@@ -1725,7 +1726,8 @@ public class DNACompiler {
         
         GW = netsynth.runNetSynth(
                 verilog_filepath,
-                new ArrayList<NetSynthSwitch>(),
+               // new ArrayList<NetSynthSwitch>(),
+                switches, //and jai did this for the structural verilog stuff
                 motifLibrary
         );
 
