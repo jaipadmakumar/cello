@@ -192,9 +192,10 @@ public class PartitionCircuit {
 		//System.out.println("combos: \n" + gate_combinations);
 		
 		List<List<Gate>> all_paths = new ArrayList<List<Gate>>();
-		for(Gate g:lc.get_input_gates()){
-			//System.out.println("Finding paths to gate: " + g);
-			all_paths.addAll(DepthFirstSearch.findAllPaths(lc, end, g, empty_list));
+		for(Gate input_g:lc.get_input_gates()){
+			for(Gate output_g:lc.get_output_gates())
+				//System.out.println("Finding paths to gate: " + g);
+				all_paths.addAll(DepthFirstSearch.findAllPaths(lc, output_g, input_g, empty_list));
 		}
 		
 		//general algorithm:
