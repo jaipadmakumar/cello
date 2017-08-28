@@ -149,11 +149,14 @@ public class PartitionCircuit {
 		}
 		
 		private void buildLogicCircuit1(){
-
+			//something about this method of building logic circuit makes code work
+			//where buildLogicCircuit() fails
+			
 			//calculates subcircuit based on given subgraph paths
 			//GATES ALREADY HAVE WIRES ATTACHED FROM PARENT STRUCTURE, JUST USE THOSE IN CONSTRCUTOR 
 			//MIGHT NEED TO MAKE A COPY OF GATE BEFORE PUTTING INTO A SUBGRAPH SO THAT 
 			// DUPLICATE GATES IN DIFFERENT SUBGRAPHS ARE THEIR OWN OBJECTS IN MEMORY
+			
 			HashSet<Gate> sublcs_gates = new HashSet<Gate>(); //lc gates set
 			HashSet<Wire> sublcs_wires = new HashSet<Wire>(); //lc wires set
 			
@@ -163,15 +166,13 @@ public class PartitionCircuit {
 				//needs to be cast as ArrayList
 				
 				for(List<Gate> path:this.paths){
-					for(Gate g: path) { //make a gaet copy and add
+					for(Gate g: path) { //make a gate copy and add
 						Gate copy_g = new Gate(g);
 						sublcs_gates.add(copy_g);
 					}
 				}
 
 				for(Gate g:sublcs_gates){
-					//int gate_ind = g.Index;
-					//List<Integer> child_inds = new ArrayList<Integer>();
 					sublcs_wires.addAll(getGateWires(g));
 					}
 					
@@ -253,17 +254,12 @@ public class PartitionCircuit {
 		List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);
 		
 		//since effectively cutting wires, might work to better explicitly do so
-		//for readability
+		//for readability --> bad idea b/c then makes resimulating logics hard b/c have to 
+		//add qs wire back in to qs gate parents
+		
 		//'edge' defined as leaving edges of gate, so gate is terminal node in graph
 		List<List<Gate>> edge_combinations_to_cut = getValidEdges(2);
-		
-		//List<List<Gate>> test_combo_func = CombosTest(test_gate_combos, 3);
-		
-		//System.out.println("COMBOS of: " + "\n");
-		//System.out.println(edge_combinations_to_cut);
-		
-		//System.out.println("combos: \n" + gate_combinations);
-		
+				
 		List<List<Gate>> all_paths = new ArrayList<List<Gate>>();
 		for(Gate input_g:lc.get_input_gates()){
 			for(Gate output_g:lc.get_output_gates()) {
@@ -277,7 +273,7 @@ public class PartitionCircuit {
 		// 2. any path that hits a qs node goes into separate graph --> all nodes to right of qs node, inclusive
 		// 3. any remaining paths go in dump graph containing rest of nodes
 		//Circuit partitioning doesn't change topology of circuit itself so don't need to keep track of wires in this process
-		// (since wires aren't aware of anything, can just use gates to determine DAG structure)
+		//since wires already connected to gates by Gate.Outgoing property
 		
 		//TODO test case where outdegree = 2
 		//list of lists of list<gate> = 
@@ -290,7 +286,6 @@ public class PartitionCircuit {
 			//choose an edge to cut
 			//number of subgraphs = length(combos_list)
 			List<Subgraph> emptyGraphsList = new ArrayList<Subgraph>();
-			//List<List<Gate>> emptySubgraphsList = new ArrayList<List<Gate>>();
 			partition_subgraph_map.put(combos_list, emptyGraphsList);
 			
 			//CALL METHOD HERE
@@ -307,6 +302,7 @@ public class PartitionCircuit {
 		//use identified subgraphs to find logic subcircuits
 		List<List<LogicCircuit>> all_subgraphs_lc = new ArrayList<>();
 		System.out.println("Parent lc: \n" + this.parent_lc.printGraph());
+		
 //		for(Gate g: this.parent_lc.get_Gates()) {
 //			System.out.println("Gate: " + g);
 //			if(g.Outgoing != null) {
@@ -358,12 +354,7 @@ public class PartitionCircuit {
 				
 			///////////////////////end debug block////////////////////////////
 			
-			all_subgraphs_lc.add(subgraphs_lc);
-			
-//			//verify integrated circuit logics are equivalent to input logics
-//			IntegratedLogicCircuit ic = new IntegratedLogicCircuit(LogicCircuit parent_lc, subgraphs);
-			
-			
+			all_subgraphs_lc.add(subgraphs_lc);			
 
 		}
 		
@@ -387,7 +378,6 @@ public class PartitionCircuit {
 		//hashmap where Gate key = subgraph w/ terminal node = Gate
 		//then data validation aka deduping occurs w/in Subgraph class
 		HashMap<Gate, Subgraph> subgraph_path_map = new HashMap<Gate, Subgraph>();
-		//int subgraph_num = 0;
 		
 		//initialize w/ keys = terminal_gates of subgraphs
 		//and Subgraph objects w/ terminal gate and terminal gate parents set
@@ -443,7 +433,7 @@ public class PartitionCircuit {
 						int terminal_ind = LookForward(edges_to_cut, qs_gate, full_path);
 						List<Gate> subpath = full_path.subList(0, terminal_ind);
 						//keys only go to single output but multiple outputs are possible
-						//shouldn't matter b/c complete paths run to same graph
+						//shouldn't matter b/c complete paths run to same graph and all outputs can only be in one graph (ASSUMPTION)
 						subgraph_path_map.get(lc.get_output_gates().get(0)).addPath(subpath);
 						//subgraph_path_map.get(lc.get_output_gates().get(0)).addPath(full_path);
 						//System.out.println("full path else: " + subpath);

@@ -21,12 +21,8 @@ public class IntegratedLogicCircuit {
 		this.subgraphs = subgraphs;
 		
 		for(PartitionCircuit.Subgraph subgraph:subgraphs) {
-			//this.terminal_gate_map.put(subgraph.terminal_gate, subgraph.terminal_gate_parents);
-			System.out.println(subgraph.terminal_gate_parents);
 			if(subgraph.terminal_gate_parents.size() > 0) {
 				this.terminal_parents.addAll(subgraph.terminal_gate_parents);
-				//System.out.println(subgraph.terminal_gate_parents);
-				//System.out.println("len > 0");
 			}
 		}
 		
@@ -34,9 +30,6 @@ public class IntegratedLogicCircuit {
 		verifyLogicIdentical();
 	}
 	
-	//BUG potentially comes from fact that terminal gates don't include all output gates for 
-	// that graph and when it is an output gate is set to null
-	// aka there can be MULTIPLE terminal gates
 	
 	public void set_sub_lcs(List<PartitionCircuit.Subgraph> subgraphs) {
 		
@@ -54,9 +47,7 @@ public class IntegratedLogicCircuit {
 			
 		}
 		
-		//reset old logics and gate unvisited values for all gates
-		//except input and qs_gate parents, which should maintain logic
-		//and be marked as visited so recursion doesn't fail
+		
 		
 		//I think the resason this is working and I don't need to explicitly reset 
 		//the QS parent logics is b/c gates already aware who their children are
@@ -66,6 +57,10 @@ public class IntegratedLogicCircuit {
 		//the children anywhere here. Thus, when the logic recursion occurs, since it
 		//uses the gate children (and by extension, wires) without checking if the 
 		//gate is actually in the logic circuit, the logic recursion succeeds. 
+		
+		//reset old logics and gate unvisited values for all gates
+				//except input and qs_gate parents, which should maintain logic
+				//and be marked as visited so recursion doesn't fail
 		List<LogicCircuit> reset_lcs = new ArrayList<LogicCircuit>();
 
 		for(LogicCircuit dirty_lc: subgraph_lcs_dirty) {
@@ -87,33 +82,14 @@ public class IntegratedLogicCircuit {
 		
 		//resimulate logics
 		for(LogicCircuit reset_lc:reset_lcs) {
-			System.out.println(reset_lc.printGraph());
+			//System.out.println(reset_lc.printGraph());
 			Evaluate.simulateLogic(reset_lc);
-			System.out.println("successfully reevaluated logic");
-			System.out.println(reset_lc.printGraph());
+			//System.out.println("successfully reevaluated logic");
+			//System.out.println(reset_lc.printGraph());
 			sub_lcs.add(reset_lc);
 		}
 	}
-//		
-//
-//        /**
-//         *  propagate logic through gates
-//         */
-//        //initialize logic to all zeroes
-//        //Integer nrows = subcircuit.get_input_gates().get(0).get_logics().size();
-//        Integer nrows = 16;
-//        for (Gate g : subcircuit.get_Gates()) {
-//            if (g.get_logics().isEmpty()) {
-//                ArrayList<Integer> logics = new ArrayList<>();
-//                for (int i = 0; i < nrows; ++i) {
-//                    logics.add(0);
-//                }
-//                g.set_logics(logics);
-//            }
-//        }
-//		//Evaluate.simulateLogic(subcircuit);
-//	}
-	
+
 	
 	private void setAllGatesUnvisited(LogicCircuit lc) {
 		for(Gate g: lc.get_Gates()) {
