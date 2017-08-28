@@ -245,7 +245,7 @@ public class LogicCircuit{
 
             String child_indx = "(";
             for(Gate child: gi.getChildren()) {
-                child_indx += child.Index +",";
+                child_indx += child.Name + "," + child.Index  + ","; //jai modified to print name
             }
             child_indx = child_indx.substring(0,child_indx.length()-1);
             if(gi.Type != GateType.INPUT)
