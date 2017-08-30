@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.*;
 import static org.cellocad.MIT.dnacompiler.PartitionCircuitUtil.*;
-
+import org.cellocad.MIT.figures.*;
 
 /**
  * PartitionCircuit provides a class that enables a LogicCircuit instance to be split into 
@@ -27,6 +27,7 @@ public class PartitionCircuit {
 
 	@Getter @Setter private List<List<LogicCircuit>> sub_lcs; //list of sub LogicCircuits
 	@Getter @Setter private LogicCircuit parent_lc; 
+	private Args options;
 	
 	//From a code logic perspective, might make more sense to have 
 	//subgraph called subcircuit and have that be a subclass of 
@@ -73,12 +74,13 @@ public class PartitionCircuit {
 			this.paths = subgr.paths;
 			this.sub_lc = subgr.sub_lc;
 			this.terminal_gate_parents = subgr.terminal_gate_parents;
+			this.terminal_gate = subgr.terminal_gate;
 			
 		}
 		
 		Subgraph(Gate term_gate, List<Gate> term_gate_parents){
 			//construct w/ auto setting for qs node children
-			terminal_gate = term_gate;
+			terminal_gate = new Gate(term_gate);
 			terminal_gate_parents = term_gate_parents;
 		}
 		
@@ -158,7 +160,7 @@ public class PartitionCircuit {
 			// DUPLICATE GATES IN DIFFERENT SUBGRAPHS ARE THEIR OWN OBJECTS IN MEMORY
 			
 			HashSet<Gate> sublcs_gates = new HashSet<Gate>(); //lc gates set
-			HashSet<Wire> sublcs_wires = new HashSet<Wire>(); //lc wires set
+			HashSet<Wire> sublcs_wires = new HashSet<Wire>(); //lc wires set, contains lots of duplicates b/c wire equality doesn't work
 			
 			
 			if(this.paths.size() == 1){
@@ -200,7 +202,9 @@ public class PartitionCircuit {
 			
 			this.sub_lc = subcircuit;
 		}
+		
 		private List<Wire> getGateWires(Gate g){
+			// assumes <3 wires exist
 			List<Wire> wires = new ArrayList<Wire>();
 			if(g.Type != Gate.GateType.INPUT) {
 				if(g.Outgoing != null) {
@@ -214,6 +218,23 @@ public class PartitionCircuit {
 				}
 			return wires;
 		}
+		
+		private List<Wire> getWires(Gate g){
+			 //doesn't make copies but will actually catch all wires if have greater than 2
+	        List<Wire> children = new ArrayList<Wire>();
+
+	        if ( (g.Outgoing != null) && (g.Outgoing.To != null)){
+	            children.add(g.Outgoing);
+
+	            Wire w = g.Outgoing;
+	            while(w.Next != null && w.Next.To != null) {
+	                children.add(w.Next);
+	                w = w.Next;
+	            }
+	        }
+
+	        return children;
+	    }
 	}
 	
 	
@@ -227,6 +248,14 @@ public class PartitionCircuit {
 		sub_lcs = new ArrayList<List<LogicCircuit>>();
 		
 	}
+	
+	public PartitionCircuit(LogicCircuit lc, Args options){
+			
+			parent_lc = lc;
+			sub_lcs = new ArrayList<List<LogicCircuit>>();
+			this.options = options;
+			
+		}
 
 	/**
 	 * Given an {@code LogicCircuit}, finds the set of all partitions determined by
@@ -250,7 +279,8 @@ public class PartitionCircuit {
 		List<Gate> lc_gates = lc.get_logic_gates();
 		//List<Gate> lc_gates = lc.get_Gates();
 		
-		List<Gate> test_gate_combos = Arrays.asList(lc_gates.get(7), lc_gates.get(5));
+		List<Gate> test_gate_combos = Arrays.asList(lc_gates.get(7), lc_gates.get(5)); //iphone blue test
+		//List<Gate> test_gate_combos = Arrays.asList(lc_gates.get(3), lc_gates.get(8));
 		List<List<Gate>> gate_combinations = Arrays.asList(test_gate_combos);
 		
 		//since effectively cutting wires, might work to better explicitly do so
@@ -345,7 +375,23 @@ public class PartitionCircuit {
 			
 		///////////////////////debug block////////////////////////////
 			System.out.println("Determining integrated lc");
-				IntegratedLogicCircuit ic = new IntegratedLogicCircuit(this.parent_lc, test_built_subgraphs );
+				IntegratedLogicCircuit ic = new IntegratedLogicCircuit(this.parent_lc, test_built_subgraphs);
+				for (Subgraph subgraph:test_built_subgraphs){
+					//System.out.println("output gates" + this.parent_lc.get_output_gates());
+					System.out.println("output gate(s): " + subgraph.sub_lc.get_output_gates());
+					System.out.println("terminal gate: " + subgraph.terminal_gate);
+					System.out.println("terminal gate parents: " + subgraph.terminal_gate_parents);
+					System.out.println("Subgraph sub_lc number: " + sub_count);
+					System.out.println("number of gates in sublc: " + subgraph.sub_lc.get_Gates().size());
+					System.out.println("Terminal gate children: " + subgraph.terminal_gate.getChildren());
+					System.out.println(subgraph.sub_lc.printGraph());
+				}
+				//System.out.println("terminal gate in pc ic call: " + test_built_subgraphs.get(1).terminal_gate);
+				Graphviz graphviz = new Graphviz(options.get_home(), options.get_output_directory(), options.get_jobID());
+				ScriptCommands script_commands = new ScriptCommands(options.get_home(), options.get_output_directory(), options.get_jobID());
+				graphviz.printGraphvizDotText(ic, "IC_WIRING_DIAGRAM.dot");
+		        script_commands.makeDot2Png("IC_WIRING_DIAGRAM.dot");
+		        
 				
 				//System.out.println(ic.sub_lcs);
 				for(LogicCircuit test_lc: ic.sub_lcs) {
@@ -430,6 +476,7 @@ public class PartitionCircuit {
 						//any splitting. that being said, need to stop at ANY qs gate even if it's not the one 
 						//currently iterating on so maybe need to check if ANY of the edge_cut gates are 
 						//on the path
+						
 						int terminal_ind = LookForward(edges_to_cut, qs_gate, full_path);
 						List<Gate> subpath = full_path.subList(0, terminal_ind);
 						//keys only go to single output but multiple outputs are possible
@@ -527,6 +574,8 @@ public class PartitionCircuit {
 		}
 		return output_logics;
 	}
+	
+	 
 	
 	
 
