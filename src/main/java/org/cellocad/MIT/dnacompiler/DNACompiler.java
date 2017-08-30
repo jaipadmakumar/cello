@@ -365,7 +365,6 @@ public class DNACompiler {
        // System.out.println("\nLC gates");
        // System.out.println(_abstract_lc.get_logic_gates());
 
-
         // TODO organize DNACompiler in a more modular way.
         // TODO with a more clear API.
         // abstract circuit: Verilog in, LogicCircuit out
@@ -759,7 +758,7 @@ public class DNACompiler {
             //jai fixed gate sim annealing for testing
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.fixed_gates) {
             	
-            		PartitionCircuit pc = new PartitionCircuit(abstract_lc);
+            		PartitionCircuit pc = new PartitionCircuit(abstract_lc, _options);
             		//PartitionCircuit.partitionCircuit(abstract_lc);
             		pc.partitionCircuit(abstract_lc);
             		System.out.println("Success!");
