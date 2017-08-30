@@ -343,6 +343,31 @@ public class Gate {
 
         return children;
     }
+    
+//    @Override
+//    public boolean equals (Object o) {
+//    	        if (o == this) { //reflexive
+//    	            return true;
+//    	        }
+//    	 
+//    	        /* Check if o is an instance of Complex or not
+//    	          "null instanceof [type]" also returns false */
+//    	        if (!(o instanceof Gate)) {
+//    	            return false;
+//    	        }
+//    	         
+//    	        Gate g = (Gate) o; // typecast to Gate to compare data members
+//    	         
+//    	        // Compare the object fields and return accordingly 
+//    	        // probably want to include equality check for wire
+//    	        if(Name.equals(g.Name) && Type == g.Type && Index == g.Index && Outgoing.To.toString().equals(g.Outgoing.To.toString())) {
+//    	        		return true;
+//    	        }
+//    	        else {
+//    	        		return false;
+//    	        }
+//    	    }
+    
 
 
     /////////////////////////
@@ -353,7 +378,49 @@ public class Gate {
     
 //    @Getter @Setter private boolean _tp_exists = false;
 
-    @Getter @Setter private int _distance_to_input = -1;
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Index;
+		result = prime * result + ((Name == null) ? 0 : Name.hashCode());
+		result = prime * result + ((Outgoing == null) ? 0 : Outgoing.toString().hashCode());
+		result = prime * result + ((_logics == null) ? 0 : _logics.hashCode());
+		return result;
+	}
+
+    //override equals returns true iff Gate has equal name, index, logics, and Outgoing.toString()
+    //should probably add all fields here except maybe set_visited 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Gate other = (Gate) obj;
+		if (Index != other.Index)
+			return false;
+		if (Name == null) {
+			if (other.Name != null)
+				return false;
+		} else if (!Name.equals(other.Name))
+			return false;
+		if (Outgoing == null) {
+			if (other.Outgoing != null)
+				return false;
+		} else if (!Outgoing.toString().equals(other.Outgoing.toString()))
+			return false;
+		if (_logics == null) {
+			if (other._logics != null)
+				return false;
+		} else if (!_logics.equals(other._logics))
+			return false;
+		return true;
+	}
+
+	@Getter @Setter private int _distance_to_input = -1;
 
     //TODO get rid of this one
     @Getter @Setter private int _farthest_dist2in = 1;
