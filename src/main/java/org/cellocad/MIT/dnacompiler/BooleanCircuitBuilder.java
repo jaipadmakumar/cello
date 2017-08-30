@@ -25,7 +25,17 @@ import java.util.*;
 
 
 /**
- * this._boolean_lc:     Boolean circuit.  Also called wiring diagram.
+ * Builder class to generate a boolean circuit from verilog file. A boolean circuit (aka an abstract circuit or wiring diagram) 
+ * is a {@code LogicCircuit} with no gates assignment. It is purely composed of logic gates. Most of the code
+ * here was originally in {@code DNACompiler} and moved to here for modularity and simplification purposes. To actually
+ * get the circuit, you should construct the class with the appropriate arguments then call {@code get_boolean_lc()}.
+ * 
+ * @param verilog_filepath filepath to verilog file specifying boolean circuit
+ * @param ucf user specified UCF file
+ * @param options user specified options
+ * 
+ * @author jaipadmakumar
+ *
  */
 public class BooleanCircuitBuilder {
 	@Getter private String _verilog_filepath;
