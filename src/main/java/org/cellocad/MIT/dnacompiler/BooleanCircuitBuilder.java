@@ -52,11 +52,7 @@ public class BooleanCircuitBuilder {
 		this._verilog_filepath = verilog_filepath;
 		this._options = options;
         this._ucf = ucf;
-        
-		
-        
-        
-        
+
 	}
 	
 	public LogicCircuit get_boolean_lc() {
@@ -66,7 +62,7 @@ public class BooleanCircuitBuilder {
          * NetSynth: convert Verilog to Boolean wiring diagram
          */
 		
-		logger.info("BOOLEANCIRCUIT LOGGED SOMETHING!");
+		logger.info("Building boolean circuit...\n");
         try {
             this._boolean_lc = buildBooleanCircuit();
         } catch(Exception e) {
@@ -88,11 +84,6 @@ public class BooleanCircuitBuilder {
         return this._boolean_lc;
 		
 	}
-	
-	
-	
-	
-	
 	
 	private void validateCircuit() {
 	    /**
