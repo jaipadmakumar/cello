@@ -11,18 +11,46 @@ public class IntegratedLogicCircuit {
 	
 	LogicCircuit original_lc;
 	List<PartitionCircuit.Subgraph> subgraphs;
-	List<LogicCircuit> sub_lcs = new ArrayList<LogicCircuit>();
+	public List<LogicCircuit> sub_lcs = new ArrayList<LogicCircuit>();
 	LogicCircuit merged_lc;
-	//HashMap<Gate, List<Gate>> terminal_gate_map; //maps qs gates to parents in other circuit
-	List<Gate> terminal_parents = new ArrayList<Gate>(); //list of terminal gate parents
+	public HashMap<Gate, List<Gate>> terminal_gate_map = new HashMap<Gate, List<Gate>>(); //maps qs gates to parents in other circuit
+	public List<Gate> terminal_parents = new ArrayList<Gate>(); //list of terminal gate parents
+	public HashSet<Gate> input_gates = new HashSet<Gate>();
+	public HashSet<Gate> output_gates = new HashSet<Gate>();
+	public List<Gate> qs_gates = new ArrayList<Gate>();
 	
 	public IntegratedLogicCircuit(LogicCircuit parent_lc, List<PartitionCircuit.Subgraph> subgraphs) {
 		this.original_lc = parent_lc;
 		this.subgraphs = subgraphs;
 		
 		for(PartitionCircuit.Subgraph subgraph:subgraphs) {
+			System.out.println("this printer: " + subgraph.terminal_gate.getChildren());
 			if(subgraph.terminal_gate_parents.size() > 0) {
+				System.out.println("term parents " + subgraph.terminal_gate_parents); //print successfully
 				this.terminal_parents.addAll(subgraph.terminal_gate_parents);
+			
+			if(subgraph.terminal_gate.Index != -1) {
+				System.out.println("terminal gate: " + subgraph.terminal_gate);
+				this.terminal_gate_map.put(subgraph.terminal_gate, subgraph.terminal_gate_parents);
+			}
+			else {
+				System.out.println("else terminal gate: " + subgraph.terminal_gate);
+				//this.terminal_gate_map.put(subgraph.terminal_gate, new ArrayList<Gate>());
+					
+				}
+			}
+		}
+		
+	
+		for(PartitionCircuit.Subgraph subgraph:subgraphs) {
+		
+			this.input_gates.addAll(subgraph.sub_lc.get_input_gates());
+			this.output_gates.addAll(subgraph.sub_lc.get_output_gates());
+			
+			//null check, should be able to do better now that have overridden equals()
+			//also I think the gate type is what is really 'null' here 
+			if(subgraph.terminal_gate.Index != -1) {
+				this.qs_gates.add(subgraph.terminal_gate);
 			}
 		}
 		
@@ -50,7 +78,7 @@ public class IntegratedLogicCircuit {
 		
 		
 		//I think the resason this is working and I don't need to explicitly reset 
-		//the QS parent logics is b/c gates already aware who their children are
+		//the QS parent logics is b/c gates already aware who their children are via outgoing wire
 		//and I don't touch child logics or visitation state. In other words, 
 		//even though qs gate parent isn't in the same circuit, it still knows
 		//its child is a qs gate b/c I made copies of gate objects and didn't reset
@@ -108,6 +136,21 @@ public class IntegratedLogicCircuit {
 		ArrayList<Integer> zero_logics = new ArrayList<Integer>(Collections.nCopies(g.get_logics().size(), 0));
 		g.set_logics(zero_logics);
 		}
+	
+	private List<Gate> dedupGatesByName(List<Gate> gates_list){
+		List<String> seen_names = new ArrayList<String>();
+		List<Gate> dedup = new ArrayList<Gate>();
+		
+		for(Gate g:gates_list) {
+			System.out.println("on gate: " + g);
+			System.out.println("gate hash: " + g.hashCode());
+			if(!seen_names.contains(g.Name)) {
+				dedup.add(g);
+				seen_names.add(g.Name);
+			}
+		}
+		return dedup;
+	}
 	
 	private void verifyLogicIdentical() {
 		List<Gate> original_inputs = this.original_lc.get_input_gates();
