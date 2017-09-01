@@ -376,7 +376,8 @@ public class Graphviz {
     public void printGraphvizDotText(IntegratedLogicCircuit ic, String outfile) {
     	
     		System.out.println("---------Generating Integrated Logic Circuit dot file.-----------");
-	    String gvText = "#GRAPHVIZ_OUTPUT \n";
+
+    		String gvText = "#GRAPHVIZ_OUTPUT \n";
 	    gvText += "digraph{ \n";
 	    gvText += "rankdir=LR; \n";
 	    gvText += "splines=ortho; \n";
@@ -390,8 +391,8 @@ public class Graphviz {
 	    for(LogicCircuit sublc : sub_lcs) {
 	    		//start of single cluster definition, should contain names of nodes in this graph
 	    	
-	    		System.out.println("working on sublc: " + sublc_count);
-	    		System.out.println(sublc.printGraph());
+	    		//System.out.println("working on sublc: " + sublc_count);
+	    		//System.out.println(sublc.printGraph());
 	    		gvText += "\nsubgraph cluster" + sublc_count + " {\n" ;
 	    		//gvText += "node [style=filled, color=white];\n";
 	    		gvText += "rank=same;\n";
@@ -477,7 +478,7 @@ public class Graphviz {
 	    gvText += "} \n";
 	
 	    Util.fileWriter(_output_directory + outfile, gvText, false);
-	    System.out.println("---------------End of graphviz ----------------");
+	    //System.out.println("---------------End of graphviz ----------------");
 }
 
 
