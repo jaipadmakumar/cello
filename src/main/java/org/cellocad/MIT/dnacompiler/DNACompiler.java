@@ -219,9 +219,12 @@ public class DNACompiler {
          * assigned_lcs:    all logic gates assigned with genetic gates
          */
         
+        //an alternate constructor without _options here might* be useful
         BooleanCircuitBuilder boolean_builder = new BooleanCircuitBuilder(_options.get_fin_verilog(), ucf, _options);
         boolean_builder.setThreadDependentLoggername(threadDependentLoggername);
         LogicCircuit abstract_lc = boolean_builder.get_boolean_lc();
+        //if abstract_lc is too big, set partition circuit argument to true
+
         
         ArrayList<LogicCircuit> unassigned_lcs = new ArrayList<LogicCircuit>();
         ArrayList<LogicCircuit> assigned_lcs = new ArrayList<LogicCircuit>();
@@ -503,10 +506,14 @@ public class DNACompiler {
             return;
         }
 
-        if (!LogicCircuitUtil.libraryGatesCoverCircuitGates(abstract_lc, gate_library)) {
+        if (!LogicCircuitUtil.libraryGatesCoverCircuitGates(abstract_lc, gate_library) || _options.is_partition_circuit() == true) {
             //if run out of gates, must try splitting circuit
             logger.info("Not enough gates in the library to cover the gates in the circuit."
-            		+ "Forcing simulated annealing w/ circuit splitting.");
+            		+ "Forcing simulated annealing w/ circuit partitioning.");
+            PartitionCircuit pc = new PartitionCircuit(abstract_lc, _options);
+    			//PartitionCircuit.partitionCircuit(abstract_lc);
+    			pc.partitionCircuit(abstract_lc);
+    			System.out.println("Success Dude!");
             get_options().set_assignment_algorithm(BuildCircuits.AssignmentAlgorithm.fixed_gates);
 
         } else {
@@ -657,10 +664,10 @@ public class DNACompiler {
             //jai fixed gate sim annealing for testing
             else if (_options.get_assignment_algorithm() == BuildCircuits.AssignmentAlgorithm.fixed_gates) {
             	
-            		PartitionCircuit pc = new PartitionCircuit(abstract_lc, _options);
-            		//PartitionCircuit.partitionCircuit(abstract_lc);
-            		pc.partitionCircuit(abstract_lc);
-            		System.out.println("Success!");
+//            		PartitionCircuit pc = new PartitionCircuit(abstract_lc, _options);
+//            		//PartitionCircuit.partitionCircuit(abstract_lc);
+//            		pc.partitionCircuit(abstract_lc);
+//            		System.out.println("Success!");
             		circuit_builder = new BuildCircuitsFixedGates(_options, gate_library, roadblock); 
                 
             }
