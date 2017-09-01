@@ -55,7 +55,7 @@ public class IntegratedLogicCircuit {
 		}
 		
 		set_sub_lcs(this.subgraphs);
-		verifyLogicIdentical();
+		verifyLogicIdentical(); //hard to debug w/ this on
 	}
 	
 	
@@ -77,7 +77,7 @@ public class IntegratedLogicCircuit {
 		
 		
 		
-		//I think the resason this is working and I don't need to explicitly reset 
+		//I think the reason this is working and I don't need to explicitly reset 
 		//the QS parent logics is b/c gates already aware who their children are via outgoing wire
 		//and I don't touch child logics or visitation state. In other words, 
 		//even though qs gate parent isn't in the same circuit, it still knows
@@ -155,12 +155,19 @@ public class IntegratedLogicCircuit {
 	private void verifyLogicIdentical() {
 		List<Gate> original_inputs = this.original_lc.get_input_gates();
 		List<Gate> original_outputs = this.original_lc.get_output_gates();
-		List<Gate> subcircuit_inputs = new ArrayList<Gate>();
-		List<Gate> subcircuit_outputs = new ArrayList<Gate>();
+		HashSet<Gate> subcircuit_inputs = this.input_gates; //new ArrayList<Gate>();
+		HashSet<Gate> subcircuit_outputs = this.output_gates; //new ArrayList<Gate>();
 		
-		for(LogicCircuit sub_lc:this.sub_lcs) {
-			subcircuit_inputs.addAll(sub_lc.get_input_gates());
-			subcircuit_outputs.addAll(sub_lc.get_output_gates());
+//		for(LogicCircuit sub_lc:this.sub_lcs) {
+//			subcircuit_inputs.addAll(sub_lc.get_input_gates());
+//			subcircuit_outputs.addAll(sub_lc.get_output_gates());
+//		}
+		
+		if(original_inputs.size() != subcircuit_inputs.size()) {
+			throw new IllegalStateException("Parent and integrated circuit don't have same number of inputs.");
+		}
+		if(original_outputs.size() != subcircuit_outputs.size()) {
+			throw new IllegalStateException("Parent and integrated circuit don't have same number of output gates.");
 		}
 		
 		for(Gate lc_out: original_outputs) {
