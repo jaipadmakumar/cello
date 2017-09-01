@@ -414,8 +414,10 @@ public class PartitionCircuit {
 						//System.out.println("qs gate index: " + qs_gate_ind);
 						//System.out.println("full path: " + full_path);
 						List<Gate> subpath = full_path.subList(qs_gate_ind, terminal_ind);
+						List<Gate> subpath_backend = full_path.subList(0, qs_gate_ind); //if node has outdegree>1, won't encounter those remaining nodes in any other way
 						//System.out.println("subpath: " + subpath + "\n");
 						subgraph_path_map.get(qs_gate).addPath(subpath);
+						subgraph_path_map.get(lc.get_output_gates().get(0)).addPath(subpath_backend);
 					}
 					else{
 						//BUG: THIS PART LOOKS WEIRD --> IF qs_gate isn't on the path shouldn't need to do 
