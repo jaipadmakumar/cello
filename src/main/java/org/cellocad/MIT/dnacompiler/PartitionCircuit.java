@@ -26,7 +26,7 @@ public class PartitionCircuit {
 	//Instance Variables
 
 	@Getter @Setter private List<List<LogicCircuit>> sub_lcs; //list of sub LogicCircuits
-	@Getter @Setter private LogicCircuit parent_lc; 
+	@Getter @Setter private LogicCircuit parent_lc;
 	private Args options;
 	
 	//From a code logic perspective, might make more sense to have 
@@ -94,65 +94,8 @@ public class PartitionCircuit {
 			paths.add(path_to_add);
 		}
 		
+
 		private void buildLogicCircuit(){
-			
-			//calculates subcircuit based on given subgraph paths
-			//GATES ALREADY HAVE WIRES ATTACHED FROM PARENT STRUCTURE, JUST USE THOSE IN CONSTRCUTOR 
-			//MIGHT NEED TO MAKE A COPY OF GATE BEFORE PUTTING INTO A SUBGRAPH SO THAT 
-			// DUPLICATE GATES IN DIFFERENT SUBGRAPHS ARE THEIR OWN OBJECTS IN MEMORY
-			HashSet<Gate> sublcs_gates = new HashSet<Gate>(); //lc gates set
-			HashSet<Wire> sublcs_wires = new HashSet<Wire>(); //lc wires set
-			int wire_count = 0;
-			
-			if(this.paths.size() == 1){
-				//only a single path through list so path is subgraph
-				//needs to be cast as ArrayList
-				//ArrayList<Gate> sublcs_gates = new ArrayList<Gate>(subgraph_paths.get(0));
-				
-				for(List<Gate> path:this.paths){
-					sublcs_gates.addAll(path);
-				}
-				//sublcs_gates.addAll(this.paths.get(0));
-				for(Gate g:sublcs_gates){
-					//int gate_ind = g.Index;
-					//List<Integer> child_inds = new ArrayList<Integer>();
-					for(Gate child:g.getChildren()){
-						//child_inds.add(child.Index);
-						
-						Wire wire = new Wire(wire_count, g, child);
-						sublcs_wires.add(wire);
-						wire_count +=1;
-					}
-					
-				}
-			}
-			else{
-				//need to find set of gates from list
-				
-				List<Gate> gate_set = new ArrayList<Gate>(Union(this.paths));
-				sublcs_gates.addAll(gate_set);
-				
-				for(List<Gate> path:this.paths){
-					for(Gate g:path){
-						for(Gate child:g.getChildren()){
-							//child_inds.add(child.Index);
-							
-							Wire wire = new Wire(wire_count, g, child);
-							sublcs_wires.add(wire);
-							wire_count +=1;
-						}
-					}
-				}
-			}
-			LogicCircuit subcircuit = new LogicCircuit(new ArrayList<Gate>(sublcs_gates), 
-				 	new ArrayList<Wire>(sublcs_wires));
-			
-			this.sub_lc = subcircuit;
-		}
-		
-		private void buildLogicCircuit1(){
-			//something about this method of building logic circuit makes code work
-			//where buildLogicCircuit() fails
 			
 			//calculates subcircuit based on given subgraph paths
 			//GATES ALREADY HAVE WIRES ATTACHED FROM PARENT STRUCTURE, JUST USE THOSE IN CONSTRCUTOR 
