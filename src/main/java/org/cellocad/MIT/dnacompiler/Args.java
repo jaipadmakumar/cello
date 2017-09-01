@@ -74,6 +74,9 @@ public class Args {
 
     @Getter @Setter ArrayList<String> _exclude_groups = new ArrayList<>();
 
+    //still need to add argument to loop below in order to be able to parse commandline argument
+    @Getter @Setter private boolean _partition_circuit = false; //should the circuit be partitioned?, if so assignment algorithm must be fixed gates
+    
     @Getter @Setter private BuildCircuits.AssignmentAlgorithm _assignment_algorithm = BuildCircuits.AssignmentAlgorithm.sim_annealing; //
 //    @Getter @Setter private int _timelimit = 10; // seconds.
     @Getter @Setter private boolean _unique_repressor_assignments = true; // only output unique repressor assignments
