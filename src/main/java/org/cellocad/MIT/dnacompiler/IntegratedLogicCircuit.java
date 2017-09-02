@@ -18,6 +18,7 @@ public class IntegratedLogicCircuit {
 	public HashSet<Gate> input_gates = new HashSet<Gate>();
 	public HashSet<Gate> output_gates = new HashSet<Gate>();
 	public List<Gate> qs_gates = new ArrayList<Gate>();
+	public double score;
 	
 	public IntegratedLogicCircuit(LogicCircuit parent_lc, List<PartitionCircuit.Subgraph> subgraphs) {
 		this.original_lc = parent_lc;
@@ -56,6 +57,8 @@ public class IntegratedLogicCircuit {
 		
 		set_sub_lcs(this.subgraphs);
 		verifyLogicIdentical(); //hard to debug w/ this on
+		
+		this.score = pairwiseGateDiff();
 	}
 	
 	
