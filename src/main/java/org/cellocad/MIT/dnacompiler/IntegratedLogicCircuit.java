@@ -7,7 +7,7 @@ import java.util.*;
 
 import org.cellocad.MIT.dnacompiler.Gate.GateType;
 
-public class IntegratedLogicCircuit {
+public class IntegratedLogicCircuit implements Comparable<IntegratedLogicCircuit>{
 	
 	LogicCircuit original_lc;
 	List<PartitionCircuit.Subgraph> subgraphs;
@@ -214,6 +214,17 @@ public class IntegratedLogicCircuit {
 		}
 
 
+		@Override
+		public int compareTo(IntegratedLogicCircuit o) { //high scores = bad, sort them low
+			if(this.score < o.score) {
+				return -1;
+			}
+			else if(this.score > o.score) {
+				return 1;
+			}
+			return 0;	
+		}
+		
 
 }
 
