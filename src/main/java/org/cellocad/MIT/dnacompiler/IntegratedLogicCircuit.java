@@ -181,6 +181,36 @@ public class IntegratedLogicCircuit {
 		}
 		
 	}
+	
+	//Serves as a scoring function for determining which subgraphs should be kept
+		private boolean isLogicCircuitTooBig(List<LogicCircuit> subgraphs, int max){
+			//returns true if any subgraph has number of gates larger than max
+			boolean bool = false;
+			for(LogicCircuit subgr: subgraphs){
+				if(subgr.get_logic_gates().size() > max){
+					bool = true;
+					}
+			}
+			return bool;
+		}
+		
+		private double pairwiseGateDiff() {
+			//calculate sum of all pairwise differences in gate counts
+			System.out.println("number of subgraphs: " + this.sub_lcs.size());
+			System.out.println("calculating pairwise differences");
+			double x = 0;
+			for(int i=0;i<this.sub_lcs.size();++i) {
+				for(int j=i+1;j<this.sub_lcs.size(); ++j) {
+					x+= Math.abs(this.sub_lcs.get(i).get_logic_gates().size() - this.sub_lcs.get(j).get_logic_gates().size());
+				}
+			}
+			
+			//System.out.println("Score: " + x);
+			
+			return x;
+		}
+
+
 
 }
 
