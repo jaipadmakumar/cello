@@ -25,9 +25,11 @@ public class PartitionCircuit {
 	
 	//Instance Variables
 
-	@Getter @Setter private List<List<LogicCircuit>> sub_lcs; //list of sub LogicCircuits
+	@Getter @Setter private List<List<LogicCircuit>> sub_lcs; //list of sub-LogicCircuits
+	@Getter @Setter private List<List<Subgraph>> subgraph_sets;
 	@Getter @Setter private LogicCircuit parent_lc;
 	private Args options;
+	@Getter @Setter private List<IntegratedLogicCircuit> integrated_circuits;
 	
 	//From a code logic perspective, might make more sense to have 
 	//subgraph called subcircuit and have that be a subclass of 
@@ -189,6 +191,9 @@ public class PartitionCircuit {
 		
 		parent_lc = lc;
 		sub_lcs = new ArrayList<List<LogicCircuit>>();
+		this.integrated_circuits = new ArrayList<IntegratedLogicCircuit>();
+		this.subgraph_sets = new ArrayList<List<Subgraph>>();
+		
 		
 	}
 	
@@ -197,6 +202,9 @@ public class PartitionCircuit {
 			parent_lc = lc;
 			sub_lcs = new ArrayList<List<LogicCircuit>>();
 			this.options = options;
+			this.integrated_circuits = new ArrayList<IntegratedLogicCircuit>();
+			this.subgraph_sets = new ArrayList<List<Subgraph>>();
+
 			
 		}
 
@@ -231,6 +239,33 @@ public class PartitionCircuit {
 	//[6 NOT g4, 11 NOT g9]
 	//for iphone blue: [9 NOR g8, 7 NOR g6]
 	
+	
+	public void setIntegratedCircuits() {
+		
+		System.out.println("Determining integrated lc");
+		
+		int count = 0;
+		for(List<Subgraph> subgraphs:this.subgraph_sets) {
+			//System.out.println("terminal gate in pc ic call: " + test_built_subgraphs.get(1).terminal_gate);
+			IntegratedLogicCircuit ic = new IntegratedLogicCircuit(this.parent_lc, subgraphs);
+			this.integrated_circuits.add(ic);
+			//System.out.println("Score: " + ic.score);
+			
+//			Graphviz graphviz = new Graphviz(options.get_home(), options.get_output_directory(), options.get_jobID());
+//			ScriptCommands script_commands = new ScriptCommands(options.get_home(), options.get_output_directory(), options.get_jobID());
+//			String outfile_name = "IC_WIRING_DIAGRAM_" + count;
+//			for(Gate combo:ic.qs_gates) {outfile_name += "_" + combo.Name;}
+//			outfile_name += ".dot";
+//			graphviz.printGraphvizDotText(ic, outfile_name);
+//			script_commands.makeDot2Png(outfile_name);
+		
+		}
+		count+=1;
+		Collections.sort(this.integrated_circuits);
+		System.out.println("Integrated Circuit Scores:\n");
+		for(IntegratedLogicCircuit ic:this.integrated_circuits) {System.out.println(ic.score);}
+	}
+
 	public void partitionCircuit(LogicCircuit lc){
 		
 		List<Gate> empty_list = new ArrayList<Gate>();
@@ -264,8 +299,8 @@ public class PartitionCircuit {
 		
 		HashMap<List<Gate>, List<Subgraph>> partition_subgraph_map = new HashMap<List<Gate>, List<Subgraph>>();
 		
-		for(List<Gate> combos_list : gate_combinations){
-		//for(List<Gate> combos_list : edge_combinations_to_cut){
+		//for(List<Gate> combos_list : gate_combinations){
+		for(List<Gate> combos_list : edge_combinations_to_cut){
 			//choose an edge to cut
 			//number of subgraphs = length(combos_list)
 			List<Subgraph> emptyGraphsList = new ArrayList<Subgraph>();
