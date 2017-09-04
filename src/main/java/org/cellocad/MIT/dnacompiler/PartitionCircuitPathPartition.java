@@ -8,7 +8,12 @@ import static org.cellocad.MIT.dnacompiler.PartitionCircuitUtil.*;
 import org.cellocad.MIT.dnacompiler.PartitionCircuit.*;
 
 
-public class PartitionCircuitPathPartition extends PartitionCircuit{
+public class PartitionCircuitPathPartition implements PartitionCircuitAlgorithm{
 	
 	
+	@Override
+	public List<IntegratedLogicCircuit> partitionCircuit(LogicCircuit lc){
+		 List<IntegratedLogicCircuit> ic_list = new ArrayList<IntegratedLogicCircuit>();
+		 return ic_list;
+	}
 }
