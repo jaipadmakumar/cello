@@ -513,6 +513,7 @@ public class DNACompiler {
             PartitionCircuit pc = new PartitionCircuit(abstract_lc, _options);
     			//PartitionCircuit.partitionCircuit(abstract_lc);
     			pc.partitionCircuit(abstract_lc);
+    			pc.setIntegratedCircuits();
     			System.out.println("Success Dude!");
             get_options().set_assignment_algorithm(BuildCircuits.AssignmentAlgorithm.fixed_gates);
 
