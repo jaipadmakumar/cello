@@ -85,6 +85,9 @@ public class BooleanCircuitBuilder {
 		
 	}
 	
+	//validation can really be moved to LogicCircuit setter itself
+	// you should test if this works period, not sure ResultStatus will get passed to main script
+	// probably need object to have ResultStatus field and test in DNACompiler if invalid and if so, return
 	private void validateCircuit() {
 	    /**
 	     * A logic circuit must have at least one input gate and one output gate
