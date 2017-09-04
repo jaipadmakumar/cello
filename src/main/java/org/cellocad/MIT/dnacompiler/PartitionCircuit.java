@@ -208,10 +208,25 @@ public class PartitionCircuit {
 	 * those. Thus, each edge (or edge pair) denotes a single set of subcircuits
 	 * which, taken together, have the same logic as the original logic circuit.
 	 * 
+	 * General algorithm:
+	 * 1. find all paths through graphs (all paths from all sources to all sinks)
+	 * 2. any path that hits a qs node goes into separate graph --> all nodes to right of qs node, inclusive
+	 * 3. any remaining paths go in dump graph containing rest of nodes and output nodes
+	 * 
+	 * Therefore, each graph either as 1 qs node or all output nodes.
+	 * 
 	 * @param lc
 	 * @return
 	 */
 	
+
+	//Circuit partitioning doesn't change topology of circuit itself so don't need to keep track of wires in this process
+	//since wires already connected to gates by Gate.Outgoing property
+	
+	//TODO test case where outdegree = 2 --> structural_iphone2 cutting gate g9 has outdegree = 3 --> works now
+	//TODO test case where outdegree > 1 AND hit second qs node on path
+	//list of lists of list<gate> = 
+	//edge_cut: [[subgraph1path1, subgraph1path2],[subgraph2path1, subgraph2path2]]
 	//try testing w/ edge cuts:
 	//[6 NOT g4, 11 NOT g9]
 	//for iphone blue: [9 NOR g8, 7 NOR g6]
@@ -245,16 +260,7 @@ public class PartitionCircuit {
 		//System.out.println("all paths:\n");
 		//for(List<Gate> p:all_paths) {System.out.println(p);}
 		
-		//general algorithm:
-		// 1. find all paths
-		// 2. any path that hits a qs node goes into separate graph --> all nodes to right of qs node, inclusive
-		// 3. any remaining paths go in dump graph containing rest of nodes
-		//Circuit partitioning doesn't change topology of circuit itself so don't need to keep track of wires in this process
-		//since wires already connected to gates by Gate.Outgoing property
 		
-		//TODO test case where outdegree = 2 --> structural_iphone2 cutting gate g9 has outdegree = 3
-		//list of lists of list<gate> = 
-		//edge_cut: [[subgraph1path1, subgraph1path2],[subgraph2path1, subgraph2path2]]
 		
 		HashMap<List<Gate>, List<Subgraph>> partition_subgraph_map = new HashMap<List<Gate>, List<Subgraph>>();
 		
@@ -280,25 +286,10 @@ public class PartitionCircuit {
 		List<List<LogicCircuit>> all_subgraphs_lc = new ArrayList<>();
 		System.out.println("Parent lc: \n" + this.parent_lc.printGraph());
 		
-//		for(Gate g: this.parent_lc.get_Gates()) {
-//			System.out.println("Gate: " + g);
-//			if(g.Outgoing != null) {
-//				System.out.println("Wire: " + g.Outgoing);
-//			}
-//			if(g.Outgoing.Next != null) {
-//				System.out.println("Next Wire: " + g.Outgoing.Next);
-//			}
-//			System.out.println("////////////////////////////////////////////////////////");
-//			
-//		}
-		
-		int count = 0;
 		for(List<Gate >k:partition_subgraph_map.keySet()){
 			List<Subgraph> subgraphs = partition_subgraph_map.get(k);
 			List<LogicCircuit> subgraphs_lc = new ArrayList<>();
-			
-			
-			
+
 			//following is just print statements for debugging except for two lines that are important
 			System.out.println("Edge Cut: " + k);
 			int sub_count = 1;
@@ -322,51 +313,16 @@ public class PartitionCircuit {
 				sub_count +=1;
 			}
 			
-		///////////////////////debug block////////////////////////////
-			System.out.println("Determining integrated lc");
-				IntegratedLogicCircuit ic = new IntegratedLogicCircuit(this.parent_lc, test_built_subgraphs);
-				for (Subgraph subgraph:test_built_subgraphs){
-					//System.out.println("output gates" + this.parent_lc.get_output_gates());
-					//System.out.println("Subgraph sub_lc number: " + sub_count);
-					System.out.println("output gate(s): " + subgraph.sub_lc.get_output_gates());
-					System.out.println("terminal gate: " + subgraph.terminal_gate);
-					System.out.println("terminal gate parents: " + subgraph.terminal_gate_parents);
-					System.out.println("number of gates in sublc: " + subgraph.sub_lc.get_Gates().size());
-					System.out.println("Terminal gate children: " + subgraph.terminal_gate.getChildren());
-					System.out.println("subgraph paths:\n" + subgraph.paths);
-					System.out.println(subgraph.sub_lc.printGraph());
-				}
-				//System.out.println("terminal gate in pc ic call: " + test_built_subgraphs.get(1).terminal_gate);
-				Graphviz graphviz = new Graphviz(options.get_home(), options.get_output_directory(), options.get_jobID());
-				ScriptCommands script_commands = new ScriptCommands(options.get_home(), options.get_output_directory(), options.get_jobID());
-				String outfile_name = "IC_WIRING_DIAGRAM_" + count;
-				for(Gate combo:ic.qs_gates) {outfile_name += "_" + combo.Name;}
-				outfile_name += ".dot";
-				graphviz.printGraphvizDotText(ic, outfile_name);
-		        script_commands.makeDot2Png(outfile_name);
-		        
-		        count += 1;
-				//System.out.println(ic.sub_lcs);
-				//for(LogicCircuit test_lc: ic.sub_lcs) {
-				//	System.out.println(test_lc.printGraph());
-				//}
-				
-			///////////////////////end debug block////////////////////////////
-			
+			this.subgraph_sets.add(test_built_subgraphs);
 			all_subgraphs_lc.add(subgraphs_lc);			
 
 		}
 		
 		for(List<LogicCircuit> subgraphs:all_subgraphs_lc){
-			System.out.println("calculating norms");
-			pairwiseGateDiff(subgraphs);
-			if(!isLogicCircuitTooBig(subgraphs, 5)){
-				this.sub_lcs.add(subgraphs); //populate PartitionCircuit object w/ identified subgraphs
-
-			}
+			this.sub_lcs.add(subgraphs); //populate PartitionCircuit object w/ identified subgraphs
 		}
 		
-		System.out.println("Number of subgraphs matching criteria: " + this.sub_lcs.size());
+		//System.out.println("Number of subgraphs matching criteria: " + this.sub_lcs.size());
 		System.out.println("Total number of subgraphs found: " + partition_subgraph_map.keySet().size() );
 		
 	}
