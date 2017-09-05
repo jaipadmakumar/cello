@@ -91,8 +91,8 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 		
 		HashMap<List<Gate>, List<Subgraph>> partition_subgraph_map = new HashMap<List<Gate>, List<Subgraph>>();
 		
-		for(List<Gate> combos_list : gate_combinations){
-		//for(List<Gate> combos_list : edge_combinations_to_cut){
+		//for(List<Gate> combos_list : gate_combinations){
+		for(List<Gate> combos_list : edge_combinations_to_cut){
 			//choose an edge to cut
 			//number of subgraphs = length(combos_list)
 			List<Subgraph> emptyGraphsList = new ArrayList<Subgraph>();
@@ -103,10 +103,10 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 			//System.out.println("Subgraph path map: " + subgraph_path_map);
 			//collect subgraphs from subgraph_path_map into single list and add to edge_partitions_dict
 			for(Gate g: subgraph_path_map.keySet()){
-				System.out.println("key: " + g);
-				System.out.println("value: " + subgraph_path_map.get(g).paths);
+				//System.out.println("key: " + g);
+				//System.out.println("value: " + subgraph_path_map.get(g).paths);
 				partition_subgraph_map.get(combos_list).add(subgraph_path_map.get(g));
-				}	
+			}	
 		}
 		
 		//use identified subgraphs to find logic subcircuits
@@ -117,7 +117,6 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 			List<Subgraph> subgraphs = partition_subgraph_map.get(k);
 			List<LogicCircuit> subgraphs_lc = new ArrayList<>();
 
-			//following is just print statements for debugging except for two lines that are important
 			System.out.println("Edge Cut: " + k);
 			int sub_count = 1;
 			List<Subgraph> subgraph_set = new ArrayList<Subgraph>();

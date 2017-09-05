@@ -29,17 +29,9 @@ public class PartitionCircuit {
 	@Getter @Setter private List<List<Subgraph>> subgraph_sets;
 	@Getter @Setter private LogicCircuit parent_lc;
 	private Args options;
-	@Getter @Setter private List<IntegratedLogicCircuit> integrated_circuits;
+	@Getter @Setter private List<IntegratedLogicCircuit> integrated_circuits; //list of found integrated aka partitioned circuits
 	@Getter @Setter private PartitionCircuitAlgorithm algorithm;
 	
-	//From a code logic perspective, might make more sense to have 
-	//subgraph called subcircuit and have that be a subclass of 
-	//LogicCircuit
-//	public class SplitLogicCircuit{
-//		@Getter @Setter private List<List<LogicCircuit>> sub_lcs;
-//		@Getter @Setter private LogicCircuit parent_lc;
-//		@Getter @Setter private LogicCircuit merged_lc;
-//	}
 	
 	/**
 	 * A collection of Subgraph objects taken together constitute the same logic 
@@ -88,12 +80,6 @@ public class PartitionCircuit {
 		}
 		
 		public void addPath(List<Gate> path_to_add){
-//			List<Gate> new_path_list = new ArrayList<Gate>();
-//			//make copies of gates
-//			for(Gate g: path_to_add) {
-//				Gate new_g = new Gate(g);
-//				new_path_list.add(new_g);
-//			}
 			paths.add(path_to_add);
 		}
 		
@@ -233,14 +219,15 @@ public class PartitionCircuit {
 			IntegratedLogicCircuit ic = new IntegratedLogicCircuit(this.parent_lc, subgraphs);
 			this.integrated_circuits.add(ic);
 			System.out.println("Score: " + ic.score);
+			//output wiring diagram file
 			
-			Graphviz graphviz = new Graphviz(options.get_home(), options.get_output_directory(), options.get_jobID());
-			ScriptCommands script_commands = new ScriptCommands(options.get_home(), options.get_output_directory(), options.get_jobID());
-			String outfile_name = "IC_WIRING_DIAGRAM_" + count;
-			for(Gate combo:ic.qs_gates) {outfile_name += "_" + combo.Name;}
-			outfile_name += ".dot";
-			graphviz.printGraphvizDotText(ic, outfile_name);
-			script_commands.makeDot2Png(outfile_name);
+//			Graphviz graphviz = new Graphviz(options.get_home(), options.get_output_directory(), options.get_jobID());
+//			ScriptCommands script_commands = new ScriptCommands(options.get_home(), options.get_output_directory(), options.get_jobID());
+//			String outfile_name = "IC_WIRING_DIAGRAM_" + count;
+//			for(Gate combo:ic.qs_gates) {outfile_name += "_" + combo.Name;}
+//			outfile_name += ".dot";
+//			graphviz.printGraphvizDotText(ic, outfile_name);
+//			script_commands.makeDot2Png(outfile_name);
 		
 		}
 		count+=1;
@@ -250,7 +237,6 @@ public class PartitionCircuit {
 	}
 
 	public void set_subgraph_sets() {
-		//System.out.println(this.parent_lc.printGraph());
 		subgraph_sets = this.algorithm.partitionCircuit();
 	}
 	

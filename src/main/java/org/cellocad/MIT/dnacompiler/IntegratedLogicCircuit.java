@@ -25,17 +25,13 @@ public class IntegratedLogicCircuit implements Comparable<IntegratedLogicCircuit
 		this.subgraphs = subgraphs;
 		
 		for(PartitionCircuit.Subgraph subgraph:subgraphs) {
-			System.out.println("this printer: " + subgraph.terminal_gate.getChildren());
 			if(subgraph.terminal_gate_parents.size() > 0) {
-				System.out.println("term parents " + subgraph.terminal_gate_parents); //print successfully
 				this.terminal_parents.addAll(subgraph.terminal_gate_parents);
 			
 			if(subgraph.terminal_gate.Index != -1) {
-				System.out.println("terminal gate: " + subgraph.terminal_gate);
 				this.terminal_gate_map.put(subgraph.terminal_gate, subgraph.terminal_gate_parents);
 			}
 			else {
-				System.out.println("else terminal gate: " + subgraph.terminal_gate);
 				//this.terminal_gate_map.put(subgraph.terminal_gate, new ArrayList<Gate>());
 					
 				}
@@ -198,9 +194,9 @@ public class IntegratedLogicCircuit implements Comparable<IntegratedLogicCircuit
 		}
 		
 		private double pairwiseGateDiff() {
-			//calculate sum of all pairwise differences in gate counts
-			System.out.println("number of subgraphs: " + this.sub_lcs.size());
-			System.out.println("calculating pairwise differences");
+			//calculate sum of all pairwise differences in gate counts --> effectively a toxicity balancing score
+			//takes no explicit account of how good the reduction was
+			
 			double x = 0;
 			for(int i=0;i<this.sub_lcs.size();++i) {
 				for(int j=i+1;j<this.sub_lcs.size(); ++j) {
