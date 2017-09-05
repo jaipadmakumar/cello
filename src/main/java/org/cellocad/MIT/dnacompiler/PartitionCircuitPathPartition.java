@@ -120,17 +120,18 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 			//following is just print statements for debugging except for two lines that are important
 			System.out.println("Edge Cut: " + k);
 			int sub_count = 1;
-			List<Subgraph> test_built_subgraphs = new ArrayList<Subgraph>();
+			List<Subgraph> subgraph_set = new ArrayList<Subgraph>();
 			for (Subgraph subgraph:subgraphs){
 				subgraph.buildLogicCircuit();
 				subgraphs_lc.add(subgraph.sub_lc);
+				
 				Subgraph new_subgraph = new Subgraph(subgraph);
-				test_built_subgraphs.add(new_subgraph); //debugging
+				subgraph_set.add(new_subgraph); 
 			
 				sub_count +=1;
 			}
 			
-			subgraph_partitions.add(test_built_subgraphs);
+			subgraph_partitions.add(subgraph_set);
 			all_subgraphs_lc.add(subgraphs_lc);			
 
 		}
