@@ -222,9 +222,6 @@ public class PartitionCircuit {
 
 		
 	}
-
-	
-	
 	
 	public void setIntegratedCircuits() {
 		
