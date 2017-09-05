@@ -254,37 +254,6 @@ public class PartitionCircuit {
 		subgraph_sets = this.algorithm.partitionCircuit();
 	}
 	
-	
-	
-	
-	//Serves as a scoring function for determining which subgraphs should be kept
-	private boolean isLogicCircuitTooBig(List<LogicCircuit> subgraphs, int max){
-		//returns true if any subgraph has number of gates larger than max
-		boolean bool = false;
-		for(LogicCircuit subgr: subgraphs){
-			if(subgr.get_logic_gates().size() > max){
-				bool = true;
-				}
-		}
-		return bool;
-	}
-	
-	private int pairwiseGateDiff(List<LogicCircuit> sublcs) {
-		//calculate sum of all pairwise differences in gate counts
-		System.out.println("number of subgraphs: " + sublcs.size());
-		System.out.println("calculating pairwise differences");
-		int x = 0;
-		for(int i=0;i<sublcs.size();++i) {
-			for(int j=i+1;j<sublcs.size(); ++j) {
-				x+= Math.abs(sublcs.get(i).get_logic_gates().size() - sublcs.get(j).get_logic_gates().size());
-			}
-		}
-		
-		System.out.println("Score: " + x);
-		
-		return x;
-	}
-	
 	private void printLogics(LogicCircuit lc) {
 		for(Gate g:lc.get_Gates()) {
 			System.out.println(g + " logic: " + g.get_logics());
