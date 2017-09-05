@@ -510,9 +510,9 @@ public class DNACompiler {
             //if run out of gates, must try splitting circuit
             logger.info("Not enough gates in the library to cover the gates in the circuit."
             		+ "Forcing simulated annealing w/ circuit partitioning.");
-            PartitionCircuit pc = new PartitionCircuit(abstract_lc, _options);
+            PartitionCircuit pc = new PartitionCircuit(abstract_lc, _options,  new PartitionCircuitPathPartition(abstract_lc));
     			//PartitionCircuit.partitionCircuit(abstract_lc);
-    			pc.partitionCircuit(abstract_lc);
+    			pc.set_subgraph_sets();
     			pc.setIntegratedCircuits();
     			System.out.println("Success Dude!");
             get_options().set_assignment_algorithm(BuildCircuits.AssignmentAlgorithm.fixed_gates);
