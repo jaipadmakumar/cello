@@ -26,8 +26,8 @@ public class PartitionCircuit {
 	//Instance Variables
 
 	@Getter @Setter private List<List<LogicCircuit>> sub_lcs; //list of sub-LogicCircuits
-	@Getter @Setter public List<List<Subgraph>> subgraph_sets;
-	@Getter @Setter public LogicCircuit parent_lc;
+	@Getter @Setter private List<List<Subgraph>> subgraph_sets;
+	@Getter @Setter private LogicCircuit parent_lc;
 	private Args options;
 	@Getter @Setter private List<IntegratedLogicCircuit> integrated_circuits;
 	@Getter @Setter private PartitionCircuitAlgorithm algorithm;
