@@ -2,6 +2,8 @@ package org.cellocad.MIT.dnacompiler;
 
 import java.util.List;
 
+import org.cellocad.MIT.dnacompiler.PartitionCircuit.Subgraph;
+
 //interface to implement 'strategy' design pattern for circuit partitioning algorithms
 //I think a way to do this is to have different algorithms which implement this interface, 
 // then have a base class which hold the Subgraph class which is extended by various algorithms
@@ -15,5 +17,5 @@ import java.util.List;
 
 
 public interface PartitionCircuitAlgorithm {
-	public List<IntegratedLogicCircuit> partitionCircuit(LogicCircuit lc);
+	public List<List<Subgraph>> partitionCircuit();
 }
