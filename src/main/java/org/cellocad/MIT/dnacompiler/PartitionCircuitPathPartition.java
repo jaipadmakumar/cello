@@ -30,7 +30,7 @@ import org.cellocad.MIT.dnacompiler.PartitionCircuit.*;
 
 
 //Circuit partitioning doesn't change topology of circuit itself so don't need to keep track of wires in this process
-//since wires already connected to gates by Gate.Outgoing property
+//since wires already connected to gates by Gate.Outgoing property --> actually might if have duplicate nodes
 
 //TODO test case where outdegree = 2 --> structural_iphone2 cutting gate g9 has outdegree = 3 --> works now
 //TODO test case where outdegree > 1 AND hit second qs node on path
@@ -39,6 +39,8 @@ import org.cellocad.MIT.dnacompiler.PartitionCircuit.*;
 //try testing w/ edge cuts:
 //[6 NOT g4, 11 NOT g9]
 //for iphone blue: [9 NOR g8, 7 NOR g6]
+//TODO need to remove gates that are effectively output gates (those directly connected to output gates) b/c
+//TODO partitioning those causes bugs and those will never reduce circuit size anyways 
 
 public class PartitionCircuitPathPartition extends PartitionCircuit implements PartitionCircuitAlgorithm{
 	
@@ -117,7 +119,7 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 			List<Subgraph> subgraphs = partition_subgraph_map.get(k);
 			List<LogicCircuit> subgraphs_lc = new ArrayList<>();
 
-			System.out.println("Edge Cut: " + k);
+			//System.out.println("Edge Cut: " + k);
 			int sub_count = 1;
 			List<Subgraph> subgraph_set = new ArrayList<Subgraph>();
 			for (Subgraph subgraph:subgraphs){
@@ -178,6 +180,7 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 			if(lc.get_input_gates().contains(qs_gate)){
 				//cutting at input gates is pointless
 				//TODO also don't need include output gate b/c has no incoming edge
+				//TODO should be, if input_gates_parents || output_gates_children contains qs_gate, continue
 				continue;
 			}
 			else{
@@ -186,7 +189,7 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 				
 		
 				for(List<Gate> full_path:graph_paths){
-					System.out.println("full path:\n" + full_path);
+					//System.out.println("full path:\n" + full_path);
 					if(full_path.contains(qs_gate)){
 						//slice path into subpath that either goes from qs_gate to input
 						//or qs_gate to other quorum sensing gate that may be in path
@@ -198,8 +201,8 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 						//System.out.println("full path: " + full_path);
 						List<Gate> subpath = full_path.subList(qs_gate_ind, terminal_ind);
 						List<Gate> subpath_backend = full_path.subList(0, qs_gate_ind); //if node has outdegree>1, won't encounter those remaining nodes in any other way
-						System.out.println("path contains qs gate, subpath is:\n" + subpath);
-						System.out.println("backend of above path is: " + subpath_backend);
+						//System.out.println("path contains qs gate, subpath is:\n" + subpath);
+						//System.out.println("backend of above path is: " + subpath_backend);
 						//System.out.println("subpath: " + subpath + "\n");
 						
 						subgraph_path_map.get(qs_gate).addPath(subpath);
@@ -216,7 +219,7 @@ public class PartitionCircuitPathPartition extends PartitionCircuit implements P
 						//keys only go to single output but multiple outputs are possible
 						//shouldn't matter b/c complete paths run to same graph and all outputs can only be in one graph (ASSUMPTION)
 						
-						System.out.println("path does not contain qs gate, subpath is:\n" + subpath);
+						//System.out.println("path does not contain qs gate, subpath is:\n" + subpath);
 						subgraph_path_map.get(lc.get_output_gates().get(0)).addPath(subpath);
 						//subgraph_path_map.get(lc.get_output_gates().get(0)).addPath(full_path);
 						//System.out.println("full path else: " + subpath);
