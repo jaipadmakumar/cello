@@ -4,7 +4,13 @@ import java.util.*;
 
 
 
-
+/**
+ * Class to compute a topological ordering for a given LogicCircuit. The class holds one public static method, {@code topoSort}
+ * which is used to find a topological sort of the gates in a circuit. {@code topoSort} uses a depth first search with backtracking
+ * and an extra stack to find a linear ordering of the logic circuit DAG. 
+ * @author jaipadmakumar
+ *
+ */
 
 public class TopologicalSort {
 	
@@ -42,7 +48,15 @@ public class TopologicalSort {
 	}
 	
 
-	public static void topoSort(LogicCircuit lc) {
+	/**
+	 * Finds a topological sort of the given LogicCircuit. Employs a depth first search w/ backtracking and an additional 
+	 * stack to keep track of the ordering of gates in the linear ordering. Since this is still just a depth first search,
+	 * it's runtime should be proportional the size of the input circuit so this should scale well. Assuming I actually
+	 * implemented it properly, I think the time complexity should be O(total gates, total wires). 
+	 * 
+	 * @param lc LogicCircuit to find topological sort of
+	 * @return topological_order linear ordering of gates, 1st gate is first entry, last gate is final entry
+	 */
 	public static List<Gate> topoSort(LogicCircuit lc) {
 		System.out.println("Calculating topological sort");
 		List<Gate> topological_order = new ArrayList<Gate>();
