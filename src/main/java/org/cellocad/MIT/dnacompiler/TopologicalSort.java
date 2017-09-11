@@ -43,21 +43,28 @@ public class TopologicalSort {
 	
 
 	public static void topoSort(LogicCircuit lc) {
+	public static List<Gate> topoSort(LogicCircuit lc) {
 		System.out.println("Calculating topological sort");
+		List<Gate> topological_order = new ArrayList<Gate>();
 		Deque<Gate> stack = new ArrayDeque<Gate>();
 		List<Gate> visited_gates = new ArrayList<Gate>();
+		
 		
 		//initiate depth first search starting from output gates, only one stack and visited_gates array
 		//in memory so will be appropriately filled out by helper function
 		for(Gate out_g: lc.get_output_gates()) {
 			topoSortHelper(out_g, visited_gates, stack);
 		}
+		
 		System.out.println("toplogical order:");
 		while (stack.isEmpty()==false) {
-			System.out.println(stack.pop() + " ");
+			topological_order.add(stack.pop());
+			
 		}
+		Collections.reverse(topological_order); //circuit is iterated from output --> input so stack needs to be reversed
+		for(Gate g:topological_order) {System.out.println(g);}
 		
-		
+		return topological_order;
 		
 	}
 	
