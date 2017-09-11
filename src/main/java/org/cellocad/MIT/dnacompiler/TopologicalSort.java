@@ -7,7 +7,9 @@ import java.util.*;
 /**
  * Class to compute a topological ordering for a given LogicCircuit. The class holds one public static method, {@code topoSort}
  * which is used to find a topological sort of the gates in a circuit. {@code topoSort} uses a depth first search with backtracking
- * and an extra stack to find a linear ordering of the logic circuit DAG. 
+ * and an extra stack to find a linear ordering of the logic circuit DAG. Simply, a topological sort is a linear ordering of 
+ * all gates in such that all edges point to the right in the ordering. 
+ * 
  * @author jaipadmakumar
  *
  */
@@ -52,7 +54,16 @@ public class TopologicalSort {
 	 * Finds a topological sort of the given LogicCircuit. Employs a depth first search w/ backtracking and an additional 
 	 * stack to keep track of the ordering of gates in the linear ordering. Since this is still just a depth first search,
 	 * it's runtime should be proportional the size of the input circuit so this should scale well. Assuming I actually
-	 * implemented it properly, I think the time complexity should be O(total gates, total wires). 
+	 * implemented it properly, I think the time complexity should be O(total gates, total wires).
+	 * 
+	 * Algorithms works for multi-source, multi-sink graphs. Unlike other common implementations, multi-sink outputs are not
+	 * handled by simply adding a super-sink which is then ignored at the end. This was mainly b/c it was hard to add a new 
+	 * output gate connecting to all other output gates. Instead, topoSort calls its recursive helper function separately
+	 * for each output node. This still results in a linear ordering but may give unexpected results. For example, w/ a 
+	 * 2-input, 2-output circuit that doesn't have any wires crossing (aka only two paths in the graph and both are disjoint),
+	 * this implementation will not return the input nodes as the first two entries in the sort as one might expect. Instead,
+	 * it will return [gates_in_path1, gates_in_path2] = [in1,...,out1, in2, ..., out2]. 
+	 * 
 	 * 
 	 * @param lc LogicCircuit to find topological sort of
 	 * @return topological_order linear ordering of gates, 1st gate is first entry, last gate is final entry
